@@ -1,0 +1,1 @@
+FactoryHolder holds a factory object of a specific type

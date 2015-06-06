@@ -1,0 +1,1242 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="base">
+      <UniqueIdentifier>{3b1307a9-bc58-4773-9a93-0e9ceff55c82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scripts">
+      <UniqueIdentifier>{b7b35df3-4231-4370-aed5-5859ab4c312e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include">
+      <UniqueIdentifier>{2fd46769-c050-4e47-9533-461ef8695d6a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="system">
+      <UniqueIdentifier>{90f3df6a-a1d0-4a6e-b8d7-d1d993fc795b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scripts\Schlachtfelder">
+      <UniqueIdentifier>{ced0a1e2-6867-4f01-a762-390a3d1f01d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scripts\Östliche_Königreiche">
+      <UniqueIdentifier>{ca2551e0-68d0-4331-88f3-ab0cdaa2bf9a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scripts\Östliche_Königreiche\Schlachtzüge">
+      <UniqueIdentifier>{6348f6fc-ab4a-4134-b12f-f05b847d1c7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scripts\Östliche_Königreiche\Dungeons">
+      <UniqueIdentifier>{08d74bbb-7423-4896-a3d6-7d9c25867269}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scripts\Östliche_Königreiche\Gebiete">
+      <UniqueIdentifier>{7eb07d8d-cf38-407c-8cb2-23e25964e650}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scripts\Offene_Welt">
+      <UniqueIdentifier>{ca7213e9-56c1-4084-a48b-19ff57dee433}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scripts\Offene_Welt\epic quest">
+      <UniqueIdentifier>{de9e1235-b31c-4a79-b730-bdf66d9a754d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scripts\Offene_Welt\BlzzconGuys">
+      <UniqueIdentifier>{b0bbe70c-d59f-4522-ba70-2629ca738578}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scripts\Offene_Welt\Events">
+      <UniqueIdentifier>{48747df4-95cb-4363-b245-662d3c32fb4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scripts\Offene_Welt\Premium">
+      <UniqueIdentifier>{c907e08d-3ab3-4dbd-81c7-6115590da110}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scripts\Offene_Welt\Weltbosse">
+      <UniqueIdentifier>{29eadad2-fcf8-4876-b321-1861f3edec16}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scripts\Kalimdor">
+      <UniqueIdentifier>{5cda7bda-399b-46b7-8bc2-5786f0202fa2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scripts\Kalimdor\Schlachtzüge">
+      <UniqueIdentifier>{b2be299e-d632-4e7f-8548-d4305bf3ba50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scripts\Kalimdor\Dungeons">
+      <UniqueIdentifier>{d6c98fcd-a074-45ce-b2ba-c807ba64a902}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scripts\Kalimdor\Dungeons\blackfathom_deeps">
+      <UniqueIdentifier>{226d4dc8-830b-4249-b28a-313ac21080a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scripts\Kalimdor\Dungeons\razorfen_downs">
+      <UniqueIdentifier>{de2e959a-1ef4-41ef-9235-15a1f3f8a19d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scripts\Kalimdor\Dungeons\razorfen_kraul">
+      <UniqueIdentifier>{8f8a60e0-223e-4517-918c-243e523a7892}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scripts\Kalimdor\Gebiete">
+      <UniqueIdentifier>{b6b8671d-4a78-46f5-a01f-02205a266128}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scripts\Schlachtfelder\Alteractal">
+      <UniqueIdentifier>{996f6d83-a555-458e-b868-c9fbf4609a94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scripts\Östliche_Königreiche\Dungeons\Schwarzfelstiefen">
+      <UniqueIdentifier>{45c59280-02fb-482f-859b-bd47cc230f0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scripts\Östliche_Königreiche\Dungeons\Schwarzfelsspitze">
+      <UniqueIdentifier>{5631f38e-66c8-4efd-ad3a-2834fbb49a6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scripts\Östliche_Königreiche\Dungeons\Todesminen">
+      <UniqueIdentifier>{08fb5b22-710d-46d6-9893-f567aa75a5e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scripts\Östliche_Königreiche\Dungeons\Gnomeregan">
+      <UniqueIdentifier>{cef5c3c5-f434-4b9f-9bad-8c106d46c755}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scripts\Östliche_Königreiche\Dungeons\Schalachrote_Kloster">
+      <UniqueIdentifier>{dd4995a8-6d86-4f21-82bc-a18acc2c688f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scripts\Östliche_Königreiche\Dungeons\Scholomance">
+      <UniqueIdentifier>{2a3a25e5-51f1-4ab3-a1a0-1b9ec9c45d1a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scripts\Östliche_Königreiche\Dungeons\Burg_Schattenfang">
+      <UniqueIdentifier>{7a028ad9-afa1-42ea-b147-20a40c5e716c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scripts\Östliche_Königreiche\Dungeons\Stratholme">
+      <UniqueIdentifier>{385f26dc-dcaf-4022-921d-3a562617bf93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scripts\Östliche_Königreiche\Dungeons\Versunkener_Tempel">
+      <UniqueIdentifier>{25be39dd-536d-450d-ac94-6372d37a4fae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scripts\Östliche_Königreiche\Dungeons\Uldaman">
+      <UniqueIdentifier>{c929f54b-22dd-49b4-862c-92dfa9a2d1f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scripts\Östliche_Königreiche\Schlachtzüge\Pechschwingenhort">
+      <UniqueIdentifier>{31605090-12b9-4d42-a5e9-1cbfac8ab384}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scripts\Östliche_Königreiche\Schlachtzüge\Geschmolzener_Kern">
+      <UniqueIdentifier>{920d1832-b347-4afd-bd05-4c943e5555f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scripts\Östliche_Königreiche\Schlachtzüge\Naxxramas">
+      <UniqueIdentifier>{a187836e-bd7b-4c74-a8bd-d86ed0793280}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scripts\Östliche_Königreiche\Schlachtzüge\Zulgurub">
+      <UniqueIdentifier>{22eca3e6-662f-4c53-9344-6e749c09c86b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scripts\Kalimdor\Dungeons\Düsterbruch">
+      <UniqueIdentifier>{02135a7c-33cc-444e-af90-48a5193e5a6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scripts\Kalimdor\Dungeons\Maraudon">
+      <UniqueIdentifier>{014ada9a-13bf-4540-a0ce-5132bdc36fcf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scripts\Kalimdor\Dungeons\Höhlen_der_Wehklagen">
+      <UniqueIdentifier>{0412262e-b05b-4827-adef-97507204cb69}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scripts\Kalimdor\Dungeons\ZulFarrak">
+      <UniqueIdentifier>{e775610e-fa3c-4355-9c4c-473a6a5e57d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scripts\Kalimdor\Schlachtzüge\Onyxias_Hort">
+      <UniqueIdentifier>{9feb59d0-e6bd-4328-9a50-7ddb9852936e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scripts\Kalimdor\Schlachtzüge\AQ20">
+      <UniqueIdentifier>{416ccfc8-a1bb-43a5-b202-d7656981094a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="scripts\Kalimdor\Schlachtzüge\AQ40">
+      <UniqueIdentifier>{ba031a13-787e-41da-bcaf-1986fdea8069}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\base\escort_ai.cpp">
+      <Filter>base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\base\follower_ai.cpp">
+      <Filter>base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\base\guard_ai.cpp">
+      <Filter>base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\base\simple_ai.cpp">
+      <Filter>base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\battlegrounds\battleground.cpp">
+      <Filter>scripts\Schlachtfelder</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\blackrock_spire\boss_drakkisath.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Schwarzfelsspitze</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\blackrock_spire\boss_halycon.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Schwarzfelsspitze</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\blackrock_spire\boss_highlord_omokk.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Schwarzfelsspitze</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\blackrock_spire\boss_mother_smolderweb.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Schwarzfelsspitze</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\blackrock_spire\boss_overlord_wyrmthalak.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Schwarzfelsspitze</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\blackrock_spire\boss_pyroguard_emberseer.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Schwarzfelsspitze</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\blackrock_spire\boss_quartermaster_zigris.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Schwarzfelsspitze</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\blackrock_spire\boss_shadow_hunter_voshgajin.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Schwarzfelsspitze</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\blackrock_spire\boss_the_beast.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Schwarzfelsspitze</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\blackrock_spire\boss_warmaster_voone.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Schwarzfelsspitze</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\blackrock_spire\instance_blackrock_spire.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Schwarzfelsspitze</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\blackwing_lair\boss_broodlord_lashlayer.cpp">
+      <Filter>scripts\Östliche_Königreiche\Schlachtzüge\Pechschwingenhort</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\blackwing_lair\boss_chromaggus.cpp">
+      <Filter>scripts\Östliche_Königreiche\Schlachtzüge\Pechschwingenhort</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\blackwing_lair\boss_ebonroc.cpp">
+      <Filter>scripts\Östliche_Königreiche\Schlachtzüge\Pechschwingenhort</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\blackwing_lair\boss_firemaw.cpp">
+      <Filter>scripts\Östliche_Königreiche\Schlachtzüge\Pechschwingenhort</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\blackwing_lair\boss_flamegor.cpp">
+      <Filter>scripts\Östliche_Königreiche\Schlachtzüge\Pechschwingenhort</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\blackwing_lair\boss_razorgore.cpp">
+      <Filter>scripts\Östliche_Königreiche\Schlachtzüge\Pechschwingenhort</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\blackwing_lair\boss_vaelastrasz.cpp">
+      <Filter>scripts\Östliche_Königreiche\Schlachtzüge\Pechschwingenhort</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\blackwing_lair\boss_victor_nefarius.cpp">
+      <Filter>scripts\Östliche_Königreiche\Schlachtzüge\Pechschwingenhort</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\deadmines\deadmines.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Todesminen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\deadmines\instance_deadmines.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Todesminen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\gnomeregan\boss_thermaplugg.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Gnomeregan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\gnomeregan\gnomeregan.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Gnomeregan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\gnomeregan\instance_gnomeregan.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Gnomeregan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\scarlet_monastery\boss_arcanist_doan.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Schalachrote_Kloster</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\scarlet_monastery\boss_azshir_the_sleepless.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Schalachrote_Kloster</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\scarlet_monastery\boss_bloodmage_thalnos.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Schalachrote_Kloster</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\scarlet_monastery\boss_herod.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Schalachrote_Kloster</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\scarlet_monastery\boss_high_inquisitor_fairbanks.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Schalachrote_Kloster</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\scarlet_monastery\boss_houndmaster_loksey.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Schalachrote_Kloster</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\scarlet_monastery\boss_interrogator_vishas.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Schalachrote_Kloster</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\scarlet_monastery\boss_mograine_and_whitemane.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Schalachrote_Kloster</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\scarlet_monastery\instance_scarlet_monastery.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Schalachrote_Kloster</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\shadowfang_keep\instance_shadowfang_keep.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Burg_Schattenfang</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\shadowfang_keep\shadowfang_keep.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Burg_Schattenfang</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\stratholme\boss_baron_rivendare.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Stratholme</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\stratholme\boss_baroness_anastari.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Stratholme</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\stratholme\boss_cannon_master_willey.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Stratholme</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\stratholme\boss_dathrohan_balnazzar.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Stratholme</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\stratholme\boss_magistrate_barthilas.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Stratholme</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\stratholme\boss_maleki_the_pallid.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Stratholme</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\stratholme\boss_nerubenkan.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Stratholme</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\stratholme\boss_postmaster_malown.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Stratholme</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\stratholme\boss_ramstein_the_gorger.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Stratholme</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\stratholme\boss_timmy_the_cruel.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Stratholme</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\stratholme\instance_stratholme.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Stratholme</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\stratholme\stratholme.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Stratholme</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\sunken_temple\instance_sunken_temple.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Versunkener_Tempel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\sunken_temple\sunken_temple.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Versunkener_Tempel</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\uldaman\boss_archaedas.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Uldaman</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\uldaman\uldaman.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Uldaman</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\uldaman\instance_uldaman.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Uldaman</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\zulgurub\boss_arlokk.cpp">
+      <Filter>scripts\Östliche_Königreiche\Schlachtzüge\Zulgurub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\zulgurub\boss_gahzranka.cpp">
+      <Filter>scripts\Östliche_Königreiche\Schlachtzüge\Zulgurub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\zulgurub\boss_grilek.cpp">
+      <Filter>scripts\Östliche_Königreiche\Schlachtzüge\Zulgurub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\zulgurub\boss_hakkar.cpp">
+      <Filter>scripts\Östliche_Königreiche\Schlachtzüge\Zulgurub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\zulgurub\boss_hazzarah.cpp">
+      <Filter>scripts\Östliche_Königreiche\Schlachtzüge\Zulgurub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\zulgurub\boss_jeklik.cpp">
+      <Filter>scripts\Östliche_Königreiche\Schlachtzüge\Zulgurub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\zulgurub\boss_jindo.cpp">
+      <Filter>scripts\Östliche_Königreiche\Schlachtzüge\Zulgurub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\zulgurub\boss_mandokir.cpp">
+      <Filter>scripts\Östliche_Königreiche\Schlachtzüge\Zulgurub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\zulgurub\boss_marli.cpp">
+      <Filter>scripts\Östliche_Königreiche\Schlachtzüge\Zulgurub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\zulgurub\boss_renataki.cpp">
+      <Filter>scripts\Östliche_Königreiche\Schlachtzüge\Zulgurub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\zulgurub\boss_thekal.cpp">
+      <Filter>scripts\Östliche_Königreiche\Schlachtzüge\Zulgurub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\zulgurub\boss_venoxis.cpp">
+      <Filter>scripts\Östliche_Königreiche\Schlachtzüge\Zulgurub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\zulgurub\boss_wushoolay.cpp">
+      <Filter>scripts\Östliche_Königreiche\Schlachtzüge\Zulgurub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\zulgurub\instance_zulgurub.cpp">
+      <Filter>scripts\Östliche_Königreiche\Schlachtzüge\Zulgurub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\onyxias_lair\boss_onyxia.cpp">
+      <Filter>scripts\Kalimdor\Schlachtzüge\Onyxias_Hort</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\onyxias_lair\instance_onyxias_lair.cpp">
+      <Filter>scripts\Kalimdor\Schlachtzüge\Onyxias_Hort</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\razorfen_downs\boss_amnennar_the_coldbringer.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\razorfen_downs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\razorfen_downs\razorfen_downs.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\razorfen_downs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\ruins_of_ahnqiraj\boss_ayamiss.cpp">
+      <Filter>scripts\Kalimdor\Schlachtzüge\AQ20</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\ruins_of_ahnqiraj\boss_buru.cpp">
+      <Filter>scripts\Kalimdor\Schlachtzüge\AQ20</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\ruins_of_ahnqiraj\boss_kurinnaxx.cpp">
+      <Filter>scripts\Kalimdor\Schlachtzüge\AQ20</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\ruins_of_ahnqiraj\boss_moam.cpp">
+      <Filter>scripts\Kalimdor\Schlachtzüge\AQ20</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\ruins_of_ahnqiraj\boss_ossirian.cpp">
+      <Filter>scripts\Kalimdor\Schlachtzüge\AQ20</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\ruins_of_ahnqiraj\boss_rajaxx.cpp">
+      <Filter>scripts\Kalimdor\Schlachtzüge\AQ20</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\ruins_of_ahnqiraj\instance_ruins_of_ahnqiraj.cpp">
+      <Filter>scripts\Kalimdor\Schlachtzüge\AQ20</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\ruins_of_ahnqiraj\ruins_of_ahnqiraj.cpp">
+      <Filter>scripts\Kalimdor\Schlachtzüge\AQ20</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\temple_of_ahnqiraj\boss_bug_trio.cpp">
+      <Filter>scripts\Kalimdor\Schlachtzüge\AQ40</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\temple_of_ahnqiraj\boss_cthun.cpp">
+      <Filter>scripts\Kalimdor\Schlachtzüge\AQ40</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\temple_of_ahnqiraj\boss_fankriss.cpp">
+      <Filter>scripts\Kalimdor\Schlachtzüge\AQ40</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\temple_of_ahnqiraj\boss_huhuran.cpp">
+      <Filter>scripts\Kalimdor\Schlachtzüge\AQ40</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\temple_of_ahnqiraj\boss_ouro.cpp">
+      <Filter>scripts\Kalimdor\Schlachtzüge\AQ40</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\temple_of_ahnqiraj\boss_sartura.cpp">
+      <Filter>scripts\Kalimdor\Schlachtzüge\AQ40</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\temple_of_ahnqiraj\boss_skeram.cpp">
+      <Filter>scripts\Kalimdor\Schlachtzüge\AQ40</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\temple_of_ahnqiraj\boss_twinemperors.cpp">
+      <Filter>scripts\Kalimdor\Schlachtzüge\AQ40</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\temple_of_ahnqiraj\boss_viscidus.cpp">
+      <Filter>scripts\Kalimdor\Schlachtzüge\AQ40</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\temple_of_ahnqiraj\instance_temple_of_ahnqiraj.cpp">
+      <Filter>scripts\Kalimdor\Schlachtzüge\AQ40</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\temple_of_ahnqiraj\mob_anubisath_sentinel.cpp">
+      <Filter>scripts\Kalimdor\Schlachtzüge\AQ40</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\world\areatrigger_scripts.cpp">
+      <Filter>scripts\Offene_Welt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\world\go_scripts.cpp">
+      <Filter>scripts\Offene_Welt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\world\guards.cpp">
+      <Filter>scripts\Offene_Welt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\world\item_scripts.cpp">
+      <Filter>scripts\Offene_Welt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\world\mob_generic_creature.cpp">
+      <Filter>scripts\Offene_Welt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\world\npc_professions.cpp">
+      <Filter>scripts\Offene_Welt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\world\npcs_special.cpp">
+      <Filter>scripts\Offene_Welt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\world\spell_scripts.cpp">
+      <Filter>scripts\Offene_Welt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\world\world_map_scripts.cpp">
+      <Filter>scripts\Offene_Welt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\precompiled.cpp">
+      <Filter>include</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\sc_creature.cpp">
+      <Filter>include</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\sc_grid_searchers.cpp">
+      <Filter>include</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\sc_instance.cpp">
+      <Filter>include</Filter>
+    </ClCompile>
+    <ClCompile Include="..\system\MangosdRev.cpp">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="..\system\ScriptLoader.cpp">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="..\system\system.cpp">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ScriptMgr.cpp" />
+    <ClCompile Include="..\scripts\eastern_kingdoms\naxxramas\boss_anubrekhan.cpp">
+      <Filter>scripts\Östliche_Königreiche\Schlachtzüge\Naxxramas</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\naxxramas\boss_faerlina.cpp">
+      <Filter>scripts\Östliche_Königreiche\Schlachtzüge\Naxxramas</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\naxxramas\boss_four_horsemen.cpp">
+      <Filter>scripts\Östliche_Königreiche\Schlachtzüge\Naxxramas</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\naxxramas\boss_gluth.cpp">
+      <Filter>scripts\Östliche_Königreiche\Schlachtzüge\Naxxramas</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\naxxramas\boss_gothik.cpp">
+      <Filter>scripts\Östliche_Königreiche\Schlachtzüge\Naxxramas</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\naxxramas\boss_grobbulus.cpp">
+      <Filter>scripts\Östliche_Königreiche\Schlachtzüge\Naxxramas</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\naxxramas\boss_heigan.cpp">
+      <Filter>scripts\Östliche_Königreiche\Schlachtzüge\Naxxramas</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\naxxramas\boss_kelthuzad.cpp">
+      <Filter>scripts\Östliche_Königreiche\Schlachtzüge\Naxxramas</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\naxxramas\boss_loatheb.cpp">
+      <Filter>scripts\Östliche_Königreiche\Schlachtzüge\Naxxramas</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\naxxramas\boss_maexxna.cpp">
+      <Filter>scripts\Östliche_Königreiche\Schlachtzüge\Naxxramas</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\naxxramas\boss_noth.cpp">
+      <Filter>scripts\Östliche_Königreiche\Schlachtzüge\Naxxramas</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\naxxramas\boss_patchwerk.cpp">
+      <Filter>scripts\Östliche_Königreiche\Schlachtzüge\Naxxramas</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\naxxramas\boss_razuvious.cpp">
+      <Filter>scripts\Östliche_Königreiche\Schlachtzüge\Naxxramas</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\naxxramas\boss_sapphiron.cpp">
+      <Filter>scripts\Östliche_Königreiche\Schlachtzüge\Naxxramas</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\naxxramas\boss_thaddius.cpp">
+      <Filter>scripts\Östliche_Königreiche\Schlachtzüge\Naxxramas</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\naxxramas\instance_naxxramas.cpp">
+      <Filter>scripts\Östliche_Königreiche\Schlachtzüge\Naxxramas</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\scholomance\boss_blutdiener_von_kirtonos.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Scholomance</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\scholomance\boss_blutrippe.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Scholomance</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\scholomance\boss_der_ravenier.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Scholomance</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\scholomance\boss_doktor_theolen_krastinov.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Scholomance</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\scholomance\boss_dunkelmeister_gandling.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Scholomance</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\scholomance\boss_hueter_des_wissens_polkelt.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Scholomance</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\scholomance\boss_instrukteurin_malicia.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Scholomance</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\scholomance\boss_jandice_barov.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Scholomance</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\scholomance\boss_kirtonos_der_herold.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Scholomance</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\scholomance\boss_kormok.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Scholomance</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\scholomance\boss_lady_illucia_barov.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Scholomance</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\scholomance\boss_lord_alexei_barov.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Scholomance</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\scholomance\boss_marduk.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Scholomance</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\scholomance\boss_ras_frostraunen.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Scholomance</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\scholomance\boss_vectus.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Scholomance</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\scholomance\instance_scholomance.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Scholomance</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\scholomance\scholomance.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Scholomance</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\blackrock_spire\boss_rend_blackhand.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Schwarzfelsspitze</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\zulfarrak\boss_antu_sul.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\ZulFarrak</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\zulfarrak\boss_gahz_rilla.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\ZulFarrak</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\zulfarrak\boss_haeuptling_ukorz_sandskalp.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\ZulFarrak</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\zulfarrak\boss_henker_der_sandwueter.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\ZulFarrak</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\zulfarrak\boss_hexendoktor_zum_rah.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\ZulFarrak</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\zulfarrak\boss_nekrum_der_ausweider.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\ZulFarrak</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\zulfarrak\boss_ruuzlu.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\ZulFarrak</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\zulfarrak\boss_schattenpriester_sezz_ziz.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\ZulFarrak</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\zulfarrak\boss_theka_der_maertyrer.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\ZulFarrak</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\zulfarrak\boss_wasserbeschwoererin_velratha.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\ZulFarrak</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\zulfarrak\boss_zumrah.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\ZulFarrak</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\zulfarrak\instance_zulfarrak.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\ZulFarrak</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\zulfarrak\rar_karaburan.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\ZulFarrak</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\zulfarrak\rar_zerillis.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\ZulFarrak</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\zulfarrak\zulfarrak.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\ZulFarrak</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\molten_core\boss_baron_geddon.cpp">
+      <Filter>scripts\Östliche_Königreiche\Schlachtzüge\Geschmolzener_Kern</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\molten_core\boss_garr.cpp">
+      <Filter>scripts\Östliche_Königreiche\Schlachtzüge\Geschmolzener_Kern</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\molten_core\boss_gehennas.cpp">
+      <Filter>scripts\Östliche_Königreiche\Schlachtzüge\Geschmolzener_Kern</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\molten_core\boss_golemagg.cpp">
+      <Filter>scripts\Östliche_Königreiche\Schlachtzüge\Geschmolzener_Kern</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\molten_core\boss_lucifron.cpp">
+      <Filter>scripts\Östliche_Königreiche\Schlachtzüge\Geschmolzener_Kern</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\molten_core\boss_magmadar.cpp">
+      <Filter>scripts\Östliche_Königreiche\Schlachtzüge\Geschmolzener_Kern</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\molten_core\boss_majordomo_executus.cpp">
+      <Filter>scripts\Östliche_Königreiche\Schlachtzüge\Geschmolzener_Kern</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\molten_core\boss_shazzrah.cpp">
+      <Filter>scripts\Östliche_Königreiche\Schlachtzüge\Geschmolzener_Kern</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\molten_core\boss_sulfuron_harbinger.cpp">
+      <Filter>scripts\Östliche_Königreiche\Schlachtzüge\Geschmolzener_Kern</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\molten_core\event_ragnaros.cpp">
+      <Filter>scripts\Östliche_Königreiche\Schlachtzüge\Geschmolzener_Kern</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\molten_core\instance_molten_core.cpp">
+      <Filter>scripts\Östliche_Königreiche\Schlachtzüge\Geschmolzener_Kern</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\molten_core\molten_core.cpp">
+      <Filter>scripts\Östliche_Königreiche\Schlachtzüge\Geschmolzener_Kern</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\molten_core\boss_ragnaros.cpp">
+      <Filter>scripts\Östliche_Königreiche\Schlachtzüge\Geschmolzener_Kern</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\blackrock_spire\boss_gyth.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Schwarzfelsspitze</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\blackrock_spire\blackrock_spire.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Schwarzfelsspitze</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\dire_maul\boss_alzzin_der_wildformer.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\Düsterbruch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\dire_maul\boss_cho_rush_der_beobachter.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\Düsterbruch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\dire_maul\boss_guard_fengus.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\Düsterbruch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\dire_maul\boss_hauptmann_krombruch.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\Düsterbruch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\dire_maul\boss_hydrobrut.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\Düsterbruch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\dire_maul\boss_illyanna_rabeneiche.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\Düsterbruch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\dire_maul\boss_immolthar.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\Düsterbruch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\dire_maul\boss_koenig_gordok.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\Düsterbruch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\dire_maul\boss_lethtendris.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\Düsterbruch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\dire_maul\boss_mol_dar.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\Düsterbruch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\dire_maul\boss_prince_tortheldrin.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\Düsterbruch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\dire_maul\boss_pusillin.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\Düsterbruch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\dire_maul\boss_tendris_warpwood.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\Düsterbruch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\dire_maul\boss_wache_slip_kik.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\Düsterbruch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\dire_maul\boss_zevrim_dornhuf.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\Düsterbruch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\dire_maul\dire_maul.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\Düsterbruch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\dire_maul\instance_dire_maul.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\Düsterbruch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\dire_maul\quest_elfische_legenden.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\Düsterbruch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\maraudon\boss_faulschnapper.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\Maraudon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\maraudon\boss_geist_von_gelk.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\Maraudon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\maraudon\boss_landslide.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\Maraudon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\maraudon\boss_lord_schlangenzunge.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\Maraudon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\maraudon\boss_noxxion.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\Maraudon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\maraudon\boss_princess_theradras.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\Maraudon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\maraudon\boss_tueftler_gizlock.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\Maraudon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\maraudon\rar_meshlok_der_ernter.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\Maraudon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\blackfathom_deeps\blackfathom_deeps.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\blackfathom_deeps</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\blackfathom_deeps\boss_gelihast.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\blackfathom_deeps</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\blackfathom_deeps\boss_ghamoo.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\blackfathom_deeps</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\blackfathom_deeps\boss_lady_sarevess.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\blackfathom_deeps</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\blackfathom_deeps\boss_lord_kelris.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\blackfathom_deeps</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\blackfathom_deeps\instance_blackfathom_deeps.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\blackfathom_deeps</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\blackrock_depths\blackrock_depths.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Schwarzfelstiefen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\blackrock_depths\boss_anubshiah.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Schwarzfelstiefen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\blackrock_depths\boss_bael%27gar.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Schwarzfelstiefen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\blackrock_depths\boss_botschafter_flammenschlag.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Schwarzfelstiefen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\blackrock_depths\boss_emperor_dagran_thaurissan.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Schwarzfelstiefen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\blackrock_depths\boss_fineous_dunkelader.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Schwarzfelstiefen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\blackrock_depths\boss_general_angerforge.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Schwarzfelstiefen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\blackrock_depths\boss_golemlord_argelmach.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Schwarzfelstiefen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\blackrock_depths\boss_gorosh_the_dervish.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Schwarzfelstiefen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\blackrock_depths\boss_grizzle.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Schwarzfelstiefen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\blackrock_depths\boss_high_interrogator_gerstahn.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Schwarzfelstiefen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\blackrock_depths\boss_lord_incendius.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Schwarzfelstiefen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\blackrock_depths\boss_lord_roccor.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Schwarzfelstiefen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\blackrock_depths\boss_magmus.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Schwarzfelstiefen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\blackrock_depths\boss_stahlgriff.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Schwarzfelstiefen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\blackrock_depths\boss_tomb_of_seven.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Schwarzfelstiefen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\blackrock_depths\bruecken_brandwache.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Schwarzfelstiefen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\blackrock_depths\instance_blackrock_depths.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Schwarzfelstiefen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\blackrock_depths\rar_pyromant_weisenkorn.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Schwarzfelstiefen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\razorfen_kraul\boss_agathelos_der_tobende.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\razorfen_kraul</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\razorfen_kraul\boss_aggem_dornfluch.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\razorfen_kraul</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\razorfen_kraul\boss_charlga_klingenflanke.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\razorfen_kraul</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\razorfen_kraul\boss_oberanfuehrer_rammhauer.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\razorfen_kraul</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\razorfen_kraul\boss_roogug.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\razorfen_kraul</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\razorfen_kraul\boss_todessprecher_jargba.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\razorfen_kraul</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\razorfen_kraul\instance_razorfen_kraul.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\razorfen_kraul</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\razorfen_kraul\razorfen_kraul.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\razorfen_kraul</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\wailing_caverns\boss_lady_anacondra.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\Höhlen_der_Wehklagen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\wailing_caverns\boss_lord_kobrahn.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\Höhlen_der_Wehklagen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\wailing_caverns\boss_lord_pythas.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\Höhlen_der_Wehklagen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\wailing_caverns\boss_lord_serpentis.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\Höhlen_der_Wehklagen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\wailing_caverns\boss_mutanus_der_verschlinger.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\Höhlen_der_Wehklagen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\wailing_caverns\boss_skum.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\Höhlen_der_Wehklagen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\wailing_caverns\boss_verdan_der_ewiglebende.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\Höhlen_der_Wehklagen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\wailing_caverns\instance_wailing_caverns.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\Höhlen_der_Wehklagen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\wailing_caverns\wailing_caverns.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\Höhlen_der_Wehklagen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\scholomance\npc_spectral_tutor.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Scholomance</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\dire_maul\knot_quest_suit.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\Düsterbruch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\maraudon\boss_celebras_the_redeemed.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\Maraudon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\maraudon\InstanceMaraudon.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\Maraudon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\maraudon\npc_celebras_the_cursed.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\Maraudon</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\quests\priester_quest\priester_epic_quest.cpp">
+      <Filter>scripts\Offene_Welt\epic quest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\quests\hunter_quest\epic_quest_hunter.cpp">
+      <Filter>scripts\Offene_Welt\epic quest</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\world\EngineeringPets.cpp">
+      <Filter>scripts\Offene_Welt</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\blackrock_depths\the_grim_guzzler.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Schwarzfelstiefen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\world\BlizzconGuys.cpp">
+      <Filter>scripts\Offene_Welt\BlzzconGuys</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\world\KeyCodeManager.cpp">
+      <Filter>scripts\Offene_Welt\BlzzconGuys</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\deadmines\boss_edwin_van_cleff.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Todesminen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\deadmines\boss_gilnid.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Todesminen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\deadmines\boss_handlanger_pein.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Todesminen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\deadmines\boss_kapitaen_gruenhaut.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Todesminen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\deadmines\boss_mr_smite.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Todesminen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\deadmines\boss_rhahk_zor.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Todesminen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\deadmines\boss_sneeds.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Todesminen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\deadmines\sneeds_schredder.cpp">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Todesminen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\dire_maul\TheMaul.cpp">
+      <Filter>scripts\Kalimdor\Dungeons\Düsterbruch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\blackwing_lair\blackwing_lair.cpp">
+      <Filter>scripts\Östliche_Königreiche\Schlachtzüge\Pechschwingenhort</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\zulgurub\zulgurub.cpp">
+      <Filter>scripts\Östliche_Königreiche\Schlachtzüge\Zulgurub</Filter>
+    </ClCompile>
+    <ClCompile Include="..\system\ProgressMonitor.cpp">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\blackwing_lair\instance_blackwing_lair.cpp">
+      <Filter>scripts\Östliche_Königreiche\Schlachtzüge\Pechschwingenhort</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\world\Events\zulgurub_opening.cpp">
+      <Filter>scripts\Offene_Welt\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\world\Events\ahn_qiraj_war_effort.cpp">
+      <Filter>scripts\Offene_Welt\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\alterac_valley\boss_balinda_stonehearth.cpp">
+      <Filter>scripts\Schlachtfelder\Alteractal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\alterac_valley\boss_drekthar.cpp">
+      <Filter>scripts\Schlachtfelder\Alteractal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\alterac_valley\boss_galvangar.cpp">
+      <Filter>scripts\Schlachtfelder\Alteractal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\alterac_valley\boss_vanndar_stormpike.cpp">
+      <Filter>scripts\Schlachtfelder\Alteractal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\alterac_valley\instance_alterac_valley.cpp">
+      <Filter>scripts\Schlachtfelder\Alteractal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\alterac_valley\alterac_valley.cpp">
+      <Filter>scripts\Schlachtfelder\Alteractal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\world\Events\elementar_invasion.cpp">
+      <Filter>scripts\Offene_Welt\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\world\boss_lord_kazzak.cpp">
+      <Filter>scripts\Offene_Welt\Weltbosse</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\world\bosses_emerald_dragons.cpp">
+      <Filter>scripts\Offene_Welt\Weltbosse</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\boss_azuregos.cpp">
+      <Filter>scripts\Offene_Welt\Weltbosse</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\ashenvale.cpp">
+      <Filter>scripts\Kalimdor\Gebiete</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\azshara.cpp">
+      <Filter>scripts\Kalimdor\Gebiete</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\darkshore.cpp">
+      <Filter>scripts\Kalimdor\Gebiete</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\desolace.cpp">
+      <Filter>scripts\Kalimdor\Gebiete</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\durotar.cpp">
+      <Filter>scripts\Kalimdor\Gebiete</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\dustwallow_marsh.cpp">
+      <Filter>scripts\Kalimdor\Gebiete</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\felwood.cpp">
+      <Filter>scripts\Kalimdor\Gebiete</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\feralas.cpp">
+      <Filter>scripts\Kalimdor\Gebiete</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\moonglade.cpp">
+      <Filter>scripts\Kalimdor\Gebiete</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\mulgore.cpp">
+      <Filter>scripts\Kalimdor\Gebiete</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\orgrimmar.cpp">
+      <Filter>scripts\Kalimdor\Gebiete</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\silithus.cpp">
+      <Filter>scripts\Kalimdor\Gebiete</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\stonetalon_mountains.cpp">
+      <Filter>scripts\Kalimdor\Gebiete</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\tanaris.cpp">
+      <Filter>scripts\Kalimdor\Gebiete</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\teldrassil.cpp">
+      <Filter>scripts\Kalimdor\Gebiete</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\the_barrens.cpp">
+      <Filter>scripts\Kalimdor\Gebiete</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\thousand_needles.cpp">
+      <Filter>scripts\Kalimdor\Gebiete</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\thunder_bluff.cpp">
+      <Filter>scripts\Kalimdor\Gebiete</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\ungoro_crater.cpp">
+      <Filter>scripts\Kalimdor\Gebiete</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\kalimdor\winterspring.cpp">
+      <Filter>scripts\Kalimdor\Gebiete</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\alterac_mountains.cpp">
+      <Filter>scripts\Östliche_Königreiche\Gebiete</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\arathi_highlands.cpp">
+      <Filter>scripts\Östliche_Königreiche\Gebiete</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\blasted_lands.cpp">
+      <Filter>scripts\Östliche_Königreiche\Gebiete</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\burning_steppes.cpp">
+      <Filter>scripts\Östliche_Königreiche\Gebiete</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\deeprun_tram.cpp">
+      <Filter>scripts\Östliche_Königreiche\Gebiete</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\dun_morogh.cpp">
+      <Filter>scripts\Östliche_Königreiche\Gebiete</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\eastern_plaguelands.cpp">
+      <Filter>scripts\Östliche_Königreiche\Gebiete</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\elwynn_forest.cpp">
+      <Filter>scripts\Östliche_Königreiche\Gebiete</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\hinterlands.cpp">
+      <Filter>scripts\Östliche_Königreiche\Gebiete</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\ironforge.cpp">
+      <Filter>scripts\Östliche_Königreiche\Gebiete</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\loch_modan.cpp">
+      <Filter>scripts\Östliche_Königreiche\Gebiete</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\redridge_mountains.cpp">
+      <Filter>scripts\Östliche_Königreiche\Gebiete</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\searing_gorge.cpp">
+      <Filter>scripts\Östliche_Königreiche\Gebiete</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\silverpine_forest.cpp">
+      <Filter>scripts\Östliche_Königreiche\Gebiete</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\stormwind_city.cpp">
+      <Filter>scripts\Östliche_Königreiche\Gebiete</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\stranglethorn_vale.cpp">
+      <Filter>scripts\Östliche_Königreiche\Gebiete</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\swamp_of_sorrows.cpp">
+      <Filter>scripts\Östliche_Königreiche\Gebiete</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\tirisfal_glades.cpp">
+      <Filter>scripts\Östliche_Königreiche\Gebiete</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\undercity.cpp">
+      <Filter>scripts\Östliche_Königreiche\Gebiete</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\western_plaguelands.cpp">
+      <Filter>scripts\Östliche_Königreiche\Gebiete</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\westfall.cpp">
+      <Filter>scripts\Östliche_Königreiche\Gebiete</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\eastern_kingdoms\wetlands.cpp">
+      <Filter>scripts\Östliche_Königreiche\Gebiete</Filter>
+    </ClCompile>
+    <ClCompile Include="..\scripts\world\premium_system.cpp">
+      <Filter>scripts\Offene_Welt\Premium</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\base\escort_ai.h">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\base\follower_ai.h">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\base\guard_ai.h">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\base\simple_ai.h">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\scripts\eastern_kingdoms\deadmines\deadmines.h">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Todesminen</Filter>
+    </ClInclude>
+    <ClInclude Include="..\scripts\eastern_kingdoms\scarlet_monastery\scarlet_monastery.h">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Schalachrote_Kloster</Filter>
+    </ClInclude>
+    <ClInclude Include="..\scripts\eastern_kingdoms\shadowfang_keep\shadowfang_keep.h">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Burg_Schattenfang</Filter>
+    </ClInclude>
+    <ClInclude Include="..\scripts\eastern_kingdoms\stratholme\stratholme.h">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Stratholme</Filter>
+    </ClInclude>
+    <ClInclude Include="..\scripts\eastern_kingdoms\sunken_temple\sunken_temple.h">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Versunkener_Tempel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\scripts\eastern_kingdoms\uldaman\uldaman.h">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Uldaman</Filter>
+    </ClInclude>
+    <ClInclude Include="..\scripts\eastern_kingdoms\zulgurub\zulgurub.h">
+      <Filter>scripts\Östliche_Königreiche\Schlachtzüge\Zulgurub</Filter>
+    </ClInclude>
+    <ClInclude Include="..\scripts\kalimdor\ruins_of_ahnqiraj\ruins_of_ahnqiraj.h">
+      <Filter>scripts\Kalimdor\Schlachtzüge\AQ20</Filter>
+    </ClInclude>
+    <ClInclude Include="..\scripts\kalimdor\temple_of_ahnqiraj\temple_of_ahnqiraj.h">
+      <Filter>scripts\Kalimdor\Schlachtzüge\AQ40</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\precompiled.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\sc_creature.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\sc_gossip.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\sc_grid_searchers.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\sc_instance.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\system\ScriptLoader.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\system\system.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\config.h" />
+    <ClInclude Include="..\ScriptMgr.h" />
+    <ClInclude Include="..\scripts\eastern_kingdoms\naxxramas\naxxramas.h">
+      <Filter>scripts\Östliche_Königreiche\Schlachtzüge\Naxxramas</Filter>
+    </ClInclude>
+    <ClInclude Include="..\scripts\eastern_kingdoms\blackrock_spire\blackrock_spire.h">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Schwarzfelsspitze</Filter>
+    </ClInclude>
+    <ClInclude Include="..\scripts\eastern_kingdoms\scholomance\scholomance.h">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Scholomance</Filter>
+    </ClInclude>
+    <ClInclude Include="..\scripts\kalimdor\zulfarrak\zulfarrak.h">
+      <Filter>scripts\Kalimdor\Dungeons\ZulFarrak</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Pat.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\scripts\eastern_kingdoms\molten_core\molten_core.h">
+      <Filter>scripts\Östliche_Königreiche\Schlachtzüge\Geschmolzener_Kern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\scripts\kalimdor\onyxias_lair\onyxias_lair.h">
+      <Filter>scripts\Kalimdor\Schlachtzüge\Onyxias_Hort</Filter>
+    </ClInclude>
+    <ClInclude Include="..\scripts\kalimdor\dire_maul\dire_maul.h">
+      <Filter>scripts\Kalimdor\Dungeons\Düsterbruch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\scripts\kalimdor\blackfathom_deeps\blackfathom_deeps.h">
+      <Filter>scripts\Kalimdor\Dungeons\blackfathom_deeps</Filter>
+    </ClInclude>
+    <ClInclude Include="..\scripts\eastern_kingdoms\blackrock_depths\blackrock_depths.h">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Schwarzfelstiefen</Filter>
+    </ClInclude>
+    <ClInclude Include="..\scripts\kalimdor\razorfen_kraul\razorfen_kraul.h">
+      <Filter>scripts\Kalimdor\Dungeons\razorfen_kraul</Filter>
+    </ClInclude>
+    <ClInclude Include="..\scripts\kalimdor\wailing_caverns\def_wailing_caverns.h">
+      <Filter>scripts\Kalimdor\Dungeons\Höhlen_der_Wehklagen</Filter>
+    </ClInclude>
+    <ClInclude Include="..\scripts\kalimdor\wailing_caverns\wailing_caverns.h">
+      <Filter>scripts\Kalimdor\Dungeons\Höhlen_der_Wehklagen</Filter>
+    </ClInclude>
+    <ClInclude Include="..\scripts\kalimdor\dire_maul\boss_cho_rush.h">
+      <Filter>scripts\Kalimdor\Dungeons\Düsterbruch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\scripts\kalimdor\blackfathom_deeps\instance_blackfathom_deeps.h">
+      <Filter>scripts\Kalimdor\Dungeons\blackfathom_deeps</Filter>
+    </ClInclude>
+    <ClInclude Include="..\scripts\kalimdor\maraudon\InstanceMaraudon.h">
+      <Filter>scripts\Kalimdor\Dungeons\Maraudon</Filter>
+    </ClInclude>
+    <ClInclude Include="..\scripts\eastern_kingdoms\molten_core\boss_ragnaros.h">
+      <Filter>scripts\Östliche_Königreiche\Schlachtzüge\Geschmolzener_Kern</Filter>
+    </ClInclude>
+    <ClInclude Include="..\scripts\eastern_kingdoms\blackrock_depths\the_grim_guzzler.h">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Schwarzfelstiefen</Filter>
+    </ClInclude>
+    <ClInclude Include="..\scripts\world\KeyCodeManager.h">
+      <Filter>scripts\Offene_Welt\BlzzconGuys</Filter>
+    </ClInclude>
+    <ClInclude Include="..\scripts\eastern_kingdoms\deadmines\boss_mr_smite.h">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Todesminen</Filter>
+    </ClInclude>
+    <ClInclude Include="..\scripts\eastern_kingdoms\deadmines\instance_deadmines.h">
+      <Filter>scripts\Östliche_Königreiche\Dungeons\Todesminen</Filter>
+    </ClInclude>
+    <ClInclude Include="..\scripts\eastern_kingdoms\blackwing_lair\blackwing_lair.h">
+      <Filter>scripts\Östliche_Königreiche\Schlachtzüge\Pechschwingenhort</Filter>
+    </ClInclude>
+    <ClInclude Include="..\system\ProgressMonitor.h">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="..\scripts\eastern_kingdoms\alterac_valley\alterac_valley.h">
+      <Filter>scripts\Schlachtfelder\Alteractal</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\revision.h" />
+  </ItemGroup>
+</Project>

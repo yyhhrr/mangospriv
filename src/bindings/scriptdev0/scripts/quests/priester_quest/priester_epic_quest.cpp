@@ -1,0 +1,892 @@
+#include "precompiled.h"
+#include "escort_ai.h"
+
+/*
+ *script complete: 80% 
+ *need test
+ *we need a closer look at the deathdoors at wave2
+ *we need a trigger to keep eventplayer in combat
+ *maybe we have to implement a full working random spawn calculation for peasants
+ *soldier spawn is probably wrong
+ */
+
+/*######
+## npc_infected_peasant
+######*/
+
+enum
+{
+    SPELL_DEATHS_DOOR = 23127, // Green (weak)
+    SPELL_SEETHING_PLAGUE = 23072, // Purple (strong)
+
+    NPC_SCOURGE_ARCHER = 14489,
+    NPC_SCOURGE_FOOTSOLDIER = 14486,
+
+    NPC_INJURED_PEASANT = 14484,
+    NPC_PLAGUED_PEASANT = 14485,
+    
+    QUEST_INVISIBILITY = 23196,
+    SPELL_ENTER_THE_LIGHT_DND = 23107
+};
+
+struct MANGOS_DLL_DECL npc_infected_peasantAI : public ScriptedAI
+{
+    npc_infected_peasantAI(Creature* pCreature) : ScriptedAI(pCreature) 
+    {
+        Reset();
+    }
+
+    uint32 m_uiDiseaseTimer, rnd;
+    bool hasBeenAttacked;
+
+    void Reset() 
+    {
+        m_uiDiseaseTimer = urand(1000,10000);
+        rnd = urand(0,100);
+        hasBeenAttacked = false;
+        //Only Plagued Peasants get the Seething Plague
+        if(m_creature->GetEntry() == NPC_PLAGUED_PEASANT)
+             m_creature->CastSpell(m_creature, SPELL_SEETHING_PLAGUE, false);
+        if(!m_creature->HasAura(SPELL_SEETHING_PLAGUE) && rnd <= 10)
+            m_creature->CastSpell(m_creature, SPELL_DEATHS_DOOR, false);
+    }
+
+    void AttackedBy(Unit* pAttacker)
+    {
+        if(pAttacker->GetEntry() == NPC_SCOURGE_FOOTSOLDIER)
+            hasBeenAttacked = true;
+        //ScriptedAI::AttackedBy(pAttacker);
+    }
+    
+    void AttackStart(Unit* pTarget)
+    {/*
+        if(pTarget->GetEntry() == NPC_SCOURGE_FOOTSOLDIER)
+            ScriptedAI::AttackStart(pTarget);
+        else
+            return; */
+    }
+
+    void UpdateAI(const uint32 uiDiff)
+    {         
+        // Holding this aura means that this NPC is saved
+        if (m_creature->HasAura(SPELL_ENTER_THE_LIGHT_DND, EFFECT_INDEX_0))
+            return;
+        
+        if (!m_creature->HasAura(QUEST_INVISIBILITY))
+            m_creature->CastSpell(m_creature, QUEST_INVISIBILITY, false);
+
+        rnd = urand(0,100);
+
+        if (m_uiDiseaseTimer <= uiDiff)
+        {
+            //30% Chance to get Diseased
+            if(!m_creature->HasAura(SPELL_SEETHING_PLAGUE) && rnd <= 10)
+                m_creature->CastSpell(m_creature, SPELL_DEATHS_DOOR, false);
+            //Disease Timer between 1 und 10 Seconds
+            m_uiDiseaseTimer = urand(1000,10000);
+        }
+        else
+            m_uiDiseaseTimer -= uiDiff;
+
+        m_creature->m_movementInfo.GetMovementFlags();
+        if(!m_creature->getVictim())
+        {
+            if(hasBeenAttacked)
+            {
+                //m_creature->DeleteThreatList();
+                m_creature->CombatStop(true);
+                hasBeenAttacked = false;
+                
+                float fX, fY,fZ;
+                m_creature->m_movementInfo.AddMovementFlag(MOVEFLAG_WALK_MODE);
+                m_creature->GetRandomPoint(3332.767f, -2979.002f, 160.97f, 5.0f, fX, fY, fZ);
+                m_creature->GetMotionMaster()->MovePoint(1, fX, fY, fZ);
+            }
+            return;
+        }
+        
+        DoMeleeAttackIfReady();
+    }
+};
+
+CreatureAI* GetAI_npc_infected_peasant(Creature* pCreature)
+{
+    return new npc_infected_peasantAI(pCreature);
+}
+
+/*######
+## npc_eris_havenfire
+######*/
+
+static const float aArcherSpawn[10][4] =
+{
+    { 3376.750f, -3041.969f, 172.639f, 2.359f },
+    { 3383.315f, -3056.466f, 181.094f, 2.371f },
+    { 3377.810f, -3059.429f, 180.500f, 2.025f },
+    { 3358.776f, -3074.729f, 174.090f, 1.350f },
+    { 3371.300f, -3068.288f, 175.841f, 1.279f },
+    { 3348.956f, -3070.904f, 177.813f, 3.382f },
+    { 3333.764f, -3051.669f, 174.158f, 1.357f },
+    { 3313.438f, -3036.754f, 168.531f, 0.265f },
+    { 3327.897f, -3021.678f, 170.103f, 6.144f },
+    { 3362.131f, -3010.514f, 183.945f, 3.602f }
+};
+
+static const float aPeasantSpawn[15][3] =
+{
+    {3352.44f, -3048.32f, 164.833f},
+    {3355.26f, -3052.93f, 165.72f},
+    {3358.12f, -3050.71f, 165.307f},
+    {3360.07f, -3052.31f, 165.3f},
+    {3361.64f, -3055.29f, 165.295f},
+    {3361.4f, -3052.17f, 165.261f},
+    {3363.13f, -3056.21f, 165.285f},
+    {3363.99f, -3054.49f, 165.342f},
+    {3366.84f, -3053.95f, 165.541f},
+    {3367.61f, -3056.84f, 165.88f},
+    {3364.9f, -3052.68f, 165.321f},
+    {3363.3f, -3051.2f, 165.266f},
+    {3367.61f, -3051.14f, 165.517f},
+    {3363.54f, -3049.64f, 165.238f},
+    {3360.66f, -3049.14f, 165.261f}
+};
+
+static const float aFootsoldieSpawn[3][4] =
+{
+    {3347.603271f, -3045.536377f, 164.029877f, 1.814429f},
+    {3363.609131f, -3037.187256f, 163.541885f, 2.277649f},
+    {3349.105469f, -3056.500977f, 168.079468f, 1.857460f}
+
+    /* Alternative
+    { 3349.937f, -3056.875f, 168.141f, 1.622f },
+    { 3370.527f, -3048.276f, 165.872f, 2.377f },
+    { 3346.987f, -3052.782f, 165.360f, 1.662f }*/
+};
+
+static const uint32 aPeasantSpawnYell[] = 
+{
+	static_cast<uint32>(-1000682), 
+	static_cast<uint32>(-1000683), 
+	static_cast<uint32>(-1000684)
+};
+
+static const uint32 aPeasantRandomSay[] = 
+{
+	static_cast<uint32>(-1000685), 
+	static_cast<uint32>(-1000686), 
+	static_cast<uint32>(-1000687)
+}; // TODO
+
+static const uint32 aPeasantSaveSay[] = 
+{
+	static_cast<uint32>(-1000688), 
+	static_cast<uint32>(-1000689), 
+	static_cast<uint32>(-1000690), 
+	static_cast<uint32>(-1000691)
+};
+
+enum
+{
+    QUEST_THE_BALANCE_OF_LIGHT_AND_SHADOW = 7622,
+
+    NPC_CLEANER = 14503,
+
+    SEE_PRIEST_INVIS = 23199,
+    SPELL_BLESSING_OF_NORDRASSIL = 23108
+};
+
+struct npc_eris_havenfireAI;
+npc_eris_havenfireAI* npc_global_eris;
+
+struct MANGOS_DLL_DECL npc_eris_havenfireAI : public ScriptedAI
+{
+    npc_eris_havenfireAI(Creature* pCreature) : ScriptedAI(pCreature)
+    {
+        m_bIsQuestInProgress = false;
+        Reset();
+    }
+
+    bool    m_bIsQuestInProgress, 
+            m_bFootsoldiersSpawned, 
+            m_bCleaningInProgress;
+
+    uint64  m_uiMainTimer;
+
+    uint32  m_uiDoomCheck,
+            m_uiFootsoldierSpawnTimer,
+            m_uiFootsoldierTimer1,
+            m_uiFootsoldierTimer2,
+            m_uiFootsoldierTimer3,
+            m_uiKillCounter[5],
+            m_uiSaveCounter[5],
+            m_uiPeasantCount[5];
+
+    uint8   m_uiPhase, 
+            m_uiCurrentWave, 
+            m_uiTotalSaved, 
+            m_uiTotalKilled, 
+            m_uiFootsoldiersSpawnCount;
+
+    GameObject* m_goLightWell;
+    ObjectGuid  m_playerGuid;
+    GUIDList    m_lSummonedGUIDList;
+
+    std::list<Player*> m_lToCleanPlayers;
+    std::list<Creature*> m_lCleaner;
+
+    void Reset()
+    {
+        if (m_bIsQuestInProgress)
+            return;
+
+        //Declarations
+        m_bFootsoldiersSpawned = false;
+        m_bIsQuestInProgress = false;
+        m_bCleaningInProgress = false;
+       
+        m_uiMainTimer = 5000;
+        m_uiFootsoldierSpawnTimer = 1000;
+        m_uiFootsoldierTimer1 = urand(0,1)*5000 + 20000;
+        m_uiFootsoldierTimer2 = 30000;
+        m_uiFootsoldierTimer3 = 60000;
+        m_uiDoomCheck = 5000;
+        m_uiPhase = 1;
+        m_uiCurrentWave = 0;
+        m_uiTotalSaved = 0;
+        m_uiTotalKilled = 0;
+        m_uiFootsoldiersSpawnCount = 0;
+       
+        for(uint8 i = 0; i < 5; i++)
+        {
+            m_uiKillCounter[i] = 0;
+            m_uiSaveCounter[i] = 0;
+        }
+
+        m_uiPeasantCount[0] = 12;
+        m_uiPeasantCount[1] = 12;
+        m_uiPeasantCount[2] = 13;
+        m_uiPeasantCount[3] = 13;
+        m_uiPeasantCount[4] = 15;
+
+        m_playerGuid.Clear();
+        m_lCleaner.clear();
+        m_lToCleanPlayers.clear();
+
+        if((m_goLightWell = GetClosestGameObjectWithEntry(m_creature, 179693, 100.0f)) != nullptr)
+        {    
+            m_goLightWell->Delete();
+        }
+
+        m_creature->CastSpell(m_creature, QUEST_INVISIBILITY, true);
+
+        if (!m_creature->HasFlag(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_QUESTGIVER))
+            m_creature->SetFlag(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_QUESTGIVER);
+
+        if (!m_lSummonedGUIDList.empty())
+            for (GUIDList::const_iterator itr = m_lSummonedGUIDList.begin(); itr != m_lSummonedGUIDList.end(); ++itr)
+                if (Creature* pSummoned = m_creature->GetMap()->GetCreature(*itr))
+                    pSummoned->ForcedDespawn();
+       
+        m_lSummonedGUIDList.clear();
+    }
+
+    void PhaseEnded(bool bFailed, bool bWave)
+    {
+        Player* pPlayer = m_creature->GetMap()->GetPlayer(m_playerGuid);
+
+        if (!pPlayer)
+        {
+            DoScriptText(urand(0, 1) ? -1000706 : -1000707, m_creature);
+            //Despawn Eris
+            m_creature->ForcedDespawn(0);
+            m_creature->SetRespawnTime(7200);
+      
+            m_bIsQuestInProgress = false;
+
+            Reset();
+
+            return;
+        }
+
+        // Failed
+        if (bFailed && !bWave)
+        {
+            DoScriptText(urand(0, 1) ? -1000692 : -1000693, m_creature);
+            if (pPlayer->GetQuestStatus(QUEST_THE_BALANCE_OF_LIGHT_AND_SHADOW) == QUEST_STATUS_INCOMPLETE)
+                pPlayer->FailQuest(QUEST_THE_BALANCE_OF_LIGHT_AND_SHADOW);
+            //Despawn Eris
+            m_creature->ForcedDespawn(0);
+            m_creature->SetRespawnTime(7200);
+      
+            m_bIsQuestInProgress = false;
+
+            Reset();
+
+            return;
+        }
+        if (!bFailed && bWave)
+        {
+            DoScriptText(-1000695, m_creature);
+
+            m_creature->CastSpell(pPlayer, SPELL_BLESSING_OF_NORDRASSIL, true);
+
+            //Summon Soldiers (Wave 1 -> 8, Wave 2 -> 6, Wave 3 -> 8, ...)
+            m_uiFootsoldiersSpawnCount += (6 + ((m_uiCurrentWave%2)*2));
+
+            m_bFootsoldiersSpawned = true;
+
+            //Wave Done next inc.
+            if(m_uiCurrentWave <= 5)
+                m_uiCurrentWave++;
+
+            return;
+        }
+
+        //event completed
+        if (!bFailed && !bWave)
+        {
+            DoScriptText(-1000694, m_creature);
+            if (pPlayer->GetQuestStatus(QUEST_THE_BALANCE_OF_LIGHT_AND_SHADOW) == QUEST_STATUS_INCOMPLETE)
+            {
+                m_creature->SetFlag(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_QUESTGIVER);
+
+                //Quest done
+                pPlayer->CompleteQuest(QUEST_THE_BALANCE_OF_LIGHT_AND_SHADOW); 
+				pPlayer->SendQuestCompleteEvent(QUEST_THE_BALANCE_OF_LIGHT_AND_SHADOW);
+            }
+
+            m_bIsQuestInProgress = false;
+
+            Reset();
+
+            return;
+        }
+    }
+
+    void DoNextWave(uint32 uiWaveNumber)
+    {
+        uint8 uiRandomPeasant = static_cast<uint8>(urand(0, m_uiPeasantCount[uiWaveNumber-1]));
+
+        for(uint8 i = 0; i < m_uiPeasantCount[uiWaveNumber-1]; ++i)
+        {
+            uint32 m_uiPeasantType = NPC_INJURED_PEASANT;
+
+            if(urand(0,100) <= 5 + 5 * uiWaveNumber)
+                m_uiPeasantType = NPC_PLAGUED_PEASANT;
+
+            if (Creature* pTemp = m_creature->SummonCreature(m_uiPeasantType, aPeasantSpawn[i][0], aPeasantSpawn[i][1], aPeasantSpawn[i][2], 0, TEMPSUMMON_DEAD_DESPAWN, 0))
+            {    
+				pTemp->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_PASSIVE);
+                m_lSummonedGUIDList.push_back(pTemp->GetGUID());
+
+                //Waypoint, to avoid peasants going up the hills
+                float fX, fY, fZ;
+                pTemp->GetRandomPoint(3343.270f, -3018.100f, 161.72f, 5.0f, fX, fY, fZ);
+                pTemp->GetMotionMaster()->MovePoint(0, fX, fY, fZ);
+
+                if (i == uiRandomPeasant)
+                    DoScriptText(aPeasantSpawnYell[urand(0,2)], pTemp);
+            }
+        }
+    }
+
+    void SummonedMovementInform(Creature* pSummoned, uint32, uint32 uiPointId)
+    {
+        if(uiPointId == 0)
+        {
+            float fX, fY,fZ;
+            pSummoned->GetRandomPoint(3332.767f, -2979.002f, 160.97f, 5.0f, fX, fY, fZ);
+            pSummoned->GetMotionMaster()->MovePoint(1, fX, fY, fZ);
+        }
+
+        if (uiPointId == 1)
+        {
+            if(m_uiCurrentWave == 0)
+                return;
+
+            if (m_uiSaveCounter[m_uiCurrentWave-1] >= m_uiPeasantCount[m_uiCurrentWave-1])
+                debug_log("SD0: npc_eris_havenfire: Current wave %u was not reset properly in void WaveFinished()", m_uiCurrentWave);
+
+            ++m_uiSaveCounter[m_uiCurrentWave-1];
+            ++m_uiTotalSaved;
+
+            pSummoned->GetMotionMaster()->Clear(false);
+
+            if (pSummoned->HasAura(SPELL_DEATHS_DOOR, EFFECT_INDEX_0))
+                pSummoned->RemoveAurasDueToSpell(SPELL_DEATHS_DOOR);
+            if (pSummoned->HasAura(SPELL_SEETHING_PLAGUE, EFFECT_INDEX_0))
+                pSummoned->RemoveAurasDueToSpell(SPELL_SEETHING_PLAGUE);
+
+            uint8 uiRandomPeasant = static_cast<uint8>(urand(1,10));
+            if (uiRandomPeasant == 5)
+                DoScriptText(aPeasantSaveSay[urand(0,3)], pSummoned);
+
+            pSummoned->CastSpell(pSummoned, SPELL_ENTER_THE_LIGHT_DND, false);
+            pSummoned->ForcedDespawn(4000);
+        }
+    }
+
+    void SummonedCreatureJustDied(Creature* pSummoned)
+    {
+        /* We do not want to count staying peasants.
+        It means that they are saved. Saved peasants are ForcedDespawn(),
+        which triggers SummonedCreatureJustDied.
+        */
+
+        if(m_uiCurrentWave == 0)
+            return;
+
+        if (pSummoned->GetMotionMaster()->GetCurrentMovementGeneratorType() != IDLE_MOTION_TYPE && (pSummoned->GetEntry() == NPC_INJURED_PEASANT || pSummoned->GetEntry() == NPC_PLAGUED_PEASANT))
+        {
+            DoScriptText(aPeasantRandomSay[urand(0,2)], pSummoned);
+            ++m_uiKillCounter[m_uiCurrentWave-1];
+            ++m_uiTotalKilled;
+        }
+        pSummoned->RemoveCorpse();
+    }
+
+    void DoSummonFootsoldier()
+    {
+        uint8 uiRandomForArray = static_cast<uint8>(urand(0,2));
+
+        if (Creature* pTemp = m_creature->SummonCreature(NPC_SCOURGE_FOOTSOLDIER, aFootsoldieSpawn[uiRandomForArray][0], aFootsoldieSpawn[uiRandomForArray][1], aFootsoldieSpawn[uiRandomForArray][2], aFootsoldieSpawn[uiRandomForArray][3], TEMPSUMMON_DEAD_DESPAWN, 5000))
+            m_lSummonedGUIDList.push_back(pTemp->GetGUID());
+    }
+
+    void DoSpawnArchers ()
+    {
+        for(uint8 i = 0; i < 10; ++i)
+		{
+            if (Creature* pTemp = m_creature->SummonCreature(NPC_SCOURGE_ARCHER, aArcherSpawn[i][0], aArcherSpawn[i][1], aArcherSpawn[i][2], aArcherSpawn[i][3], TEMPSUMMON_TIMED_OR_CORPSE_DESPAWN, 360000))
+                m_lSummonedGUIDList.push_back(pTemp->GetGUID());
+		}
+    }
+
+    void functionOfDoom(Creature* creature)
+    {
+        if (!creature->CanHaveThreatList())
+            return;
+
+        std::vector<ObjectGuid> vGuids;
+
+        creature->FillGuidsListFromThreatList(vGuids);
+
+		 if (vGuids.empty())
+			 return;
+
+        for (std::vector<ObjectGuid>::const_iterator itr = vGuids.begin(); itr != vGuids.end(); ++itr)
+		{
+            if (Unit* pTarget = creature->GetMap()->GetUnit(*itr))
+			{
+                if(pTarget->GetTypeId() != TYPEID_PLAYER)
+					continue;
+
+				if(((Player*)pTarget)->GetGUID() == m_playerGuid)
+					continue;
+				
+                bool bInCleanerList = false, bDoneAlready = false;
+
+                if(((Player*)pTarget)->isDead())
+                {
+                    if(!m_lToCleanPlayers.empty())
+					{
+                        for(std::list<Player*>::iterator i = m_lToCleanPlayers.begin(); i != m_lToCleanPlayers.end(); ++i)
+						{
+                            if((*i)->GetGUID() == ((Player*)pTarget)->GetGUID())
+                                bDoneAlready = true;
+						}
+					}
+
+                    if(!bDoneAlready)
+                        m_lToCleanPlayers.remove((Player*)pTarget);
+                }
+                else
+                {
+                    if(!m_lToCleanPlayers.empty())
+					{
+                        for(std::list<Player*>::iterator i = m_lToCleanPlayers.begin(); i != m_lToCleanPlayers.end(); ++i)
+						{
+                            if((*i)->GetGUID() == ((Player*)pTarget)->GetGUID())
+                                bInCleanerList = true;
+						}
+					}
+
+                    if(!bInCleanerList)
+                        m_lToCleanPlayers.push_back((Player*)pTarget);
+                }
+			}
+		}
+    }
+
+    void UpdateAI(const uint32 uiDiff)
+    {
+        if (!m_bIsQuestInProgress || m_uiCurrentWave == 0)
+        {
+            if((m_goLightWell = GetClosestGameObjectWithEntry(m_creature, 179693, 100.0f)) != nullptr)
+            {    
+                m_goLightWell->Delete();       
+            }
+            return;
+        }
+        else
+        {
+            if(!m_goLightWell)
+            {
+                m_goLightWell = new GameObject;
+                m_goLightWell->LoadFromDB(632565, m_creature->GetMap());
+                m_goLightWell->AddToWorld();
+                m_goLightWell->Refresh();
+                m_goLightWell->Respawn();
+            }
+        }
+
+        Player* pPlayer = m_creature->GetMap()->GetPlayer(m_playerGuid);
+
+        for (GUIDList::const_iterator itr = m_lSummonedGUIDList.begin(); itr != m_lSummonedGUIDList.end(); ++itr)
+            if (Creature* pSummoned = m_creature->GetMap()->GetCreature(*itr))
+                functionOfDoom(pSummoned);
+
+        if (m_bCleaningInProgress)
+        {
+            m_lCleaner.clear();
+            GetCreatureListWithEntryInGrid(m_lCleaner, m_creature, NPC_CLEANER, 300.f);
+
+            if(m_lCleaner.empty())
+                m_bCleaningInProgress = false;
+        }
+
+        //Get the frakkin Cleaner started
+        if (!m_bCleaningInProgress && !m_lToCleanPlayers.empty())
+            for(std::list<Player*>::iterator i = m_lToCleanPlayers.begin(); i != m_lToCleanPlayers.end(); ++i)
+                if((*i)->isAlive() && (*i)->isTargetableForAttack())
+                {
+                    float fX, fY, fZ;
+                    m_creature->GetRandomPoint( (*i)->GetPositionX(), (*i)->GetPositionY(), (*i)->GetPositionZ(), 5.0f, fX, fY, fZ );
+                    Creature* pCleaner = m_creature->SummonCreature(NPC_CLEANER, fX, fY, fZ, 0, TEMPSUMMON_TIMED_DESPAWN_OUT_OF_COMBAT, 10000);		 
+                    pCleaner->AI()->AttackStart((*i));
+                    m_bCleaningInProgress = true;
+                }
+
+        //Different Footsoldier spawns
+        if(m_bFootsoldiersSpawned)
+        {
+            //Spawntimers
+            if (m_uiFootsoldierTimer1 <= uiDiff)
+            {
+                m_uiFootsoldiersSpawnCount += 1;
+                m_uiFootsoldierTimer1 = urand(0,1)*5000 + 20000;
+            }
+            else
+                m_uiFootsoldierTimer1 -= uiDiff;
+
+            if (m_uiFootsoldierTimer2 <= uiDiff)
+            {
+                m_uiFootsoldiersSpawnCount += 2;
+                m_uiFootsoldierTimer2 = 30000;
+            }
+            else
+                m_uiFootsoldierTimer2 -= uiDiff;
+
+            if (m_uiFootsoldierTimer3 <= uiDiff)
+            {
+                m_uiFootsoldiersSpawnCount += 3+((m_uiCurrentWave%2)*2);
+                m_uiFootsoldierTimer3 = 60000;
+            }
+            else
+                m_uiFootsoldierTimer3 -= uiDiff;
+
+            //Function call depending on count
+            if (m_uiFootsoldiersSpawnCount > 0)
+            {
+                if (m_uiFootsoldierSpawnTimer <= uiDiff)
+                {
+                    DoSummonFootsoldier();
+                    m_uiFootsoldiersSpawnCount--;
+                    m_uiFootsoldierSpawnTimer = 500;
+                }
+                else
+                    m_uiFootsoldierSpawnTimer -= uiDiff;
+            }
+        }
+
+        //player is dead
+        if (pPlayer->GetQuestStatus(QUEST_THE_BALANCE_OF_LIGHT_AND_SHADOW) != QUEST_STATUS_INCOMPLETE || pPlayer->isDead())
+        {
+            PhaseEnded(true, false);
+            return;
+        }
+
+        //Phases
+        if (m_uiPhase)
+        {
+            if (m_uiTotalKilled >= 15)
+            {
+                PhaseEnded(true, false);
+                return;
+            }
+
+            else if ((m_uiKillCounter[m_uiCurrentWave-1] + m_uiSaveCounter[m_uiCurrentWave-1] >= m_uiPeasantCount[m_uiCurrentWave-1]))
+            {
+                // When we saved 50 peasants
+                if (m_uiTotalSaved >= 50)
+                    PhaseEnded(false, false);
+                else
+                    PhaseEnded(false, true);
+
+                return;
+            }
+
+            // No more phases or no wave
+            if (m_uiPhase > 6 || m_uiCurrentWave == 0)
+                return;
+
+            if (m_uiMainTimer < uiDiff)
+            {
+                switch(m_uiPhase)
+                {
+                    case 1: // Spawn Archers
+                        DoSpawnArchers();
+                        m_uiMainTimer = 5000;
+                        break;
+                    case 2: // Wave 1
+                        DoNextWave(1);
+                        m_uiMainTimer = 60000;
+                        break;
+                    case 3: // Wave 2
+                        DoNextWave(2);
+                        m_uiMainTimer = 75000;
+                        break;
+                    case 4: // Wave 3
+                        DoNextWave(3);
+                        m_uiMainTimer = 100000;
+                        break;
+                    case 5: // Wave 4
+                        DoNextWave(4);
+                        m_uiMainTimer = 105000;
+                        break;
+                    case 6: // Wave 5
+                        DoNextWave(5);
+                        break;
+                }
+                ++m_uiPhase;
+            }
+            else
+                m_uiMainTimer -= uiDiff;
+        }
+        else
+            debug_log("SD0: npc_eris_havenfire: No phase detected");
+    }
+};
+
+bool QuestAccept_npc_eris_havenfire(Player* pPlayer, Creature* pCreature, const Quest* pQuest)
+{
+    if (pQuest->GetQuestId() == QUEST_THE_BALANCE_OF_LIGHT_AND_SHADOW)
+    {
+        if (npc_eris_havenfireAI* pEris = dynamic_cast<npc_eris_havenfireAI*>(pCreature->AI()))
+        {
+            pCreature->RemoveFlag(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_QUESTGIVER);
+            pEris->m_bIsQuestInProgress = true;
+            pEris->m_uiCurrentWave = 1;
+            pEris->m_playerGuid = pPlayer->GetObjectGuid();
+        }
+    }
+
+    return true;
+}
+
+CreatureAI* GetAI_npc_eris_havenfire(Creature* pCreature)
+{
+    return new npc_eris_havenfireAI(pCreature);
+}
+
+/*######
+## mob_scourge_archer
+######*/
+
+enum
+{
+    SHOOT = 23073,
+};
+
+struct MANGOS_DLL_DECL mob_scourge_archerAI : public ScriptedAI
+{
+    mob_scourge_archerAI(Creature* pCreature) : ScriptedAI(pCreature)
+    {
+        SetCombatMovement(false);
+        pCreature->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
+        Reset();
+    }
+
+    std::list<Creature*> pPeasants;
+    uint32 m_uiShotTimer;
+
+    void Reset()
+    {
+         //Use a bow
+        m_creature->UpdateDamagePhysical(RANGED_ATTACK);
+
+        //get a bow
+        SetEquipmentSlots(false, EQUIP_UNEQUIP, EQUIP_UNEQUIP, 6231);
+
+        //get immune
+        m_creature->CastSpell(m_creature, 29230, true);
+
+        //dont move
+        SetCombatMovement(false);
+
+        //shoot timer
+        m_uiShotTimer = 2000 + urand(0, 400); 
+    }
+
+    void DamageTaken(Unit* pDoneBy, uint32 &uiDamage)
+    {
+        if (pDoneBy->IsCharmerOrOwnerPlayerOrPlayerItself())
+            if (!((Player*)pDoneBy)->isGameMaster())
+                uiDamage = 0;
+    }
+
+    void UpdateAI(const uint32 uiDiff)
+    {
+        //Invisibility
+        //if (!m_creature->HasAura(QUEST_INVISIBILITY))
+        //    m_creature->CastSpell(m_creature, QUEST_INVISIBILITY, false);
+
+        if (Player* pPlayer = GetPlayerAtMinimumRange(300.0f))
+        {
+            if (pPlayer->isAlive() && !pPlayer->isInCombat() && pPlayer->GetQuestStatus(QUEST_THE_BALANCE_OF_LIGHT_AND_SHADOW) == QUEST_STATUS_INCOMPLETE)
+                pPlayer->SetInCombatWith(m_creature);
+        }
+
+        pPeasants.clear();
+        GetCreatureListWithEntryInGrid(pPeasants, m_creature, NPC_INJURED_PEASANT, 60.0f);
+        GetCreatureListWithEntryInGrid(pPeasants, m_creature, NPC_PLAGUED_PEASANT, 60.0f);
+
+        if (m_uiShotTimer)
+        {
+            if (m_uiShotTimer <= uiDiff)
+            {
+                uint32 pPeasantRandom = urand(0,pPeasants.size()), j = 1;
+                for (std::list<Creature*>::iterator i = pPeasants.begin(); i != pPeasants.end(); ++i)
+                {
+                    if ((*i)->isAlive() && j == pPeasantRandom && m_creature->IsInRange((*i), 0.0f, 59.0f, true) && m_creature->IsWithinLOS((*i)->GetPositionX(), (*i)->GetPositionY(), (*i)->GetPositionZ()))
+                    {
+                        DoCastSpellIfCan((*i), SHOOT);
+                        m_creature->AddThreat((*i));
+                    }
+                    else if (j == pPeasantRandom)
+                         pPeasantRandom = urand(j,pPeasants.size());
+
+                    j++;
+                }
+                m_uiShotTimer = 10000 + urand(200, 1000);
+            }
+            else
+                m_uiShotTimer -= uiDiff;
+        }
+    }
+};
+
+CreatureAI* GetAI_mob_scourge_archer(Creature* pCreature)
+{
+    return new mob_scourge_archerAI(pCreature);
+}
+
+/*######
+## mob_scourge_footsoldier
+######*/
+
+struct MANGOS_DLL_DECL mob_scourge_footsoldierAI : public ScriptedAI
+{
+    Creature* pTemp;
+    mob_scourge_footsoldierAI(Creature* pCreature) : ScriptedAI(pCreature)
+    {
+        Reset();
+    }
+
+    void Reset()
+    {
+        pTemp = 0;
+        m_creature->CastSpell(m_creature, SEE_PRIEST_INVIS, false);
+    }
+    
+    
+    //Temp Fix for Attacking Eris
+    void AttackStart(Unit* pTarget)
+    {
+        if (pTarget->GetEntry() != 14494 && (pTarget->GetEntry() == NPC_PLAGUED_PEASANT || pTarget->GetEntry() == NPC_INJURED_PEASANT || (pTarget->GetTypeId() == TYPEID_PLAYER)) )
+            ScriptedAI::AttackStart(pTarget);
+        else
+        {
+            return; 
+        }
+    }
+
+    void UpdateAI(const uint32)
+    {   
+        if(!m_creature->getVictim())
+        {
+            Unit* tempCreature = 0;
+
+            //hier nur hinlaufen und fertig
+            //Peasant list
+           std::list<Creature*> pPeasants;
+            pPeasants.clear();
+            GetCreatureListWithEntryInGrid(pPeasants, m_creature, NPC_INJURED_PEASANT, 300.0f);
+            GetCreatureListWithEntryInGrid(pPeasants, m_creature, NPC_PLAGUED_PEASANT, 300.0f);
+            
+            tempCreature = GetPlayerAtMinimumRange(300.0f);
+
+            if (!pPeasants.empty())
+                for(std::list<Creature*>::iterator i = pPeasants.begin(); i != pPeasants.end(); ++i)
+                    if((*i)->isAlive())
+                    {
+                        if(tempCreature == 0)
+                            tempCreature = (*i);
+                        if(tempCreature->isDead())
+                            tempCreature = (*i);
+                        if(m_creature->GetDistanceOrder((*i), (Unit*)tempCreature))
+                            tempCreature = (*i);
+                    }
+
+            if(tempCreature)
+                if(tempCreature->isAlive())
+                    m_creature->AI()->AttackStart((Unit*)tempCreature);
+        }
+            
+        //Return since we have no target*/
+        if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
+            return;
+        DoMeleeAttackIfReady();
+    }
+};
+
+CreatureAI* GetAI_mob_scourge_footsoldier(Creature* pCreature)
+{
+    return new mob_scourge_footsoldierAI(pCreature);
+}
+
+void AddSC_Priest_Epic_Quest()
+{
+    Script* pNewscript;
+
+    pNewscript = new Script;
+    pNewscript->Name = "npc_eris_havenfire";
+    pNewscript->GetAI = &GetAI_npc_eris_havenfire;
+    pNewscript->pQuestAcceptNPC = &QuestAccept_npc_eris_havenfire;
+    pNewscript->RegisterSelf();
+
+    pNewscript = new Script;
+    pNewscript->Name = "npc_infected_peasant";
+    pNewscript->GetAI = &GetAI_npc_infected_peasant;
+    pNewscript->RegisterSelf();
+
+    pNewscript = new Script;
+    pNewscript->Name = "mob_scourge_archer";
+    pNewscript->GetAI = &GetAI_mob_scourge_archer;
+    pNewscript->RegisterSelf();
+
+    pNewscript = new Script;
+    pNewscript->Name = "mob_scourge_footsoldier";
+    pNewscript->GetAI = &GetAI_mob_scourge_footsoldier;
+    pNewscript->RegisterSelf();
+}
