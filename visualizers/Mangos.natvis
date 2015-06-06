@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010"> 
+  <Type Name="Player">
+	<DisplayString>Player {m_name} ({m_position.x} {m_position.y} {m_position.z} {m_mapId})</DisplayString>
+	<Expand>
+		<Item Name="[Guid Low]">*m_uint32Values</Item>
+		<Item Name="[Guid High]">*(m_uint32Values + 1)</Item>
+		<Synthetic Name="[uint32 values">
+			<DisplayString>uint32 values</DisplayString>
+			<Expand>
+				<ArrayItems>
+					<Size>1094</Size>
+					<ValuePointer>m_uint32Values + 188</ValuePointer>
+				</ArrayItems>
+			</Expand>
+		</Synthetic>
+		<Synthetic Name="[Items">
+			<DisplayString>Items</DisplayString>
+			<Expand>
+				<ArrayItems>
+					<Size>118</Size>
+					<ValuePointer>m_items</ValuePointer>
+				</ArrayItems>
+			</Expand>
+		</Synthetic>
+	</Expand>
+  </Type>
+  <Type Name="Unit">
+	<DisplayString>Unit {m_name} ({m_position.x} {m_position.y} {m_position.z} {m_mapId})</DisplayString>
+	<Expand>
+		<Item Name="[Guid Low]">*m_uint32Values</Item>
+		<Item Name="[Guid High]">*(m_uint32Values + 1)</Item>
+		<Item Name="[Entry]">*(m_uint32Values + 3)</Item>
+	</Expand>
+  </Type>
+  <Type Name="WorldObject">
+	<DisplayString>WorldObject {m_name} ({m_position.x} {m_position.y} {m_position.z} {m_mapId})</DisplayString>
+	<Expand>
+		<Item Name="[Guid Low]">*m_uint32Values</Item>
+		<Item Name="[Guid High]">*(m_uint32Values + 1)</Item>
+		<Item Name="[Entry]">*(m_uint32Values + 3)</Item>
+	</Expand>
+  </Type>
+  <Type Name="Item">
+	<DisplayString>Item {*(m_uint32Values + 3)}</DisplayString>
+	<Expand>
+		<Item Name="[Guid Low]">*m_uint32Values</Item>
+		<Item Name="[Guid High]">*(m_uint32Values + 1)</Item>
+		<Item Name="[Entry]">*(m_uint32Values + 3)</Item>
+	</Expand>
+  </Type>
+</AutoVisualizer>

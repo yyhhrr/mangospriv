@@ -1,0 +1,12 @@
+F:\classic-wow\tools\VisualEventAI\VisualEventAI\bin\Debug\VisualEventAI.exe.config
+F:\classic-wow\tools\VisualEventAI\VisualEventAI\obj\Debug\VisualEventAI.csprojResolveAssemblyReference.cache
+F:\classic-wow\tools\VisualEventAI\VisualEventAI\obj\Debug\VisualEventAI.Forms.AiTab.resources
+F:\classic-wow\tools\VisualEventAI\VisualEventAI\obj\Debug\VisualEventAI.Forms.MainWindow.resources
+F:\classic-wow\tools\VisualEventAI\VisualEventAI\obj\Debug\VisualEventAI.Forms.PhaseGrid.resources
+F:\classic-wow\tools\VisualEventAI\VisualEventAI\obj\Debug\VisualEventAI.Forms.Properties.Resources.resources
+F:\classic-wow\tools\VisualEventAI\VisualEventAI\obj\Debug\VisualEventAI.csproj.GenerateResource.Cache
+F:\classic-wow\tools\VisualEventAI\VisualEventAI\bin\Debug\VisualEventAI.exe
+F:\classic-wow\tools\VisualEventAI\VisualEventAI\bin\Debug\VisualEventAI.pdb
+F:\classic-wow\tools\VisualEventAI\VisualEventAI\bin\Debug\MySql.Data.dll
+F:\classic-wow\tools\VisualEventAI\VisualEventAI\obj\Debug\VisualEventAI.exe
+F:\classic-wow\tools\VisualEventAI\VisualEventAI\obj\Debug\VisualEventAI.pdb
