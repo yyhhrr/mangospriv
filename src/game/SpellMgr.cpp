@@ -4289,6 +4289,9 @@ void SpellMgr::LoadDbcDataCorrections()
             spellInfo->EffectRadiusIndex[0] = 28;
             spellInfo->EffectRadiusIndex[1] = 28;
             spellInfo->EffectRadiusIndex[2] = 28;
+          
+            break;
+
             case 20662: // Execute
                 spellInfo->AttributesEx3 |= SPELL_ATTR_EX3_CANT_MISS;
                 spellInfo->Attributes |= SPELL_ATTR_UNAFFECTED_BY_INVULNERABILITY;
