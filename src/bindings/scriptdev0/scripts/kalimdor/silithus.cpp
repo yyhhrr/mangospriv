@@ -1034,6 +1034,108 @@ bool OnEvent(uint32 eventId, Object* pSource, Object* pTarget, bool isStart)
 	return true;
 }
 
+enum ScoutSwarms
+{
+    QUEST_SPAEHERBERICHT_ASHISCHWARM = 8739,
+    QUEST_SPAEHERBERICHT_REGALSCHWARM = 8738,
+    QUEST_SPAEHERBERICHT_ZORASCHWARM = 8534,
+    SPELL_REGALSCHWARM = 25847,
+    SPELL_ASHISCHWARM = 25845,
+    SPELL_ZORASCHWARM = 25843,
+    SPELL_STEALTH = 8218
+};
+
+
+struct MANGOS_DLL_DECL npc_cenarion_scout_landionAI : public ScriptedAI
+{
+    npc_cenarion_scout_landionAI(Creature* pCreature) : ScriptedAI(pCreature)
+    {
+        Reset();
+    }
+    
+    void Reset()
+    {
+        m_creature->CastSpell(m_creature, SPELL_STEALTH, true);
+    }
+};
+
+
+bool GossipHello_mob_Landion_the_scout(Player* pPlayer, Creature* pCreature)
+{
+    if (pPlayer->GetQuestStatus(QUEST_SPAEHERBERICHT_REGALSCHWARM) == QUEST_STATUS_INCOMPLETE)
+    {
+        pCreature->CastSpell(pPlayer, SPELL_REGALSCHWARM, true);
+    }
+    return true;
+}
+
+CreatureAI* GetAI_npc_cenarion_scout_landion(Creature* pCreature)
+{
+    return new npc_cenarion_scout_landionAI(pCreature);
+}
+
+
+
+struct MANGOS_DLL_DECL npc_cenarion_scout_jaliaAI : public ScriptedAI
+{
+    npc_cenarion_scout_jaliaAI(Creature* pCreature) : ScriptedAI(pCreature)
+    {
+        Reset();
+    }
+
+    void Reset()
+    {
+        m_creature->CastSpell(m_creature, SPELL_STEALTH, true);
+    }
+};
+
+
+bool GossipHello_mob_jalia_the_scout(Player* pPlayer, Creature* pCreature)
+{
+    if (pPlayer->GetQuestStatus(QUEST_SPAEHERBERICHT_ASHISCHWARM) == QUEST_STATUS_INCOMPLETE)
+    {
+        pCreature->CastSpell(pPlayer, SPELL_ASHISCHWARM, true);
+    }
+    return true;
+}
+
+CreatureAI* GetAI_npc_cenarion_scout_jalia(Creature* pCreature)
+{
+    return new npc_cenarion_scout_jaliaAI(pCreature);
+}
+
+
+
+
+
+struct MANGOS_DLL_DECL npc_cenarion_scout_azenelAI : public ScriptedAI
+{
+    npc_cenarion_scout_azenelAI(Creature* pCreature) : ScriptedAI(pCreature)
+    {
+        Reset();
+    }
+
+    void Reset()
+    {
+        m_creature->CastSpell(m_creature, SPELL_STEALTH, true);
+    }
+};
+
+
+bool GossipHello_mob_azenel_the_scout(Player* pPlayer, Creature* pCreature)
+{
+    if (pPlayer->GetQuestStatus(QUEST_SPAEHERBERICHT_ZORASCHWARM) == QUEST_STATUS_INCOMPLETE)
+    {
+        pCreature->CastSpell(pPlayer, SPELL_ZORASCHWARM, true);
+    }
+    return true;
+}
+
+CreatureAI* GetAI_npc_cenarion_scout_azenel(Creature* pCreature)
+{
+    return new npc_cenarion_scout_azenelAI(pCreature);
+}
+
 
 //TODO: Sandvortex (npc:15428 zaubert:25160 und läuft random durch silithus)
 
@@ -1046,6 +1148,7 @@ void AddSC_silithus()
     pNewScript->pGossipHello = &GossipHello_npc_highlord_demitrian;
     pNewScript->pGossipSelect = &GossipSelect_npc_highlord_demitrian;
     pNewScript->RegisterSelf();
+
 
     pNewScript = new Script;
     pNewScript->Name = "npcs_rutgar_and_frankal";
@@ -1078,4 +1181,22 @@ void AddSC_silithus()
 	pNewScript->Name = "AQ_SUMMON_DOOR";
 	pNewScript->pProcessEventId = &OnEvent;
 	pNewScript->RegisterSelf();
+
+    pNewScript = new Script;
+    pNewScript->Name = "npc_cenarion_scout_landion";
+    pNewScript->GetAI = &GetAI_npc_cenarion_scout_landion;
+    pNewScript->pGossipHello = &GossipHello_mob_Landion_the_scout;
+    pNewScript->RegisterSelf();
+
+    pNewScript = new Script;
+    pNewScript->Name = "npc_cenarion_scout_jalia";
+    pNewScript->GetAI = &GetAI_npc_cenarion_scout_jalia;
+    pNewScript->pGossipHello = &GossipHello_mob_jalia_the_scout;
+    pNewScript->RegisterSelf();
+
+    pNewScript = new Script;
+    pNewScript->Name = "npc_cenarion_scout_azenel";
+    pNewScript->GetAI = &GetAI_npc_cenarion_scout_azenel;
+    pNewScript->pGossipHello = &GossipHello_mob_azenel_the_scout;
+    pNewScript->RegisterSelf();
 }
