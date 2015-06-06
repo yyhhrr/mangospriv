@@ -4418,8 +4418,7 @@ Corpse* Player::CreateCorpse()
     }
 
     // we not need saved corpses for BG/arenas
-    if (!GetMap()->IsBattleGround())
-        corpse->SaveToDB();
+    corpse->SaveToDB();
 
     // register for player, but not show
     sObjectAccessor.AddCorpse(corpse);
