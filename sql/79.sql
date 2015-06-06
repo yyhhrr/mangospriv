@@ -1,0 +1,2 @@
+UPDATE gameobject_template SET data2 = 30 WHERE entry IN(177484, 177485, 148837);
+UPDATE creature_template SET faction_A = 103, faction_H = 103, ScriptName = "Corrupted_Totem_AI" WHERE entry IN(14662, 14664, 14663, 14666);

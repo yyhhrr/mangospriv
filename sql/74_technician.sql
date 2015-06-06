@@ -1,0 +1,1 @@
+UPDATE creature_template SET AIName = '', ScriptName = 'mob_blackwing_technician' WHERE entry = 13996;

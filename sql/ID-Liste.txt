@@ -1,0 +1,26 @@
+`creature`
+349110-349149 AQ-Opening
+349206-349250 Arathibecken
+1105302-1105614 AQ 20
+9000441-9000444 AQ 20
+
+`creature_equip_template`
+`creature_equip_template_raw`
+2217-2237 AQ-Opening
+2238-2239 AQ 20
+
+`creature_template`
+90100-90110 Teleportmeister
+90120 Teleportmeister
+90121 Teleportmeister
+90200 Testserver Teleporter
+800020-800026 Testserver Stuff
+800064 Emerald Dragons Spawner
+
+`item_template`
+50010-50012 Premium
+
+`world_events`
+1 ZG-Opening
+2-32 AQ-Opening
+33-40 Emerald-Dragon Spawnsystem

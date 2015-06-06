@@ -1,0 +1,17 @@
+UPDATE spell_script_target SET targetEntry = '11582' WHERE entry = '17618';
+DELETE FROM gameobject_scripts WHERE datalong = '18892';
+UPDATE creature_template SET ScriptName = 'kirtonos' WHERE entry = '10506';
+UPDATE creature_template SET ScriptName = 'doktor_theolen_krastinov', mechanic_immune_mask = '8388624' WHERE entry = '11261';
+UPDATE creature_template SET ScriptName = 'jandice_barov' WHERE entry = '10503';
+UPDATE creature_template SET ScriptName = 'hueter_des_wissens_polkelt' WHERE entry = '10901';
+UPDATE creature_template SET ScriptName = 'instrukteurin_malicia', mechanic_immune_mask = '8388624' WHERE entry = '10505';
+UPDATE creature_template SET ScriptName = 'lady_illucia_barov' WHERE entry = '10502';
+UPDATE creature_template SET ScriptName = 'lord_alexei_barov' WHERE entry = '10504';
+UPDATE creature_template SET ScriptName = 'marduk' WHERE entry = '10433';
+UPDATE creature_template SET ScriptName = 'ras_frostraunen' WHERE entry = '10508';
+UPDATE creature_template SET ScriptName = 'vectus' WHERE entry = '10432';
+UPDATE creature_template SET ScriptName = 'der_ravenier' WHERE entry = '10507';
+UPDATE creature_template SET ScriptName = 'blutrippe' WHERE entry = '11622';
+UPDATE creature_template SET ScriptName = 'blutdiener_von_kirtonos' WHERE entry = '14861';
+UPDATE creature_template SET ScriptName = 'dunkelmeister_gandling', mechanic_immune_mask = '8388624' WHERE entry = '1853';
+UPDATE creature_template SET ScriptName = 'spectralTutor' WHERE entry = '10498';

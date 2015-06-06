@@ -1,0 +1,1 @@
+UPDATE mangos_string SET content_default = "%d - |cffffffff|Hitem:%d:0:0:0:0:0:0:0|h[%s]|h|r %s [%u]" WHERE entry = 512;

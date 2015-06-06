@@ -1,0 +1,33 @@
+UPDATE reference_loot_template SET lootcondition = 6 WHERE 
+item = 16854 OR
+item = 16856 OR
+item = 16853 OR
+item = 16860 OR
+item = 16855 OR
+item = 16859 OR
+item = 16842 OR
+item = 16844 OR
+item = 16841 OR
+item = 16839 OR
+item = 16843 OR
+item = 16837 OR
+item = 16946 OR
+item = 16954;
+
+UPDATE reference_loot_template SET condition_value1 = 469 WHERE
+item = 16854 OR
+item = 16856 OR
+item = 16853 OR
+item = 16860 OR
+item = 16855 OR
+item = 16859 OR
+item = 16954;
+
+UPDATE reference_loot_template SET condition_value1 = 67 WHERE
+item = 16842 OR
+item = 16844 OR
+item = 16841 OR
+item = 16839 OR
+item = 16843 OR
+item = 16837 OR
+item = 16946;

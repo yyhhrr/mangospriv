@@ -1,0 +1,1 @@
+UPDATE gameobject_template SET ScriptName = "go_dark_coffer" WHERE entry = 174565;

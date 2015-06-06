@@ -1,0 +1,1 @@
+UPDATE gameobject SET id = '177502' WHERE guid = '26246' or guid = '26259' or guid = '26806' or guid = '26807' or guid = '26249' or guid = '26255';

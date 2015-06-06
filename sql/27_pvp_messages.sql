@@ -1,0 +1,18 @@
+UPDATE mangos_string SET content_loc3 = "Die Horde hat 200 Silithyst gesammelt!" WHERE entry = 10001;
+UPDATE mangos_string SET content_loc3 = "Die Allianz hat 200 Silithyst gesammelt!" WHERE entry = 10002;
+UPDATE mangos_string SET content_loc3 = "Die Horde hat den Nordpassturm erobert!" WHERE entry = 10003;
+UPDATE mangos_string SET content_loc3 = "Die Allianz hat den Nordpassturm erobert!" WHERE entry = 10004;
+UPDATE mangos_string SET content_loc3 = "Die Horde hat den Ostwallturm erobert!" WHERE entry = 10005;
+UPDATE mangos_string SET content_loc3 = "Die Allianz hat den Ostwallturm erobert!" WHERE entry = 10006;
+UPDATE mangos_string SET content_loc3 = "Die Horde hat den der Kronenwache erobert!" WHERE entry = 10007;
+UPDATE mangos_string SET content_loc3 = "Die Allianz hat den der Kronenwache erobert!" WHERE entry = 10008;
+UPDATE mangos_string SET content_loc3 = "Die Horde hat den Pestwaldturm erobert!" WHERE entry = 10009;
+UPDATE mangos_string SET content_loc3 = "Die Allianz hat den Pestwaldturm erobert!" WHERE entry = 10010;
+UPDATE mangos_string SET content_loc3 = "Die Horde hat den Nordpassturm verloren!" WHERE entry = 10011;
+UPDATE mangos_string SET content_loc3 = "Die Allianz hat den Nordpassturm verloren!" WHERE entry = 10012;
+UPDATE mangos_string SET content_loc3 = "Die Horde hat den Ostwallturm verloren!" WHERE entry = 10013;
+UPDATE mangos_string SET content_loc3 = "Die Allianz hat den Ostwallturm verloren!" WHERE entry = 10014;
+UPDATE mangos_string SET content_loc3 = "Die Horde hat den der Kronenwache verloren!" WHERE entry = 10015;
+UPDATE mangos_string SET content_loc3 = "Die Allianz hat den der Kronenwache verloren!" WHERE entry = 10016;
+UPDATE mangos_string SET content_loc3 = "Die Horde hat den Pestwaldturm verloren!" WHERE entry = 10017;
+UPDATE mangos_string SET content_loc3 = "Die Allianz hat den Pestwaldturm verloren!" WHERE entry = 10018;

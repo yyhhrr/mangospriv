@@ -1,0 +1,1 @@
+ALTER TABLE `world_events` CHANGE `progress` `progress` BIGINT(20) UNSIGNED NULL;

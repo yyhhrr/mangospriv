@@ -1,0 +1,1 @@
+UPDATE creature_loot_template SET mincountOrRef = 0, maxcount = 0 WHERE item = 20383;

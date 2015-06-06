@@ -1,0 +1,1 @@
+UPDATE item_template SET stat_value1 = 30, spellid_2 = 0, spelltrigger_2 = 0 WHERE entry = 19377;

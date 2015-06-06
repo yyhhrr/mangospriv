@@ -1,0 +1,1 @@
+UPDATE gameobject SET id = 176575 WHERE guid = 26262;

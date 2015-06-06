@@ -1,0 +1,20 @@
+INSERT INTO gameobject_loot_template VALUES
+( 16563, 18359, 4, 0, 1, 1, 0, 0, 0 );
+
+INSERT INTO gameobject_loot_template VALUES
+( 16563, 18363, 4, 0, 1, 1, 0, 0, 0 );
+
+INSERT INTO gameobject_loot_template VALUES
+( 16563, 18401, 0.1, 0, 1, 1, 0, 0, 0 );
+
+UPDATE gameobject_loot_template SET ChanceOrQuestChance = 4 WHERE 
+item = 18356 OR
+item = 18357 OR
+item = 18358 OR
+item = 18359 OR
+item = 18360 OR
+item = 18361 OR
+item = 18362 OR
+item = 18363 OR
+item = 18364;
+

@@ -1,0 +1,1 @@
+UPDATE creature_template SET mindmg = 2760, maxdmg = 4008, ScriptName = "death_talon_wyrmguard" WHERE entry = 12460;

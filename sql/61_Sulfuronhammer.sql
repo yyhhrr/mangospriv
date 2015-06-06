@@ -1,0 +1,1 @@
+UPDATE item_template SET ExtraFlags = 1 WHERE entry = 17204;

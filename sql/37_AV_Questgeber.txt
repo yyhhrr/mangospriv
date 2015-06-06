@@ -1,0 +1,16 @@
+UPDATE `quest_template` SET `RequiredMinRepFaction`=729, `RequiredMinRepValue`=3000, PrevQuestId=7161 WHERE `entry`=7163;
+UPDATE `quest_template` SET `RequiredMinRepFaction`=729, `RequiredMinRepValue`=9000, PrevQuestId=7163 WHERE `entry`=7164;
+UPDATE `quest_template` SET `RequiredMinRepFaction`=729, `RequiredMinRepValue`=21000, PrevQuestId=7164 WHERE `entry`=7165;
+UPDATE `quest_template` SET `RequiredMinRepFaction`=729, `RequiredMinRepValue`=42000, PrevQuestId=7165 WHERE `entry`=7166;
+UPDATE `quest_template` SET `RequiredMinRepFaction`=729, `RequiredMinRepValue`=42999, PrevQuestId=7166 WHERE `entry`=7167;
+
+
+UPDATE `quest_template` SET `RequiredMinRepFaction`=730, `RequiredMinRepValue`=3000 WHERE `entry`=7168;
+UPDATE `quest_template` SET `RequiredMinRepFaction`=730, `RequiredMinRepValue`=9000 WHERE `entry`=7169;
+UPDATE `quest_template` SET `RequiredMinRepFaction`=730, `RequiredMinRepValue`=21000 WHERE `entry`=7170;
+UPDATE `quest_template` SET `RequiredMinRepFaction`=730, `RequiredMinRepValue`=42000 WHERE `entry`=7171;
+UPDATE `quest_template` SET `RequiredMinRepFaction`=730, `RequiredMinRepValue`=42999 WHERE `entry`=7172;
+
+INSERT INTO creature (guid, id, map, modelid, position_x, position_y, position_z, orientation, curhealth) VALUES
+( 16575, 13840, 0, 13853, 400.81, -960.10, 110.50, 3.15, 9563 ),
+( 16989, 13841, 0, 13841, -16.32, -321.61, 131.25, 4.38, 9563 );
