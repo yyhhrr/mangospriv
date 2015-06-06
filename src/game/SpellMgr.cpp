@@ -3932,6 +3932,16 @@ DiminishingGroup GetDiminishingReturnsGroupForSpell(SpellEntry const* spellproto
             break;
     }
 
+    switch (spellproto->Id)
+    {
+    case 12494: // Mage Frostbite
+    case 19185: // Hunter Entrapment
+        return DIMINISHING_NONE;
+        break;
+    default:
+        break;
+    }
+
     // Get by mechanic
     uint32 mechanic = GetAllSpellMechanicMask(spellproto);
     if (!mechanic)
