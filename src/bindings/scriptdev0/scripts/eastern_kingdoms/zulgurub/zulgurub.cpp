@@ -82,7 +82,7 @@ struct MANGOS_DLL_DECL mob_gurubashi_axe_throwerAI : public ScriptedAI
             return;
 
         // Enrage
-        if (!bEnraged && m_creature->GetMaxHealth() <= 30)
+        if (!bEnraged && m_creature->GetHealthPercent() <= 50)
         {
             bEnraged = true;
             DoCastSpellIfCan(m_creature, SPELL_ENRAGE);
@@ -97,6 +97,7 @@ struct MANGOS_DLL_DECL mob_gurubashi_axe_throwerAI : public ScriptedAI
             // Axe Flurry
             if (m_uiAxeFlurryTimer <= uiDiff)
             {
+               
                 DoCastSpellIfCan(m_creature->getVictim(), SPELL_AXE_FLURRY);
                 m_uiAxeFlurryTimer = urand(12000, 18000);
             }
