@@ -8643,6 +8643,8 @@ bool Unit::HandleStatModifier(UnitMods unitMod, UnitModifierType modifierType, f
 	switch (unitMod)
 	{
 	case UNIT_MOD_STAT_STRENGTH:
+        UpdateAttackPowerAndDamage();
+        UpdateStats(GetStatByAuraGroup(unitMod));  break;
 	case UNIT_MOD_STAT_AGILITY:
 	case UNIT_MOD_STAT_STAMINA:
 	case UNIT_MOD_STAT_INTELLECT:
