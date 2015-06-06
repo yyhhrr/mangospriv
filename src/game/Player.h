@@ -1361,7 +1361,15 @@ class MANGOS_DLL_SPEC Player : public Unit
         QuestStatusMap& getQuestStatusMap() { return mQuestStatus; };
 
         ObjectGuid const& GetSelectionGuid( ) const { return m_curSelectionGuid; }
-        void SetSelectionGuid(ObjectGuid guid) { m_curSelectionGuid = guid; SetTargetGuid(guid); }
+        void SetSelectionGuid(ObjectGuid guid) 
+        {
+            m_curSelectionGuid = guid; SetTargetGuid(guid);
+            if (guid && m_comboTargetGuid != guid)
+            {
+                ClearComboPoints();
+                
+            }
+        }
 
         uint8 GetComboPoints() const { return m_comboPoints; }
         ObjectGuid const& GetComboTargetGuid() const { return m_comboTargetGuid; }
