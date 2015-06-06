@@ -213,7 +213,23 @@ Player* boss_ragnarosAI::DoSelectRandomNonMeleePlayer()
                     continue;
 
                 if (!m_creature->CanReachWithMeleeAttack(pTarget) && m_creature->getPowerType() == POWER_MANA)
-                    vManaPlayers.push_back((Player*)pTarget);
+                    switch (pTarget->getClass())
+                    {
+                        case CLASS_MAGE:
+                        case CLASS_WARLOCK:
+                        case CLASS_HUNTER:
+                        case CLASS_PRIEST:
+                        case CLASS_PALADIN:
+                        case CLASS_SHAMAN:
+                        vManaPlayers.push_back((Player*)pTarget);
+                        break;
+                        case CLASS_DRUID:
+                            if (!pTarget->IsInFeralForm())
+                                vManaPlayers.push_back((Player*)pTarget);
+                    default:
+                        break;
+                }
+                   
             }
         }
     }
