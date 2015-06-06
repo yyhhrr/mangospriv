@@ -2143,6 +2143,12 @@ bool SpellMgr::IsNoStackSpellDueToSpell(uint32 spellId_1, uint32 spellId_2) cons
         case SPELLFAMILY_PRIEST:
             if (spellInfo_2->SpellFamilyName == SPELLFAMILY_PRIEST)
             {
+
+                // Priest T2 8/8 stacks with any rank of renew
+                if ((spellInfo_1->Id == 22009 && spellInfo_2->SpellVisual == 280) ||
+                    (spellInfo_2->Id == 22009 && spellInfo_1->SpellVisual == 280))
+                    return false;
+
                 //Devouring Plague and Shadow Vulnerability
                 if (((spellInfo_1->SpellFamilyFlags & UI64LIT(0x2000000)) && (spellInfo_2->SpellFamilyFlags & UI64LIT(0x800000000))) ||
                     ((spellInfo_2->SpellFamilyFlags & UI64LIT(0x2000000)) && (spellInfo_1->SpellFamilyFlags & UI64LIT(0x800000000))))
