@@ -54,7 +54,7 @@ struct MANGOS_DLL_DECL boss_magmadarAI : public ScriptedAI
     uint32 Panic_Timer;
     uint32 Lavabomb_Timer;
 	uint32 LavaAtem_Timer;
-
+    float tankthreat;
     uint32 hittimer;
 
     void Reset()
@@ -65,6 +65,8 @@ struct MANGOS_DLL_DECL boss_magmadarAI : public ScriptedAI
 		LavaAtem_Timer	= 7000;
 
         hittimer		= 1300;
+
+        tankthreat = 0.0f;
 
 		Tank = ObjectGuid();
 		TankFeared = false;
@@ -123,7 +125,9 @@ struct MANGOS_DLL_DECL boss_magmadarAI : public ScriptedAI
 			if (pTank && pTank->HasAura(SPELL_PANIC))
 			{
 				TankFeared = true;
-				m_creature->getThreatManager().modifyThreatPercent(pTank, -99);
+				// m_creature->getThreatManager().modifyThreatPercent(pTank, -99);
+                tankthreat = m_creature->getThreatManager().getCurrentVictim()->getThreat() -1.0f;
+                m_creature->getThreatManager().addThreatDirectly(pTank, -( m_creature->getThreatManager().getCurrentVictim()->getThreat() -1.0f));
 			}
 		}
 
@@ -134,7 +138,9 @@ struct MANGOS_DLL_DECL boss_magmadarAI : public ScriptedAI
 			if (pTank && !pTank->HasAura(SPELL_PANIC))
 			{
 				TankFeared = false;
-				m_creature->getThreatManager().modifyThreatPercent(pTank, 11000);
+				// m_creature->getThreatManager().modifyThreatPercent(pTank, 11000);
+                m_creature->getThreatManager().addThreatDirectly(pTank, tankthreat);
+                
 			}
 		}
 
