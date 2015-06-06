@@ -157,7 +157,7 @@ struct MANGOS_DLL_DECL boss_baron_geddonAI : public ScriptedAI
             DoScriptText(EMOTE_SERVICE, m_creature);
             DoCastSpellIfCan(m_creature, SPELL_ARMAGEDDON, CAST_TRIGGERED);
             
-            m_uiArmageddonTimer = 8000;
+            m_uiArmageddonTimer = 5000;
             return;
         }
 
