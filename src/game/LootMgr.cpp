@@ -254,6 +254,36 @@ bool LootStoreItem::Roll(bool rate) const
     return roll_chance_f(chance*qualityModifier);
 }
 
+
+// Basic checks for player/item compatibility - if false no chance to see the item in the loot
+bool LootStoreItem::AllowedForPlayer(Player const * player) const
+{
+   
+
+    // DB conditions check
+    if (!sObjectMgr.IsPlayerMeetToCondition(player, conditionId))
+        return false;
+
+    ItemPrototype const *pProto = ObjectMgr::GetItemPrototype(itemid);
+    if (!pProto)
+        return false;
+
+    if (needs_quest)
+    {
+        // Checking quests for quest-only drop (check only quests requirements in this case)
+        if (!player->HasQuestForItem(itemid))
+            return false;
+    }
+    else
+    {
+        // Not quest only drop (check quest starting items for already accepted non-repeatable quests)
+        if (pProto->StartQuest && player->GetQuestStatus(pProto->StartQuest) != QUEST_STATUS_NONE && !player->HasQuestForItem(itemid))
+            return false;
+    }
+
+    return true;
+}
+
 // Checks correctness of values
 bool LootStoreItem::IsValid(LootStore const& store, uint32 entry) const
 {
@@ -741,6 +771,9 @@ LootItem* Loot::LootItemInSlot(uint32 lootSlot, Player* player, QuestItem **qite
     return item;
 }
 
+
+
+
 uint32 Loot::GetMaxSlotInLootFor(Player* player) const
 {
     QuestItemMap::const_iterator itr = m_playerQuestItems.find(player->GetGUIDLow());
@@ -935,12 +968,11 @@ void LootTemplate::LootGroup::Process(Loot& loot, Player* owner) const
 	int i = 0;
 	const int maxRerolls = 50;
 
-	while(!item || (item->conditionId == 1 && owner->GetTeam() == Team::ALLIANCE) || (item->conditionId == 2 && owner->GetTeam() == Team::HORDE))
+    while (i++ < maxRerolls) //prevent this from running too long in a worst case scenario
 	{
-		if(i++ >= maxRerolls) //prevent this from running too long in a worst case scenario
-			break;
-
 		item = Roll();
+        if (!item || item->AllowedForPlayer(owner))
+            break;
 	}
 
     if (item != NULL)
