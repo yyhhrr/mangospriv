@@ -1424,7 +1424,7 @@ void Aura::TriggerSpell()
             }
             case 19695:										// Baron Geddon Inferno
             {
-                uint32 bpForTick[12] = {500, 500, 500, 1000, 1000, 1500, 1500, 2000, 2000, 2500, 2500, 3000};
+                uint32 bpForTick[12] = {500, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000, 5500, 6000};
                 uint32 tick = GetAuraTicks();
                 if (tick < 12)
                 {
