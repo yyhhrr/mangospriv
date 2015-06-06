@@ -60,7 +60,7 @@ struct MANGOS_DLL_DECL boss_magmadarAI : public ScriptedAI
     void Reset()
     {
         Frenzy_Timer	= 25000;
-        Panic_Timer		= 20000;
+        Panic_Timer		= 7000;
         Lavabomb_Timer	= 5000;
 		LavaAtem_Timer	= 7000;
 
