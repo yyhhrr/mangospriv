@@ -1902,22 +1902,61 @@ void Unit::CalculateMeleeDamage(Unit *pVictim, uint32 damage, CalcDamageInfo *da
 	}
 	case MELEE_HIT_GLANCING:
 	{
-							   damageInfo->HitInfo |= HITINFO_GLANCING;
-							   damageInfo->TargetState = VICTIMSTATE_NORMAL;
-							   damageInfo->procEx |= PROC_EX_NORMAL_HIT;
-							   // calculate values
-							   int32 diff = damageInfo->target->GetDefenseSkillValue() - GetWeaponSkillValue(damageInfo->attackType) - 5;
-							   float reducePercent = 3.f * diff;
-							   
-							   //cap at 0% and at 30%
-							   reducePercent = std::max(reducePercent, 0.1f);
-							   reducePercent = std::min(reducePercent, 30.f);
-							   reducePercent /= 100.f;
+                            damageInfo->HitInfo |= HITINFO_GLANCING;
+                            damageInfo->TargetState = VICTIMSTATE_NORMAL;
+                            damageInfo->procEx |= PROC_EX_NORMAL_HIT;
+                            float reducePercent = 1.0f;                     // damage factor
 
-							   damageInfo->cleanDamage += damageInfo->damage - uint32(reducePercent *  damageInfo->damage);
-							   damageInfo->damage = damageInfo->damage - uint32(reducePercent *  damageInfo->damage);
-							   eleDamage = eleDamage - uint32(reducePercent * eleDamage);
-							   break;
+
+                            // calculate base values and mods
+                            float baseLowEnd = 1.3f;
+                            float baseHighEnd = 1.2f;
+                            
+                            switch (getClass())                             // lowering base values for casters
+                            {
+                                case CLASS_SHAMAN:
+                                case CLASS_PRIEST:
+                                case CLASS_MAGE:
+                                case CLASS_WARLOCK:
+                                case CLASS_DRUID:
+                                    baseLowEnd -= 0.7f;
+                                    baseHighEnd -= 0.3f;
+                                    break;
+                            }
+
+                            float maxLowEnd = 0.6f;
+                            switch (getClass())                             // upper for melee classes
+                            {
+                                case CLASS_WARRIOR:
+                                case CLASS_ROGUE:
+                                    maxLowEnd = 0.91f;                      // If the attacker is a melee class then instead the lower value of 0.91
+                            }
+
+                            // calculate values
+                            int32 diff = damageInfo->target->GetDefenseSkillValue() - GetWeaponSkillValue(damageInfo->attackType);
+                            float lowEnd = baseLowEnd - (0.05f * diff);
+                            float highEnd = baseHighEnd - (0.03f * diff);
+
+                            // apply max/min bounds
+                            if (lowEnd < 0.01f)                             // the low end must not go bellow 0.01f
+                                lowEnd = 0.01f;
+                            else if (lowEnd > maxLowEnd)                    // the smaller value of this and 0.6 is kept as the low end
+                                lowEnd = maxLowEnd;
+
+                            if (highEnd < 0.2f)                             // high end limits
+                                highEnd = 0.2f;
+                            if (highEnd > 0.99f)
+                                highEnd = 0.99f;
+
+                            if (lowEnd > highEnd)                           // prevent negative range size
+                                lowEnd = highEnd;
+
+                            reducePercent = lowEnd + rand_norm_f() * (highEnd - lowEnd);
+
+                            damageInfo->cleanDamage += damageInfo->damage - uint32(reducePercent *  damageInfo->damage);
+                            damageInfo->damage = uint32(reducePercent *  damageInfo->damage);
+                            break;
+
 	}
 	case MELEE_HIT_CRUSHING:
 	{
