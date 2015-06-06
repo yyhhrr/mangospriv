@@ -219,6 +219,41 @@ bool GOUse_go_kohlepfanne_des_wahnsinns(Player* plr, GameObject* pGo)
 	return false;
 }
 
+enum goHoodoo
+{
+    TYPE_HOODOO = 180228,
+    NPC_HOODOO_CASTER = 800066,
+    HOODOO_SPELL = 24178
+};
+
+bool GOUse_go_hoodoo(Player* pPlayer, GameObject* pGo)
+{
+    instance_zulgurub* m_pInstance = (instance_zulgurub*)pGo->GetInstanceData();
+
+    if (!m_pInstance)
+        return false;
+
+    if (roll_chance_i(25))
+        return false;
+    
+    float fX, fY, fZ;
+    pGo->GetPosition(fX, fY, fZ);
+
+    
+
+
+    if (Creature* caster = pGo->SummonCreature(NPC_HOODOO_CASTER, fX, fY, fZ, 0, TEMPSUMMON_TIMED_DESPAWN, 22000))
+    {
+
+        
+        caster->SetInCombatWithZone();
+        caster->CastSpell(pPlayer, HOODOO_SPELL, true);
+    }
+       
+    return false;
+}
+
+
 /*######
 ## AddSC
 ######*/
@@ -246,4 +281,10 @@ void AddSC_zulgurub()
 	pNewScript->Name = "go_kohlepfanne_des_wahnsinns";
 	pNewScript->pGOUse = &GOUse_go_kohlepfanne_des_wahnsinns;
 	pNewScript->RegisterSelf();
+
+    pNewScript = new Script;
+    pNewScript->Name = "go_hoodoo";
+    pNewScript->pGOUse = &GOUse_go_hoodoo;
+    pNewScript->RegisterSelf();
+
 }
