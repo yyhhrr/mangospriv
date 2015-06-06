@@ -89,6 +89,7 @@ struct MANGOS_DLL_SPEC LootStoreItem
 
     bool Roll(bool rate) const;                             // Checks if the entry takes it's chance (at loot generation)
     bool IsValid(LootStore const& store, uint32 entry) const;
+    bool AllowedForPlayer(Player const * player) const;
                                                             // Checks correctness of values
 };
 
