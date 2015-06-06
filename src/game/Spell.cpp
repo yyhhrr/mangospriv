@@ -1604,6 +1604,7 @@ void Spell::HandleDelayedSpellLaunch(TargetInfo *target)
     unitTarget = unit;
 
     // Reset damage/healing counter
+
     m_damage = 0;
     m_healing = 0; // healing maybe not needed at this point
 
@@ -3248,6 +3249,8 @@ void Spell::handle_immediate()
 			}
 		}
 	}
+
+    
 
     if (resist && m_caster)
        m_caster->InterruptSpell(CURRENT_CHANNELED_SPELL);
@@ -6784,6 +6787,7 @@ bool Spell::CheckTarget(Unit* target, SpellEffectIndex eff)
 	case 22247: //Suppression Devices
 	case 20924: //Weihe Rang 5
 	case 24341: //Revive Spell in ZG
+    case 22888: // Rallying Cry of the Dragonslayer
         return true;
     case 26546: // Shadow Storm
         if (m_caster->CanReachWithMeleeAttack(target))
