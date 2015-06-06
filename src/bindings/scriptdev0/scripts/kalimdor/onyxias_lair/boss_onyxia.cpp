@@ -175,7 +175,7 @@ struct MANGOS_DLL_DECL boss_onyxiaAI : public ScriptedAI
     bool hasTank;
     bool stopMeleeAttacking;
 	bool sleepok;
-
+    float tankthreat;
     uint32 visualAttackSpell;
 
     Unit* mTank;
@@ -219,6 +219,8 @@ struct MANGOS_DLL_DECL boss_onyxiaAI : public ScriptedAI
 		sleepok							= false;
 
         mTank                           = 0;
+        tankthreat                      = 0.0f;
+
 
         m_creature->ApplySpellImmune(0, IMMUNITY_SCHOOL, SPELL_SCHOOL_MASK_FIRE, true);
 
@@ -485,7 +487,8 @@ struct MANGOS_DLL_DECL boss_onyxiaAI : public ScriptedAI
 				{
 				    if (!(mTank->HasAura(SPELL_BELLOWINGROAR)))
 					{
-					    m_creature->getThreatManager().modifyThreatPercent(mTank, 11000);
+					    // m_creature->getThreatManager().modifyThreatPercent(mTank, 11000);
+                        m_creature->getThreatManager().addThreatDirectly(mTank, tankthreat);
 						fearMode = false;					
 					}
 				}
@@ -494,7 +497,10 @@ struct MANGOS_DLL_DECL boss_onyxiaAI : public ScriptedAI
 					if (mTank && mTank->HasAura(SPELL_BELLOWINGROAR))
 					{
 						fearMode = true;
-						m_creature->getThreatManager().modifyThreatPercent(mTank,-99);
+						// m_creature->getThreatManager().modifyThreatPercent(mTank,-99);
+                        tankthreat = m_creature->getThreatManager().getCurrentVictim()->getThreat() - 1.0f;
+                        m_creature->getThreatManager().addThreatDirectly(mTank, -(m_creature->getThreatManager().getCurrentVictim()->getThreat() - 1.0f));
+
 					}
 					hasTank = false;
 				}
