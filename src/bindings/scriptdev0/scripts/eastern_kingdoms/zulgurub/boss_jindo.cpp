@@ -33,6 +33,8 @@
 */
 
 #include "precompiled.h"
+#include "Spell.h"
+#include "SpellMgr.h"
 #include "zulgurub.h"
 
 enum
@@ -78,6 +80,8 @@ struct MANGOS_DLL_DECL boss_jindoAI : public ScriptedAI
     uint32 m_uiHexTimer;
     uint32 m_uiDelusionsTimer;
     uint32 m_uiTeleportTimer;
+    GuidList shadesGuids;
+
 
     void Reset() override
     {
@@ -86,6 +90,7 @@ struct MANGOS_DLL_DECL boss_jindoAI : public ScriptedAI
         m_uiHexTimer = 8000;
         m_uiDelusionsTimer = 10000;
         m_uiTeleportTimer = 5000;
+
     }
 
     void Aggro(Unit* /*pWho*/) override
@@ -170,9 +175,10 @@ struct MANGOS_DLL_DECL boss_jindoAI : public ScriptedAI
             {
                 float fX, fY, fZ;
                 m_creature->GetRandomPoint(pTarget->GetPositionX(), pTarget->GetPositionY(), pTarget->GetPositionZ(), 5.0f, fX, fY, fZ);
-                if (Creature* pSummoned = m_creature->SummonCreature(NPC_SHADE_OF_JINDO, fX, fY, fZ, 0, TEMPSUMMON_TIMED_DESPAWN_OUT_OF_COMBAT, 15000))
+                if (Creature* pSummoned = m_creature->SummonCreature(NPC_SHADE_OF_JINDO, fX, fY, fZ, 0, TEMPSUMMON_TIMED_DESPAWN_OUT_OF_COMBAT,5000))
                 {
                     //pSummoned->AI()->AttackStart(pTarget);
+                    shadesGuids.push_back(pSummoned->GetGUID());
                     pSummoned->CastSpell(pSummoned, SPELL_SHADE_OF_JINDO_PASSIVE, true);
                 }
 
@@ -196,7 +202,7 @@ struct MANGOS_DLL_DECL boss_jindoAI : public ScriptedAI
                 for (uint8 i = 0; i < MAX_SKELETONS; ++i)
                 {
                     m_creature->GetRandomPoint(aPitTeleportLocs[0], aPitTeleportLocs[1], aPitTeleportLocs[2], 4.0f, fX, fY, fZ);
-                    if (Creature* pSummoned = m_creature->SummonCreature(NPC_SACRIFICED_TROLL, fX, fY, fZ, 0.0f, TEMPSUMMON_TIMED_DESPAWN_OUT_OF_COMBAT, 15000))
+                    if (Creature* pSummoned = m_creature->SummonCreature(NPC_SACRIFICED_TROLL, fX, fY, fZ, 0.0f, TEMPSUMMON_TIMED_DESPAWN_OUT_OF_COMBAT, 5000))
                     {
                         pSummoned->AI()->AttackStart(pTarget);
                     }
@@ -212,6 +218,22 @@ struct MANGOS_DLL_DECL boss_jindoAI : public ScriptedAI
 
         DoMeleeAttackIfReady();
     }
+
+    void JustDied(Unit* /*pKiller*/)
+    {
+        for (GuidList::const_iterator itr = shadesGuids.begin(); itr != shadesGuids.end(); ++itr)
+        {
+            if (*itr == m_creature->GetObjectGuid())
+                continue;
+
+            if (Creature* shade = m_creature->GetMap()->GetCreature(*itr))
+            {
+                if (shade->isAlive())
+                    shade->ForcedDespawn();
+            }
+        }
+    }
+   
 };
 
 // HACK script! Should not need to have totems in sd2
@@ -243,6 +265,55 @@ struct MANGOS_DLL_DECL mob_healing_wardAI : public ScriptedAI
         }
     }
 };
+
+// HACK script! Should not need to have totems in sd2
+struct MANGOS_DLL_DECL mob_shade_of_jindoAI : public ScriptedAI
+{
+    mob_shade_of_jindoAI(Creature* pCreature) : ScriptedAI(pCreature) { Reset(); }
+
+    void Reset() override
+    {
+       
+    }
+        
+    bool IsAOESpell(const SpellEntry* pSpell)
+    {
+        if (!pSpell)
+            return false;
+
+        if (IsAreaOfEffectSpell(pSpell))
+            return true;
+
+        for (uint8 i = 0; i < MAX_EFFECT_INDEX; ++i)
+        {
+            if (IsAreaAuraEffect(pSpell->Effect[i]))
+                return true;
+        }
+
+        return false;
+    }
+
+    void DamageTaken(Unit* pDoneBy, uint32 &uiDamage)
+    {
+        if (auto pSpell = pDoneBy->GetCurrentSpell(CURRENT_GENERIC_SPELL))
+        if (IsAOESpell(pSpell->m_spellInfo))
+            uiDamage = 0;
+        if (auto pSpell = pDoneBy->GetCurrentSpell(CURRENT_CHANNELED_SPELL))
+        if (IsAOESpell(pSpell->m_spellInfo))
+            uiDamage = 0;
+        for (Aura* aura : m_creature->GetAurasByType(SPELL_AURA_PERIODIC_DAMAGE))
+        if (aura->IsInUse())
+            uiDamage = 0;
+    }
+
+    void PreSpellHit(Unit* pCaster, const SpellEntry* pSpell, int32& damage)
+    {
+        if (IsAOESpell(pSpell))
+            damage = 0;
+    }
+
+};
+
 
 struct MANGOS_DLL_DECL mob_brainwash_totemAI : public ScriptedAI
 {
@@ -301,6 +372,12 @@ CreatureAI* GetAI_mob_brainwash_totem(Creature* pCreature)
     return new mob_brainwash_totemAI(pCreature);
 }
 
+CreatureAI* GetAI_mob_shade_of_jindo(Creature* pCreature)
+{
+    return new mob_shade_of_jindoAI(pCreature);
+}
+
+
 void AddSC_boss_jindo()
 {
     Script* pNewScript;
@@ -319,4 +396,11 @@ void AddSC_boss_jindo()
     pNewScript->Name = "mob_brain_wash_totem";
     pNewScript->GetAI = &GetAI_mob_brainwash_totem;
     pNewScript->RegisterSelf();
+
+    pNewScript = new Script;
+    pNewScript->Name = "mob_shade_of_jindo";
+    pNewScript->GetAI = &GetAI_mob_shade_of_jindo;
+    pNewScript->RegisterSelf();
+
+
 }
