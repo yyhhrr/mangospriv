@@ -65,3 +65,8 @@ src/bindings/scriptdev0/ipch/100scriptdev0-eb66ec1/mangosscript-c9a3babe.ipch
 *.ipch
 ToDo.txt
 *.user
+*.suo
+win/VC100/mangosd.vcxproj.user
+win/mangosdVC100.v12.suo
+*.suo
+win/VC100/mangosd.vcxproj.user

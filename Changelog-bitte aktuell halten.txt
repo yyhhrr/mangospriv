@@ -1,0 +1,41 @@
+Liebe Spieler,
+mit diesem Update gab es folgende Änderungen:
+
+Allgemein:
+- Durch Furcht-Effekte rennen Charaktere nun deutlich seltener in Wände oder Klippen runter.
+- Fähigkeiten, wie Verbannen vom Hexenmeister oder Wildtier ängstigen vom Jäger können jetzt immer gegen gegnerische Begleiter eingesetzt werden. (Damit das funktioniert, muss einmal der WDB-Ordner gelöscht werden.)
+- Viele NPCs haben nun einen (meist geringen) Grund-Zauberwiderstand. Vor allem Raid-Bosse haben dadurch deutlich besssere Ressistenzen.
+- Charaktere, die sich auf einer Flugroute befinden, werden für andere Spieler nun korrekt angezeigt.
+- Durch Reinigungs-Zauber wird man nun in Ka
+
+Klassen:
+Hexenmeister:
+- Todesmantel kann nicht mehr teilweise widerstanden werden (Der Zauber trifft mit vollem Schaden oder das Ziel widersteht komplett). Außerdem können keine kritischen Treffer mehr erzielt werden.
+
+Schurken:
+-
+
+Priester:
+- Das Talent Geist der Erlösung sollte nicht mehr unter verschiedenen Umständen dazu führen, dass der Charakter nach dem Tod fest hängt.
+
+Schamanen:
+-
+
+Krieger:
+-
+
+Druiden:
+-  
+
+Paladine:
+-
+
+Jäger:
+- Fehler behoben, durch den Schnellfeuer nicht benutztbar war, nachdem der Begleiter Wolfgeheul benutzt hat.
+
+Magier:
+- Bei dem Zauber Arkane Geschosse kann es nicht mehr passieren, dass der Zauber kanalisiert wird, allerdings keine Geschosse fliegen.
+- Mehere Magier können jetzt gleichzeitig Arkane Geschosse auf das selbe Ziel casten.
+
+Items:
+-
