@@ -1173,7 +1173,15 @@ bool Pet::InitStatsForLevel(uint32 petlevel, Unit* owner)
 
     SetLevel(petlevel);
 
-    SetMeleeDamageSchool(SpellSchools(cinfo->dmgschool));
+    // Hunter-Pets machen kein Schattenschaden mehr
+    if (getPetType() == HUNTER_PET)
+    {
+        SetMeleeDamageSchool(SPELL_SCHOOL_NORMAL);
+    }
+    else
+    {
+        SetMeleeDamageSchool(SpellSchools(cinfo->dmgschool));
+    }
 
     SetModifierValue(UNIT_MOD_ARMOR, BASE_VALUE, float(petlevel*50));
 
