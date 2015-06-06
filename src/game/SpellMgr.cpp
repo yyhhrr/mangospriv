@@ -4354,6 +4354,7 @@ void SpellMgr::LoadDbcDataCorrections()
                 break;
             case 23577: // Expose Weakness Hunter T2 8/8 can be single per caster
                 spellInfo->AttributesEx3 |= SPELL_ATTR_EX3_UNK7;
+                spellInfo->AttributesEx3 |= SPELL_ATTR_EX3_CANT_MISS;
                 break;
             case 14171: // Serrated Blades Rank 1
                 spellInfo->EffectRealPointsPerLevel[1] = -2.6666666667f;
