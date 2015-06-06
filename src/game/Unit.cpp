@@ -1957,6 +1957,31 @@ void Unit::CalculateMeleeDamage(Unit *pVictim, uint32 damage, CalcDamageInfo *da
                             damageInfo->damage = uint32(reducePercent *  damageInfo->damage);
                             break;
 
+
+
+
+							   //damageInfo->HitInfo |= HITINFO_GLANCING;
+							   //damageInfo->TargetState = VICTIMSTATE_NORMAL;
+							   //damageInfo->procEx |= PROC_EX_NORMAL_HIT;
+							   //// calculate values
+							   //int32 diff = damageInfo->target->GetDefenseSkillValue() - GetWeaponSkillValue(damageInfo->attackType);
+          //                     
+          //                     // Cap at nearly 100% reducepercent
+          //                     diff = std::min(diff, 22);
+          //                     
+          //                     
+          //                     // Reduction by Athan
+          //                     float reducePercent = 0.05 * (pow(2.0, (diff / 5.0)) - 1.0);
+
+          //                     reducePercent = (reducePercent < 1) ? reducePercent : 0.95;
+          //                     
+          //                     
+          //                     damageInfo->cleanDamage +=  uint32(reducePercent *  damageInfo->damage);
+          //                     damageInfo->damage -= uint32(reducePercent *  damageInfo->damage);
+          //                     eleDamage -=  uint32(reducePercent * eleDamage);
+
+
+							   //break;
 	}
 	case MELEE_HIT_CRUSHING:
 	{
@@ -2683,10 +2708,11 @@ MeleeHitOutcome Unit::RollMeleeOutcomeAgainst(const Unit *pVictim, WeaponAttackT
 		(GetTypeId() == TYPEID_PLAYER || ((Creature*)this)->IsPet()) &&
 		pVictim->GetTypeId() != TYPEID_PLAYER && !((Creature*)pVictim)->IsPet())
 	{
-		auto victimLevel = pVictim->getLevel();
-		auto myLevel = getLevel();
+		auto defSkill = pVictim->GetDefenseSkillValue();
+		auto wpnSkill = GetWeaponSkillValue(attType);
+        wpnSkill = std::min(getLevel() * 5, wpnSkill);
 
-		auto chance = static_cast<int32>(10 + (victimLevel - myLevel) * 10);
+        auto chance = static_cast<int32>(2*(defSkill - wpnSkill) +10);
 
 		// caps at 0% and 40%
 		chance = std::max(0, chance);
