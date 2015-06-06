@@ -151,25 +151,30 @@ CreatureAI* GetAI_mob_yenniku(Creature *_Creature)
 
 enum
 {
-	SPELL_CREATE_HEART_OF_HAKKAR_RIFT = 24202,
-	SPELL_HEART_OF_HAKKAR_RITUAL_CAST = 24217,
-	SPELL_HEART_OF_HAKKAR_IMPLODE = 24204,
-	SPELL_HELLFIRE_CAST_VISUAL = 24207,
-	SPELL_HEART_OF_HAKKAR_SUMMON_CIRCLE = 24602,
-	SPELL_HEART_OF_HAKKAR_BANNING = 24203,
-	SPELL_HEART_OF_HAKKAR_MOLTHOR_CHUCKS_THE_HEART = 24214,
-	SPELL_CREATE_HEART_OF_HAKKAR_EXPLOISON = 24215,
-	SPELL_SPIRIT_OF_ZANDALAR = 24425,
+    SPELL_CREATE_HEART_OF_HAKKAR_RIFT = 24202,
+    SPELL_HEART_OF_HAKKAR_RITUAL_CAST = 24217,
+    SPELL_HEART_OF_HAKKAR_IMPLODE = 24204,
+    SPELL_HELLFIRE_CAST_VISUAL = 24207,
+    SPELL_HEART_OF_HAKKAR_SUMMON_CIRCLE = 24602,
+    SPELL_HEART_OF_HAKKAR_BANNING = 24203,
+    SPELL_HEART_OF_HAKKAR_MOLTHOR_CHUCKS_THE_HEART = 24214,
+    SPELL_CREATE_HEART_OF_HAKKAR_EXPLOISON = 24215,
+    SPELL_SPIRIT_OF_ZANDALAR = 24425,
 
-	SPELL_TELEPORT_SPAWN_OUT = 24221,
+    SPELL_TELEPORT_SPAWN_OUT = 24221,
 
-	SPELL_SPAWN_RED_LIGHTNING = 24240,
+    SPELL_SPAWN_RED_LIGHTNING = 24240,
 
-	SPELL_QUEST_TROLL_HERO_SUMMON_VISUAL = 24258,
+    SPELL_QUEST_TROLL_HERO_SUMMON_VISUAL = 24258,
 
-	NPC_TARGET_DUMMY = 90002,
-	NPC_SERVANT = 15080,
+    NPC_TARGET_DUMMY = 15069,
+    NPC_SERVANT = 15080,
+    GO_HEART_OF_HAKKAR = 180402
 };
+
+
+const float dummy_position[4] = { -11818.9f, 1343.2f, 7.9f, 4.35f };
+const float heart_position[4] = { -11818.9f, 1342.5f, 9.9f, 4.35f };
 
 const float servant_positions[4][4] =
 {
@@ -191,14 +196,16 @@ struct MANGOS_DLL_DECL mob_molthor : public ScriptedAI
 	uint32 mEventTimer = 0;
 
 	Player* target;
-	Unit* targetDummy;
+	Creature* targetDummy;
+    GameObject* heart;
 
-	std::vector<Unit*> servants;
+	std::vector<Creature*> servants;
 
 	void Reset() override
 	{
 		target = nullptr;
 		targetDummy = nullptr;
+        heart = nullptr;
 		m_creature->SetFlag(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_QUESTGIVER);
 		m_creature->SetFlag(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
 
@@ -218,11 +225,24 @@ struct MANGOS_DLL_DECL mob_molthor : public ScriptedAI
 
 	void StartQuestEvent(Player* plr)
 	{
+       
 		target = plr;
 		mJustStepped = false;
 		m_creature->RemoveFlag(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_QUESTGIVER);
 		m_creature->RemoveFlag(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
 		m_creature->m_movementInfo.RemoveMovementFlag(MOVEFLAG_WALK_MODE);
+        
+        targetDummy = m_creature->SummonCreature(NPC_TARGET_DUMMY, dummy_position[0], dummy_position[1], dummy_position[2], dummy_position[3], TEMPSUMMON_MANUAL_DESPAWN, 0);
+        heart = plr->SummonGameObject(GO_HEART_OF_HAKKAR, heart_position[0], heart_position[1], heart_position[2], heart_position[3], 90000);
+        
+        if (!targetDummy)
+        {
+            m_creature->MonsterSay("Etwas lief falsch, bitte beim Team melden!", 0);
+            m_creature->Respawn();
+            Reset();
+            return;
+        }
+        
 	}
 
 	void SpellHitTarget(Unit* pTarget, const SpellEntry* pSpell)
@@ -257,15 +277,6 @@ struct MANGOS_DLL_DECL mob_molthor : public ScriptedAI
 		}
 		else if(mEventStep == 3)
 		{
-			targetDummy = GetClosestCreatureWithEntry(m_creature, NPC_TARGET_DUMMY, 100.0f);
-			if(!targetDummy)
-			{
-				m_creature->MonsterSay("Etwas lief falsch, bitte beim Team melden!", 0);
-				m_creature->Respawn();
-				Reset();
-				return;
-			}
-			
 			m_creature->GetMotionMaster()->MovePoint(0, -11825.56f, 1322.88f, 0.29f);
 			mJustStepped = true;
 			mEventTimer = 1000;
@@ -281,7 +292,7 @@ struct MANGOS_DLL_DECL mob_molthor : public ScriptedAI
 			for (int i = 0; i < 4; ++i)
 			{
 				auto cr = m_creature->SummonCreature(NPC_SERVANT, servant_positions[i][0], servant_positions[i][1], servant_positions[i][2], servant_positions[i][3],
-													 TEMPSUMMON_TIMED_DESPAWN, 60000);
+													 TEMPSUMMON_MANUAL_DESPAWN, 0);
 				if (!cr)
 				{
 					m_creature->MonsterSay("Etwas lief falsch, bitte beim Team melden!", 0);
@@ -289,69 +300,83 @@ struct MANGOS_DLL_DECL mob_molthor : public ScriptedAI
 					Reset();
 					return;
 				}
-
-				cr->CastSpell(cr, 26638, true);
+               
+                cr->CastSpell(cr, SPELL_SPAWN_RED_LIGHTNING, true);
 				servants.push_back(cr);
 			}
 
-			m_creature->CastSpell(targetDummy, SPELL_HEART_OF_HAKKAR_MOLTHOR_CHUCKS_THE_HEART, false);
+			
 			++mEventStep;
 			mEventTimer = 2000;
 		}
-		else if(mEventStep == 6)
+        else if (mEventStep == 6)
+        {
+           
+            m_creature->CastSpell(targetDummy, SPELL_HEART_OF_HAKKAR_MOLTHOR_CHUCKS_THE_HEART, true);
+            
+            ++mEventStep;
+            mEventTimer = 5000;
+        }
+
+
+		else if(mEventStep == 7)
 		{
-			targetDummy->CastSpell(targetDummy, SPELL_CREATE_HEART_OF_HAKKAR_RIFT, true);
+           
+            targetDummy->CastSpell(targetDummy, SPELL_CREATE_HEART_OF_HAKKAR_RIFT, true);
+            
 			++mEventStep;
 			mEventTimer = 500;
 		}
-		else if(mEventStep == 7)
+		else if(mEventStep == 8)
 		{
-			m_creature->MonsterYell(-1800000, 0, 0);
-			for (int i = 0; i < 4; ++i)
-				servants[i]->CastSpell(m_creature, SPELL_HEART_OF_HAKKAR_RITUAL_CAST, false);
-
-			m_creature->CastSpell(m_creature, SPELL_HEART_OF_HAKKAR_BANNING, false);
+			DoScriptText(-1200000, m_creature);
+            for (int i = 0; i < 4; ++i)
+            {
+                servants[i]->CastSpell(servants[i], SPELL_HEART_OF_HAKKAR_SUMMON_CIRCLE, true);
+                servants[i]->CastSpell(servants[i], SPELL_HEART_OF_HAKKAR_RITUAL_CAST, true);
+               
+            }
+            m_creature->CastSpell(m_creature, SPELL_HEART_OF_HAKKAR_BANNING, true);
 			++mEventStep;
 			mEventTimer = 30000;
 		}
-		else if(mEventStep == 8)
-		{
-			targetDummy->CastSpell(targetDummy, SPELL_CREATE_HEART_OF_HAKKAR_EXPLOISON, true);
-			targetDummy->CastSpell(targetDummy, SPELL_HELLFIRE_CAST_VISUAL, true);
-			++mEventStep;
-			mEventTimer = 4000;
-		}
 		else if(mEventStep == 9)
 		{
-			m_creature->MonsterYell(-1800001, 0, target);
+			m_creature->CastSpell(targetDummy, SPELL_CREATE_HEART_OF_HAKKAR_EXPLOISON, true);
+            m_creature->CastSpell(targetDummy, SPELL_HELLFIRE_CAST_VISUAL, true);
+            heart->SetLootState(GO_JUST_DEACTIVATED);
+            heart->RemoveFromWorld();
 			++mEventStep;
-			mEventTimer = 1000;
-
-			for (int i = 0; i < 4; ++i)
-				servants[i]->CastSpell(m_creature, SPELL_TELEPORT_SPAWN_OUT, false);
+			mEventTimer = 4000;
 		}
 		else if(mEventStep == 10)
 		{
-			m_creature->CastSpell(m_creature, SPELL_SPIRIT_OF_ZANDALAR, false);
+			DoScriptText(-1200001, m_creature);
+			++mEventStep;
+			mEventTimer = 1000;
+		}
+		else if(mEventStep == 11)
+		{
+            m_creature->CastSpell(target, SPELL_SPIRIT_OF_ZANDALAR, false);
 			++mEventStep;
 			mEventTimer = 4000;
 		}
-		else if(mEventStep == 11)
+		else if(mEventStep == 12)
 		{
 			m_creature->GetMotionMaster()->MovePoint(0, -11837.02f, 1293.10f, 0.69f);
 			mJustStepped = true;
 		}
-		else if(mEventStep == 12)
+		else if(mEventStep == 13)
 		{
 			m_creature->GetMotionMaster()->MovePoint(0, -11829.73f, 1258.05f, 1.88f);
 			mJustStepped = true;
 		}
-		else if(mEventStep == 13)
+		else if(mEventStep == 14)
 		{
 			m_creature->GetMotionMaster()->MovePoint(0, -11817.48f, 1250.02f, 2.64f);
 			mJustStepped = true;
 		}
-		else if(mEventStep == 14)
+		else if(mEventStep == 15)
 		{
 			auto a = m_creature->GetMotionMaster()->top();
 
@@ -360,12 +385,19 @@ struct MANGOS_DLL_DECL mob_molthor : public ScriptedAI
 			m_creature->GetMotionMaster()->MovePoint(0, x, y, z);
 			mJustStepped = true;
 		}
-		else if(mEventStep == 15)
+		else if(mEventStep == 16)
 		{
 			m_creature->SetFacingTo(4.24f);
+            targetDummy->ForcedDespawn();
+            for (int i = 0; i < 4; ++i)
+                servants[i]->ForcedDespawn();
+            targetDummy->ForcedDespawn();
+          
 			Reset();
 		}
 	}
+
+
 };
 
 bool onHakkarQuestComplete(Player* plr, Creature* cr, Quest const*)
