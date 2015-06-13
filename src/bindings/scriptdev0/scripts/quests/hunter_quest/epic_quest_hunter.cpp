@@ -120,17 +120,17 @@ struct Hunterquest_Doombringer : public Hunterquest_BossTemplate
     uint32 frenzy;
     uint32 doom;
 
-    Unit* hunter;
+    ObjectGuid hunter;
 
-    Hunterquest_Doombringer(Creature* creature) : Hunterquest_BossTemplate(creature), stingHit(0), frenzy(0), doom(60000), hunter(0) {}
+    Hunterquest_Doombringer(Creature* creature) : Hunterquest_BossTemplate(creature), stingHit(0), frenzy(0), doom(60000), hunter(ObjectGuid()) {}
 
-    void Reset() { stingHit = frenzy = 0; doom = 0; hunter = 0; }
+    void Reset() { stingHit = frenzy = 0; doom = 0; hunter = ObjectGuid(); }
 
     void Aggro(Unit* target) 
     {
         frenzy = urand(0, 20000);
         doom = urand(0, 20000);
-        hunter = target; 
+        hunter = target->GetObjectGuid(); 
     }
 
     void Update(const uint32 time) 
@@ -147,11 +147,14 @@ struct Hunterquest_Doombringer : public Hunterquest_BossTemplate
             frenzy = 0;
         }
 
-        if(doom >= 30000 && hunter)
+        if(doom >= 30000)
         {
-            float distance = m_creature->GetDistance2d(hunter->GetPositionX(), hunter->GetPositionY());
-            if(distance < 31)
-                DoCastSpellIfCan(hunter, DEMONIC_DOOM);
+            if (Unit* pHunter = m_creature->FindMap()->GetUnit(hunter))
+            {
+                float distance = m_creature->GetDistance2d(pHunter->GetPositionX(), pHunter->GetPositionY());
+                if(distance < 31)
+                    DoCastSpellIfCan(pHunter, DEMONIC_DOOM);
+            }
             doom = 0;
         }
     }
@@ -598,17 +601,17 @@ struct Hunterquest_Solenor : public Hunterquest_BossTemplate
 {
     uint32 fright;
     uint32 bug;
-    Unit* hunter;
+    ObjectGuid hunter;
 
     bool applyAura;
     uint32 auraTimer;
 
-    Hunterquest_Solenor(Creature* creature) : Hunterquest_BossTemplate(creature), fright(0), bug(0), hunter(0),
+    Hunterquest_Solenor(Creature* creature) : Hunterquest_BossTemplate(creature), fright(0), bug(0), hunter(ObjectGuid()),
         applyAura(false), auraTimer(0) {DoCastSpellIfCan(m_creature, SOUL_FLAME);}
 
-    void Reset() { hunter = 0; fright = bug = 0; }
+    void Reset() { hunter = ObjectGuid(); fright = bug = 0; }
 
-    void Aggro(Unit* target) { hunter = target; }
+    void Aggro(Unit* target) { hunter = target->GetObjectGuid(); }
 
     void Update(const uint32 time)
     {
@@ -624,11 +627,11 @@ struct Hunterquest_Solenor : public Hunterquest_BossTemplate
 
         if(fright >= 12000)
         {
-            if(hunter)
+            if(Unit* pHunter = m_creature->FindMap()->GetUnit(hunter))
             {					
-                float distance1 = m_creature->GetDistance2d(hunter->GetPositionX(), hunter->GetPositionY());
+                float distance1 = m_creature->GetDistance2d(pHunter->GetPositionX(), pHunter->GetPositionY());
                 if(distance1 > 5.0f)
-                    DoCastSpellIfCan(hunter, DREAFUL_FRIGHT);
+                    DoCastSpellIfCan(pHunter, DREAFUL_FRIGHT);
             }
             fright = 0;
         }
@@ -658,9 +661,9 @@ struct Hunterquest_Solenor : public Hunterquest_BossTemplate
 
         if(bug >= 10000)
         {
-            if(hunter)
+            if (Unit* pHunter = m_creature->FindMap()->GetUnit(hunter))
             {			
-                float distance1 = m_creature->GetDistance2d(hunter->GetPositionX(), hunter->GetPositionY());
+                float distance1 = m_creature->GetDistance2d(pHunter->GetPositionX(), pHunter->GetPositionY());
                 if(distance1 > 5.0f)
                 {
                     for (uint8 i = 0; i < 3; i++)
@@ -670,7 +673,7 @@ struct Hunterquest_Solenor : public Hunterquest_BossTemplate
                         {
                             DoomBug->SetSpeedRate(MOVE_WALK, 0.3f);
                             DoomBug->SetSpeedRate(MOVE_RUN, 0.3f);
-                            DoomBug->AI()->AttackStart(hunter);
+                            DoomBug->AI()->AttackStart(pHunter);
 							DoomBug->AI()->JustSummoned(m_creature); //dosn't get called otherwise, weird
                         }
                     }
@@ -698,10 +701,10 @@ struct Hunterquest_Solenor : public Hunterquest_BossTemplate
 
 struct DoomBug : public ScriptedAI
 {
-    Unit* hunter;
-	Creature* summoner;
+    ObjectGuid hunter;
+    ObjectGuid summoner;
 
-    DoomBug(Creature* creature) : ScriptedAI(creature), hunter(0), summoner(nullptr) { }
+    DoomBug(Creature* creature) : ScriptedAI(creature), hunter(ObjectGuid()), summoner(ObjectGuid()) { }
     void Reset()
     {
         m_creature->ForcedDespawn();
@@ -710,7 +713,7 @@ struct DoomBug : public ScriptedAI
 
     void Aggro(Unit* target)
     {
-        hunter = target;
+        hunter = target->GetTargetGuid();
     }
 
     void UpdateAI(const uint32 t)
@@ -720,16 +723,16 @@ struct DoomBug : public ScriptedAI
 
 	void JustSummoned(Creature* summoner)
 	{
-		this->summoner = summoner;
+		this->summoner = summoner->GetObjectGuid();
 	}
 
     void JustDied(Unit* killer)
     {
-		if(killer != hunter)
+		if(killer->GetObjectGuid() != hunter)
 		{
-			if(summoner)
+			if(Creature* pSummoner = m_creature->FindMap()->GetCreature(summoner))
 			{
-				auto ai = static_cast<Hunterquest_Solenor*>(summoner->AI());
+                auto ai = static_cast<Hunterquest_Solenor*>(pSummoner->AI());
 				if(ai)
 					ai->Panik();
 			}
