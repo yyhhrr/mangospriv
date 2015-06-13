@@ -41,7 +41,7 @@ void FillSpellSummary();
 
 void LoadDatabase()
 {
-    std::string strSD0DBinfo = SD0Config.GetStringDefault("ScriptDevZeroDatabaseInfo", "");
+    std::string strSD0DBinfo = SD0Config.GetStringDefault("ScriptDev2DatabaseInfo", "");
 
     if (strSD0DBinfo.empty())
     {
