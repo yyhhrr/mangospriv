@@ -1,21 +1,21 @@
 /*
- * Copyright (C) 2006-2011 ScriptDev2 <http://www.scriptdev2.com/>
- * Copyright (C) 2010-2011 ScriptDev0 <http://github.com/mangos-zero/scriptdev0>
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- */
+* Copyright (C) 2006-2011 ScriptDev2 <http://www.scriptdev2.com/>
+* Copyright (C) 2010-2011 ScriptDev0 <http://github.com/mangos-zero/scriptdev0>
+*
+* This program is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 2 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program; if not, write to the Free Software
+* Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+*/
 
 /* ScriptData
 SDName: Eastern_Plaguelands
@@ -40,7 +40,7 @@ EndContentData */
 
 struct MANGOS_DLL_DECL mobs_ghoul_flayerAI : public ScriptedAI
 {
-    mobs_ghoul_flayerAI(Creature* pCreature) : ScriptedAI(pCreature) {Reset();}
+    mobs_ghoul_flayerAI(Creature* pCreature) : ScriptedAI(pCreature) { Reset(); }
 
     void Reset() { }
 
@@ -88,7 +88,7 @@ bool GossipSelect_npc_augustus_the_touched(Player* pPlayer, Creature* pCreature,
 
 struct MANGOS_DLL_DECL npc_darrowshire_spiritAI : public ScriptedAI
 {
-    npc_darrowshire_spiritAI(Creature* pCreature) : ScriptedAI(pCreature) {Reset();}
+    npc_darrowshire_spiritAI(Creature* pCreature) : ScriptedAI(pCreature) { Reset(); }
 
     void Reset()
     {
@@ -116,18 +116,18 @@ bool GossipHello_npc_darrowshire_spirit(Player* pPlayer, Creature* pCreature)
 
 enum
 {
-    QUEST_REDEMPTION             = 5742,
+    QUEST_REDEMPTION = 5742,
 
-    TIRION_GOSSIP_ITEM_1         = -3000106,
-    TIRION_GOSSIP_ITEM_2         = -3000107,
-    TIRION_GOSSIP_ITEM_3         = -3000108,
-    TIRION_GOSSIP_ITEM_4         = -3000109,
+    TIRION_GOSSIP_ITEM_1 = -3000106,
+    TIRION_GOSSIP_ITEM_2 = -3000107,
+    TIRION_GOSSIP_ITEM_3 = -3000108,
+    TIRION_GOSSIP_ITEM_4 = -3000109,
 };
 
 bool GossipHello_npc_tirion_fordring(Player* pPlayer, Creature* pCreature)
 {
     if (pPlayer->GetQuestStatus(QUEST_REDEMPTION) == QUEST_STATUS_INCOMPLETE && pPlayer->getStandState() == UNIT_STAND_STATE_SIT)
-        pPlayer->ADD_GOSSIP_ITEM_ID(GOSSIP_ICON_CHAT, TIRION_GOSSIP_ITEM_1, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF+1);
+        pPlayer->ADD_GOSSIP_ITEM_ID(GOSSIP_ICON_CHAT, TIRION_GOSSIP_ITEM_1, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1);
     else
         pPlayer->PrepareQuestMenu(pCreature->GetObjectGuid());
 
@@ -138,24 +138,24 @@ bool GossipHello_npc_tirion_fordring(Player* pPlayer, Creature* pCreature)
 
 bool GossipSelect_npc_tirion_fordring(Player* pPlayer, Creature* pCreature, uint32, uint32 uiAction)
 {
-    switch(uiAction)
+    switch (uiAction)
     {
-        case GOSSIP_ACTION_INFO_DEF+1:
-            pPlayer->ADD_GOSSIP_ITEM_ID(GOSSIP_ICON_CHAT, TIRION_GOSSIP_ITEM_2, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 2);
-            pPlayer->SEND_GOSSIP_MENU(4493, pCreature->GetObjectGuid());
-            break;
-        case GOSSIP_ACTION_INFO_DEF+2:
-            pPlayer->ADD_GOSSIP_ITEM_ID(GOSSIP_ICON_CHAT, TIRION_GOSSIP_ITEM_3, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 3);
-            pPlayer->SEND_GOSSIP_MENU(4494, pCreature->GetObjectGuid());
-            break;
-        case GOSSIP_ACTION_INFO_DEF+3:
-            pPlayer->ADD_GOSSIP_ITEM_ID(GOSSIP_ICON_CHAT, TIRION_GOSSIP_ITEM_4, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 4);
-            pPlayer->SEND_GOSSIP_MENU(4495, pCreature->GetObjectGuid());
-            break;
-        case GOSSIP_ACTION_INFO_DEF+4:
-            pPlayer->CLOSE_GOSSIP_MENU();
-            pPlayer->AreaExploredOrEventHappens(QUEST_REDEMPTION);
-            break;
+    case GOSSIP_ACTION_INFO_DEF + 1:
+        pPlayer->ADD_GOSSIP_ITEM_ID(GOSSIP_ICON_CHAT, TIRION_GOSSIP_ITEM_2, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 2);
+        pPlayer->SEND_GOSSIP_MENU(4493, pCreature->GetObjectGuid());
+        break;
+    case GOSSIP_ACTION_INFO_DEF + 2:
+        pPlayer->ADD_GOSSIP_ITEM_ID(GOSSIP_ICON_CHAT, TIRION_GOSSIP_ITEM_3, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 3);
+        pPlayer->SEND_GOSSIP_MENU(4494, pCreature->GetObjectGuid());
+        break;
+    case GOSSIP_ACTION_INFO_DEF + 3:
+        pPlayer->ADD_GOSSIP_ITEM_ID(GOSSIP_ICON_CHAT, TIRION_GOSSIP_ITEM_4, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 4);
+        pPlayer->SEND_GOSSIP_MENU(4495, pCreature->GetObjectGuid());
+        break;
+    case GOSSIP_ACTION_INFO_DEF + 4:
+        pPlayer->CLOSE_GOSSIP_MENU();
+        pPlayer->AreaExploredOrEventHappens(QUEST_REDEMPTION);
+        break;
     }
     return true;
 }
@@ -178,8 +178,6 @@ static EventLocations spawnPosition[] =
     { 2693.5f, -1875.21f, 66.7839f }, // Isill 2/3
     { 2696.9f, -1878.29f, 66.7887f }, // Isill 3/3
 };
-
-
 
 enum eHighLordTaelanFordring
 {
@@ -243,15 +241,13 @@ enum eHighLordTaelanFordring
     EMOTE_TIRION_HOLD = -1001102,
     SAY_TIRION6 = -1001103,
     SAY_TIRION7 = -1001104,
-    SAY_TIRION8 = -1001105
+    SAY_TIRION8 = -1001105,
 };
-
-
 
 struct MANGOS_DLL_DECL npc_highlord_taelan_fordringAI : public npc_escortAI
 {
-    npc_highlord_taelan_fordringAI(Creature* pCreature) : npc_escortAI(pCreature) {Reset();}
-    
+    npc_highlord_taelan_fordringAI(Creature* pCreature) : npc_escortAI(pCreature) { Reset(); }
+
     uint32 m_uiLayOnHandsTimer;
     uint32 m_uiCrusaderStrikeTimer;
     uint32 m_uiHolyCleaveTimer;
@@ -269,18 +265,18 @@ struct MANGOS_DLL_DECL npc_highlord_taelan_fordringAI : public npc_escortAI
     bool CanWalk;
     bool m_bTaelanDead;
 
-    Creature* isillien;
-    Creature* tirionFordring;
+    ObjectGuid isillien;
+    ObjectGuid tirionFordring;
 
-    std::list<Creature*> pat;
-    std::list<Creature*> lTaelansGuards;
-    Creature* pTowerCreatures[MAX_CREATURES];
+    std::list<ObjectGuid> pat;
+    std::list<ObjectGuid> lTaelansGuards;
+    ObjectGuid pTowerCreatures[MAX_CREATURES];
 
     void Reset()
     {
         if (HasEscortState(STATE_ESCORT_ESCORTING))
             return;
-        
+
         m_uiLayOnHandsTimer = 20000;
         m_uiCrusaderStrikeTimer = 13000;
         m_uiHolyCleaveTimer = 10000;
@@ -293,7 +289,6 @@ struct MANGOS_DLL_DECL npc_highlord_taelan_fordringAI : public npc_escortAI
         EventPhase = 0;
         EventTimer = 0;
         DeathTimer = 0;
-        
 
         bCanMount = false;
         endFight = false;
@@ -301,17 +296,16 @@ struct MANGOS_DLL_DECL npc_highlord_taelan_fordringAI : public npc_escortAI
 
         pat.clear();
         lTaelansGuards.clear();
-        isillien = nullptr;
-        tirionFordring = nullptr;
+        isillien = ObjectGuid();
+        tirionFordring = ObjectGuid();
         for (uint32 i = 0; i < MAX_CREATURES; ++i)
-            pTowerCreatures[i] = nullptr;
-       
+            pTowerCreatures[i] = ObjectGuid();
 
         DoCastSpellIfCan(m_creature, SPELL_DEVOTION_AURA, CAST_AURA_NOT_PRESENT);
 
         DismountUnitIfCan();
     }
-    
+
     void Aggro(Unit *)
     {
         if (HasEscortState(STATE_ESCORT_ESCORTING))
@@ -319,69 +313,57 @@ struct MANGOS_DLL_DECL npc_highlord_taelan_fordringAI : public npc_escortAI
         DoCastSpellIfCan(m_creature, SPELL_DEVOTION_AURA, CAST_AURA_NOT_PRESENT);
     }
 
-    // Sitrbt nicht wirklich, daher in Spellhit
-    //void JustDied(Unit* pKiller)
-    //{
-    //    //DoCastSpellIfCan(m_creature, SPELL_TAELAN_DEATH, CAST_TRIGGERED);
-    //    if (pKiller && pKiller->GetEntry() == NPC_GRAND_INQUISITOR_ISILLIEN)
-    //    {
-    //        DoScriptText(SAY_KILL_TAELAN_1, pKiller);
-    //        DoScriptText(EMOTE_ISILLIEN_LAUGH, pKiller);
-    //        DoScriptText(SAY_KILL_TAELAN_2, pKiller);
-    //    }
-    //}
-
     void WaypointStart(uint32 uiPointId)
     {
-        switch(uiPointId)
+        switch (uiPointId)
         {
-            case 0:
-                m_creature->setFaction(FACTION_FFP);
-                break;
+        case 0:
+            m_creature->setFaction(FACTION_FFP);
+            break;
         }
     }
 
     void WaypointReached(uint32 uiPointId)
     {
-        switch(uiPointId)
+        switch (uiPointId)
         {
-            case 1:
-                DoScriptText(SAY_ESCORT_START, m_creature);
-                
-                break;
-            case 2:
-                DoScriptText(SAY_ESCORT_START2, m_creature);
-                break;
+        case 1:
+            DoScriptText(SAY_ESCORT_START, m_creature);
 
-            case 16:
-                bCanMount = true;
-                
+            break;
+        case 2:
+            DoScriptText(SAY_ESCORT_START2, m_creature);
+            break;
 
-                DoScriptText(SAY_TAELAN_HALT, m_creature);
-                DoScriptText(EMOTE_TAELAN_MOUNT, m_creature);
-               
-                break;
-            case 35:
-                for (uint8 i = 0; i < 4; ++i)
+        case 16:
+            bCanMount = true;
+
+
+            DoScriptText(SAY_TAELAN_HALT, m_creature);
+            DoScriptText(EMOTE_TAELAN_MOUNT, m_creature);
+
+            break;
+        case 35:
+            for (uint8 i = 0; i < 4; ++i)
+            {
+                if (Creature* pSummoned = m_creature->SummonCreature(NPC_CRIMSON_ELITE, spawnPosition[i].m_fX, spawnPosition[i].m_fY, spawnPosition[i].m_fZ, 1.0f, TEMPSUMMON_TIMED_OR_CORPSE_DESPAWN, J_SUMMONED_DESPAWN_TIME))
                 {
-                    if (Creature* pSummoned = m_creature->SummonCreature(NPC_CRIMSON_ELITE, spawnPosition[i].m_fX, spawnPosition[i].m_fY, spawnPosition[i].m_fZ, 1.0f, TEMPSUMMON_TIMED_OR_CORPSE_DESPAWN, J_SUMMONED_DESPAWN_TIME))
-                    {
-                        pSummoned->GetMotionMaster()->MovePoint(NULL, 2742.21f, -1656.92f, 126.96f);
+                    pSummoned->GetMotionMaster()->MovePoint(NULL, 2742.21f, -1656.92f, 126.96f);
 
-                    }
                 }
-                break;
-            case 43:
-                CanWalk = false;
-                bCanMount = false;
-                DismountUnitIfCan();
-                m_creature->SetFacingToObject(GetPlayerForEscort());
-                EventPhase = 1;
-                EventTimer = 1;
-                DoScriptText(TAELAN_REACH_TOWER, m_creature);
-                SetEscortPaused(true);
+            }
+            break;
+        case 43:
+            CanWalk = false;
+            bCanMount = false;
+            DismountUnitIfCan();
+            m_creature->SetFacingToObject(GetPlayerForEscort());
+            EventPhase = 1;
+            EventTimer = 1;
+            DoScriptText(TAELAN_REACH_TOWER, m_creature);
+            SetEscortPaused(true);
 
-                break;
+            break;
         }
     }
 
@@ -401,76 +383,79 @@ struct MANGOS_DLL_DECL npc_highlord_taelan_fordringAI : public npc_escortAI
     {
         if (pSpell->Id == SPELL_TAELAN_DEATH && isillien)
         {
-            for(uint8 itr = 0; itr < MAX_CREATURES; ++itr)
-                if (pTowerCreatures[itr] && pTowerCreatures[itr]->isAlive())
-                    if (pTowerCreatures[itr]->getVictim() && pTowerCreatures[itr]->getVictim()->GetEntry() == m_creature->GetEntry())
-                        pTowerCreatures[itr]->AI()->EnterEvadeMode();
+            for (uint8 itr = 0; itr < MAX_CREATURES; ++itr)
+            {
+                Creature* pCreature = m_creature->FindMap()->GetCreature(pTowerCreatures[itr]);
+                if (!pCreature)
+                    continue;
+                if (pCreature->isAlive())
+                if (pCreature->getVictim() && pCreature->getVictim()->GetEntry() == m_creature->GetEntry() && pCreature->AI())
+                    pCreature->AI()->EnterEvadeMode();
+            }
 
-            
-            
-            
-        m_creature->RemoveAllAurasOnEvade();
-        m_creature->DeleteThreatList();
-        m_creature->CombatStop(true);
-        m_creature->SetLootRecipient(NULL);
+            // fake Death
+            m_creature->RemoveAllAurasOnEvade();
+            m_creature->DeleteThreatList();
+            m_creature->CombatStop(true);
+            m_creature->SetLootRecipient(NULL);
 
-        m_creature->InterruptNonMeleeSpells(true);
-        m_creature->SetHealth(0);
-        m_creature->StopMoving();
-        m_creature->ClearComboPointHolders();
-        m_creature->RemoveAllAurasOnDeath();
-        m_creature->ModifyAuraState(AURA_STATE_HEALTHLESS_20_PERCENT, false);
-        m_creature->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
-        m_creature->ClearAllReactives();
-        m_creature->GetMotionMaster()->Clear();
-        m_creature->GetMotionMaster()->MoveIdle();
-        m_creature->addUnitState(UNIT_STAT_CAN_NOT_MOVE);
-        m_creature->SetStandState(UNIT_STAND_STATE_DEAD);
+            m_creature->InterruptNonMeleeSpells(true);
+            m_creature->SetHealth(0);
+            m_creature->StopMoving();
+            m_creature->ClearComboPointHolders();
+            m_creature->RemoveAllAurasOnDeath();
+            m_creature->ModifyAuraState(AURA_STATE_HEALTHLESS_20_PERCENT, false);
+            m_creature->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
+            m_creature->ClearAllReactives();
+            m_creature->GetMotionMaster()->Clear();
+            m_creature->GetMotionMaster()->MoveIdle();
+            m_creature->addUnitState(UNIT_STAT_CAN_NOT_MOVE);
+            m_creature->SetStandState(UNIT_STAND_STATE_DEAD);
 
-        Reset();
-            
+            Reset();
 
-
-        isillien->SetFacingToObject(m_creature);
-        CreatureCreatePos pos(isillien->GetMap(), isillien->GetPositionX(), isillien->GetPositionY(), isillien->GetPositionZ(), isillien->GetOrientation());
-	    isillien->SetRespawnCoord(pos);
-        isillien->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
-        isillien->AI()->EnterEvadeMode();
-        EventTimer = 1500;
+            if (Creature* pIsillien = m_creature->FindMap()->GetCreature(isillien))
+            {
+                pIsillien->SetFacingToObject(m_creature);
+                CreatureCreatePos pos(pIsillien->GetMap(), pIsillien->GetPositionX(), pIsillien->GetPositionY(), pIsillien->GetPositionZ(), pIsillien->GetOrientation());
+                pIsillien->SetRespawnCoord(pos);
+                pIsillien->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
+                pIsillien->AI()->EnterEvadeMode();
+            }
+            EventTimer = 1500;
         }
     }
 
     void DamageTaken(Unit* pDoneBy, uint32 &uiDamage)
     {
-        
         // Taelan's Death (Fakedeath)
-        if (m_creature->GetHealthPercent() <= 70)
-        if (isillien && !m_bTaelanDead)
+        if (m_creature->GetHealthPercent() > 70)
+            return;
+
+        if (!m_bTaelanDead)
+        {
+            if (Creature* pIsillien = m_creature->FindMap()->GetCreature(isillien))
             {
                 uiDamage = 0;
-                isillien->InterruptNonMeleeSpells(false);
-                isillien->CastSpell(m_creature, SPELL_TAELAN_DEATH, true);
-                DoScriptText(SAY_KILL_TAELAN_1, isillien);
-                DoScriptText(EMOTE_ISILLIEN_LAUGH, isillien);
-                DoScriptText(SAY_KILL_TAELAN_2, isillien);
+                pIsillien->InterruptNonMeleeSpells(false);
+                pIsillien->CastSpell(m_creature, SPELL_TAELAN_DEATH, true);
+                DoScriptText(SAY_KILL_TAELAN_1, pIsillien);
+                DoScriptText(EMOTE_ISILLIEN_LAUGH, pIsillien);
+                DoScriptText(SAY_KILL_TAELAN_2, pIsillien);
                 m_bTaelanDead = true;
             }
             else
                 debug_log("SD0: Can't select Isillien in quest \"In Dreams!\" (phase Taelan's death)");
+        }
     }
 
     void DoStartEvent()
     {
-        
         // "NOOOOOOOOOOOO!" Event
         EventPhase = 100;
         EventTimer = 1;
-        
     }
 
-
-   
-    
     void UpdateAI(const uint32 uiDiff)
     {
         if (m_HealthRegenTimer <= uiDiff)
@@ -480,7 +465,6 @@ struct MANGOS_DLL_DECL npc_highlord_taelan_fordringAI : public npc_escortAI
                 m_creature->SetHealth(m_creature->GetHealth() + uint32(m_creature->GetMaxHealth() / 3));
                 m_HealthRegenTimer = 2000;
             }
-
         }
         else
             m_HealthRegenTimer -= uiDiff;
@@ -496,246 +480,261 @@ struct MANGOS_DLL_DECL npc_highlord_taelan_fordringAI : public npc_escortAI
                 {
                 case 1:
                     m_creature->setFaction(FACTION_FRIENDLY);
-                    if (isillien = m_creature->SummonCreature(NPC_GRAND_INQUISITOR_ISILLIEN, 2689.30f, -1936.92f, 72.13f, 2.10f, TEMPSUMMON_TIMED_DESPAWN_OUT_OF_COMBAT, J_SUMMONED_DESPAWN_TIME))
+                    if (Unit* pSummon = m_creature->SummonCreature(NPC_GRAND_INQUISITOR_ISILLIEN, 2689.30f, -1936.92f, 72.13f, 2.10f, TEMPSUMMON_TIMED_DESPAWN_OUT_OF_COMBAT, J_SUMMONED_DESPAWN_TIME))
                     {
-                        isillien->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
-                        
+                        isillien = pSummon->GetObjectGuid();
+                        pSummon->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
                     }
                     EventTimer = 2000;
                     break;
                 case 2:
-                    DoScriptText(YELL_ISILLIEN, isillien);
+                    if (Creature* pIsillien = m_creature->FindMap()->GetCreature(isillien))
+                        DoScriptText(YELL_ISILLIEN, pIsillien);
                     EventTimer = 2000;
                     break;
                 case 3:
                     DoScriptText(YELL_TAELAN, m_creature);
-                    m_creature->SetFacingToObject(isillien);
+                    if (Creature* pIsillien = m_creature->FindMap()->GetCreature(isillien))
+                        m_creature->SetFacingToObject(pIsillien);
                     EventTimer = 2000;
                     break;
                 case 4:
                     DoScriptText(SAY_TAELAN_STRANGER, m_creature);
-                    if (isillien)
+                    if (Creature* pIsillien = m_creature->FindMap()->GetCreature(isillien))
+                        pIsillien->GetMotionMaster()->MovePoint(NULL, 2677.28f, -1918.11f, 68.15f);
+                    if (Creature* pSummon = m_creature->SummonCreature(NPC_CRIMSON_ELITE, 2689.90f, -1937.98f, 72.13f, 2.10f, TEMPSUMMON_TIMED_DESPAWN_OUT_OF_COMBAT, J_SUMMONED_DESPAWN_TIME))
                     {
-                        isillien->GetMotionMaster()->MovePoint(NULL, 2677.28f, -1918.11f, 68.15f);
-                        
+                        pTowerCreatures[0] = pSummon->GetObjectGuid();
+                        pSummon->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
+                        pSummon->GetMotionMaster()->MovePoint(NULL, 2673.22f, -1920.70f, 68.21f);
+                        CreatureCreatePos pos(pSummon->GetMap(), 2673.22f, -1920.70f, 68.21f, 6.23f);
+                        pSummon->SetRespawnCoord(pos);
                     }
-                    if (pTowerCreatures[0] = m_creature->SummonCreature(NPC_CRIMSON_ELITE, 2689.90f, -1937.98f, 72.13f, 2.10f, TEMPSUMMON_TIMED_DESPAWN_OUT_OF_COMBAT, J_SUMMONED_DESPAWN_TIME))
+                    if (Creature* pSummon = m_creature->SummonCreature(NPC_CRIMSON_ELITE, 2689.90f, -1937.98f, 72.13f, 2.10f, TEMPSUMMON_TIMED_DESPAWN_OUT_OF_COMBAT, J_SUMMONED_DESPAWN_TIME))
                     {
-                        pTowerCreatures[0]->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
-                        pTowerCreatures[0]->GetMotionMaster()->MovePoint(NULL, 2673.22f, -1920.70f, 68.21f);
-                        CreatureCreatePos pos(pTowerCreatures[0]->GetMap(), 2673.22f, -1920.70f, 68.21f, 6.23f);
-                        pTowerCreatures[0]->SetRespawnCoord(pos);
-                        
-                    }
-                    if (pTowerCreatures[1] = m_creature->SummonCreature(NPC_CRIMSON_ELITE, 2689.90f, -1937.98f, 72.13f, 2.10f, TEMPSUMMON_TIMED_DESPAWN_OUT_OF_COMBAT, J_SUMMONED_DESPAWN_TIME))
-                    {
-                        pTowerCreatures[1]->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
-                        pTowerCreatures[1]->GetMotionMaster()->MovePoint(NULL, 2682.19f, -1914.96f, 68.04f);
-                        CreatureCreatePos pos(pTowerCreatures[1]->GetMap(), 2682.19f, -1914.96f, 68.04f, 6.23f);
-                        pTowerCreatures[1]->SetRespawnCoord(pos);
+                        pTowerCreatures[1] = pSummon->GetObjectGuid();
+                        pSummon->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
+                        pSummon->GetMotionMaster()->MovePoint(NULL, 2682.19f, -1914.96f, 68.04f);
+                        CreatureCreatePos pos(pSummon->GetMap(), 2682.19f, -1914.96f, 68.04f, 6.23f);
+                        pSummon->SetRespawnCoord(pos);
                     }
                     EventTimer = 8500;
                     break;
                 case 5:
-                    if (isillien)
+                    if (Creature* pIsillien = m_creature->FindMap()->GetCreature(isillien))
                     {
-                        m_creature->SetFacingToObject(isillien);
-                        isillien->SetFacingToObject(m_creature);
-                        isillien->HandleEmote(EMOTE_ONESHOT_TALK);
-                        DoScriptText(SAY_ISILLIEN1, isillien);
+                        m_creature->SetFacingToObject(pIsillien);
+                        pIsillien->SetFacingToObject(m_creature);
+                        pIsillien->HandleEmote(EMOTE_ONESHOT_TALK);
+                        DoScriptText(SAY_ISILLIEN1, pIsillien);
                     }
                     EventTimer = 6500;
                     break;
                 case 6:
-                    if (isillien)
-                        DoScriptText(SAY_ISILLIEN2, isillien);
+                    if (Creature* pIsillien = m_creature->FindMap()->GetCreature(isillien))
+                        DoScriptText(SAY_ISILLIEN2, pIsillien);
                     EventTimer = 6500;
                     break;
 
                 case 7:
-                    if (isillien)
-                        DoScriptText(SAY_ISILLIEN3, isillien);
+                    if (Creature* pIsillien = m_creature->FindMap()->GetCreature(isillien))
+                        DoScriptText(SAY_ISILLIEN3, pIsillien);
                     EventTimer = 6500;
                     break;
                 case 8:
-                    if (isillien)
+                    if (Creature* pIsillien = m_creature->FindMap()->GetCreature(isillien))
                     {
-                        DoScriptText(SAY_ISILLIEN4, isillien);
-                        DoScriptText(SAY_ISILLIEN_ATTACK, isillien);
-                        isillien->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
-                        isillien->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_ATTACKABLE_1);
-                        isillien->AI()->AttackStart(m_creature);
-                        AttackStart(isillien);
+                        DoScriptText(SAY_ISILLIEN4, pIsillien);
+                        DoScriptText(SAY_ISILLIEN_ATTACK, pIsillien);
+                        pIsillien->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
+                        pIsillien->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_ATTACKABLE_1);
+                        pIsillien->AI()->AttackStart(m_creature);
+                        AttackStart(pIsillien);
                         endFight = true;
                     }
                     for (uint8 itr = 0; itr < 2; ++itr)
-                        if (pTowerCreatures[itr])
-                        {
-                            pTowerCreatures[itr]->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
-                            if (!pTowerCreatures[itr]->getVictim())
-                                pTowerCreatures[itr]->AI()->AttackStart(m_creature);
-                        }
-                    for (uint8 itr = 2; itr < MAX_CREATURES; ++itr)
-                    if (pTowerCreatures[itr] = m_creature->SummonCreature(NPC_CRIMSON_ELITE, spawnPosition[itr + 2].m_fX, spawnPosition[itr + 2].m_fY, spawnPosition[itr + 2].m_fZ, 4.06f, TEMPSUMMON_TIMED_DESPAWN_OUT_OF_COMBAT, J_SUMMONED_DESPAWN_TIME))
+                    if (Creature* pTemp = m_creature->FindMap()->GetCreature(pTowerCreatures[itr]))
                     {
-                        pTowerCreatures[itr]->AI()->AttackStart(m_creature);
+                        pTemp->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
+                        if (!pTemp->getVictim() && pTemp->AI())
+                            pTemp->AI()->AttackStart(m_creature);
+                    }
+                    for (uint8 itr = 2; itr < MAX_CREATURES; ++itr)
+                    if (Creature* pSummon = m_creature->SummonCreature(NPC_CRIMSON_ELITE, spawnPosition[itr + 2].m_fX, spawnPosition[itr + 2].m_fY, spawnPosition[itr + 2].m_fZ, 4.06f, TEMPSUMMON_TIMED_DESPAWN_OUT_OF_COMBAT, J_SUMMONED_DESPAWN_TIME))
+                    {
+                        pTowerCreatures[itr] = pSummon->GetObjectGuid();
+                        if (pSummon->AI())
+                            pSummon->AI()->AttackStart(m_creature);
                         switch (itr)
                         {
-                            case 2:
-                            {
-                                      CreatureCreatePos pos(pTowerCreatures[itr]->GetMap(), 2680.14f, -1905.25f, 66.3613f, 6.23f);
-                                      pTowerCreatures[itr]->SetRespawnCoord(pos);
-                                      break;
-                            }
-                            case 3:
-                            {
-                                      CreatureCreatePos pos(pTowerCreatures[itr]->GetMap(), 2674.01f, -1909.43f, 66.1366f, 6.23f);
-                                      pTowerCreatures[itr]->SetRespawnCoord(pos);
-                                      break;
-                            }
-                            case 4:
-                            {
-                                      CreatureCreatePos pos(pTowerCreatures[itr]->GetMap(), 2667.25f, -1914.24f, 66.2629f, 3.36f);
-                                      pTowerCreatures[itr]->SetRespawnCoord(pos);
-                                      break;
-                            }
+                        case 2:
+                        {
+                                  CreatureCreatePos pos(pSummon->GetMap(), 2680.14f, -1905.25f, 66.3613f, 6.23f);
+                                  pSummon->SetRespawnCoord(pos);
+                                  break;
+                        }
+                        case 3:
+                        {
+                                  CreatureCreatePos pos(pSummon->GetMap(), 2674.01f, -1909.43f, 66.1366f, 6.23f);
+                                  pSummon->SetRespawnCoord(pos);
+                                  break;
+                        }
+                        case 4:
+                        {
+                                  CreatureCreatePos pos(pSummon->GetMap(), 2667.25f, -1914.24f, 66.2629f, 3.36f);
+                                  pSummon->SetRespawnCoord(pos);
+                                  break;
+                        }
                         }
                     }
                     EventTimer = 0;
                     break;
-
-
                 case 9:
-                    if (isillien && GetPlayerForEscort())
+                    if (GetPlayerForEscort())
                     {
-                        if (isillien)
+                        if (Creature* pIsillien = m_creature->FindMap()->GetCreature(isillien))
                         {
-                            DoScriptText(EMOTE_ISILLIEN_FOCUS, isillien);
-                            isillien->SetTargetGuid(GetPlayerForEscort()->GetObjectGuid());
-                            isillien->HandleEmote(EMOTE_ONESHOT_POINT);
+                            DoScriptText(EMOTE_ISILLIEN_FOCUS, pIsillien);
+                            pIsillien->SetTargetGuid(GetPlayerForEscort()->GetObjectGuid());
+                            pIsillien->HandleEmote(EMOTE_ONESHOT_POINT);
                         }
                     }
                     EventTimer = 4000;
                     break;
                 case 10:
                     // Isillien start attacking escorter player.
-
-                    if (isillien && isillien->isAlive() && GetPlayerForEscort() && GetPlayerForEscort()->isAlive())
+                    if (Creature* pIsillien = m_creature->FindMap()->GetCreature(isillien))
+                    if (pIsillien->isAlive() && GetPlayerForEscort() && GetPlayerForEscort()->isAlive())
                     {
-                        CreatureCreatePos pos(isillien->GetMap(), 2677.28f, -1918.11f, 68.15f, 2.10f);
-                        isillien->SetRespawnCoord(pos);
-                        isillien->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE + UNIT_FLAG_NOT_ATTACKABLE_1);
-                        //isillien->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_ATTACKABLE_1);
-                        isillien->AI()->AttackStart(GetPlayerForEscort());
+                        CreatureCreatePos pos(pIsillien->GetMap(), 2677.28f, -1918.11f, 68.15f, 2.10f);
+                        pIsillien->SetRespawnCoord(pos);
+                        pIsillien->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE + UNIT_FLAG_NOT_ATTACKABLE_1);
+                        pIsillien->AI()->AttackStart(GetPlayerForEscort());
+                    }
+                    for (uint8 itr = 0; itr < MAX_CREATURES; ++itr)
+                    if (Creature* pTemp = m_creature->FindMap()->GetCreature(pTowerCreatures[itr]))
+                    {
+                        pTemp->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
+                        if (!pTemp->getVictim() && pTemp->AI())
+                            pTemp->AI()->AttackStart(GetPlayerForEscort());
                     }
                     EventTimer = 25000;
                     break;
                 case 11:
-                    if (tirionFordring = m_creature->SummonCreature(NPC_TIRION_FORDRING, 2634.07f, -1914.61f, 72.23f, 0.35f, TEMPSUMMON_TIMED_DESPAWN_OUT_OF_COMBAT, J_SUMMONED_DESPAWN_TIME))
+                    if (Creature* pSummon = m_creature->SummonCreature(NPC_TIRION_FORDRING, 2634.07f, -1914.61f, 72.23f, 0.35f, TEMPSUMMON_TIMED_DESPAWN_OUT_OF_COMBAT, J_SUMMONED_DESPAWN_TIME))
                     {
-                        tirionFordring->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
-                        tirionFordring->m_movementInfo.RemoveMovementFlag(MOVEFLAG_WALK_MODE);
-                        tirionFordring->InterruptNonMeleeSpells(false);
-                        tirionFordring->CastSpell(tirionFordring, SPELL_MOUNT2, true);
+                        tirionFordring = pSummon->GetObjectGuid();
+                        pSummon->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
+                        pSummon->m_movementInfo.RemoveMovementFlag(MOVEFLAG_WALK_MODE);
+                        pSummon->InterruptNonMeleeSpells(false);
+                        pSummon->CastSpell(pSummon, SPELL_MOUNT2, true);
                     }
                     EventTimer = 2000;
                     break;
                 case 12:
-                    if (tirionFordring)
+                    if (Creature* pTirion = m_creature->FindMap()->GetCreature(tirionFordring))
                     {
-                        tirionFordring->StopMoving();
-                        tirionFordring->GetMotionMaster()->Clear();
-                        tirionFordring->GetMotionMaster()->MovePoint(NULL, 2652.45f, -1908.32f, 69.64f);
+                        pTirion->StopMoving();
+                        pTirion->GetMotionMaster()->Clear();
+                        pTirion->GetMotionMaster()->MovePoint(NULL, 2652.45f, -1908.32f, 69.64f);
                     }
                     EventTimer = 2000;
                     break;
                 case 13:
-                    if (tirionFordring)
+                    if (Creature* pTirion = m_creature->FindMap()->GetCreature(tirionFordring))
                     {
-                        tirionFordring->StopMoving();
-                        //DismountUnitIfCan(tirionFordring);
-                        if (tirionFordring->IsMounted())
+                        pTirion->StopMoving();
+                        if (pTirion->IsMounted())
                         {
-                            tirionFordring->Unmount();
-                            tirionFordring->RemoveSpellsCausingAura(SPELL_AURA_MOUNTED);
+                            pTirion->Unmount();
+                            pTirion->RemoveSpellsCausingAura(SPELL_AURA_MOUNTED);
                         }
-                        tirionFordring->SetFacingToObject(m_creature);
-                        tirionFordring->GetMotionMaster()->Clear();
-                        tirionFordring->GetMotionMaster()->MoveChase(m_creature, 3.0f, tirionFordring->GetOrientation());
-                        CreatureCreatePos pos(tirionFordring->GetMap(), m_creature->GetPositionX() - 2, m_creature->GetPositionY(), m_creature->GetPositionZ(), 0.0f);
-                        tirionFordring->SetRespawnCoord(pos);
+                        pTirion->SetFacingToObject(m_creature);
+                        pTirion->GetMotionMaster()->Clear();
+                        pTirion->GetMotionMaster()->MoveChase(m_creature, 3.0f, pTirion->GetOrientation());
+                        CreatureCreatePos pos(pTirion->GetMap(), m_creature->GetPositionX() - 2, m_creature->GetPositionY(), m_creature->GetPositionZ(), 0.0f);
+                        pTirion->SetRespawnCoord(pos);
                         EventTimer = 2500;
                     }
                     break;
                 case 14:
-                    if (tirionFordring)
+                    if (Creature* pTirion = m_creature->FindMap()->GetCreature(tirionFordring))
                     {
-                        if (tirionFordring->IsWithinDist(m_creature, 4.0f))
+                        if (pTirion->IsWithinDist(m_creature, 4.0f))
                         {
-                            CreatureCreatePos pos(tirionFordring->GetMap(), tirionFordring->GetPositionX(), tirionFordring->GetPositionY(), tirionFordring->GetPositionZ(), tirionFordring->GetOrientation());
-                            tirionFordring->SetRespawnCoord(pos);
+                            CreatureCreatePos pos(pTirion->GetMap(), pTirion->GetPositionX(), pTirion->GetPositionY(), pTirion->GetPositionZ(), pTirion->GetOrientation());
+                            pTirion->SetRespawnCoord(pos);
                         }
                         else
                         {
-                            tirionFordring->Relocate(m_creature->GetPositionX() - 2, m_creature->GetPositionY(), m_creature->GetPositionZ(), 0.0f);
+                            pTirion->Relocate(m_creature->GetPositionX() - 2, m_creature->GetPositionY(), m_creature->GetPositionZ(), 0.0f);
                             --EventPhase;
                             EventTimer = 1;
                             break;
                         }
-                        tirionFordring->SetFacingToObject(m_creature);
-                        tirionFordring->SetStandState(UNIT_STAND_STATE_KNEEL);
+                        pTirion->SetFacingToObject(m_creature);
+                        pTirion->SetStandState(UNIT_STAND_STATE_KNEEL);
                     }
                     EventTimer = 4000;
                     break;
                 case 15:
-                    if (tirionFordring)
+                    if (Creature* pTirion = m_creature->FindMap()->GetCreature(tirionFordring))
                     {
-                        tirionFordring->SetStandState(UNIT_STAND_STATE_STAND);
-                        DoScriptText(SAY_TIRION1, tirionFordring);
+                        pTirion->SetStandState(UNIT_STAND_STATE_STAND);
+                        DoScriptText(SAY_TIRION1, pTirion);
                     }
                     EventTimer = 10000;
                     break;
                 case 16:
-                    if (isillien && isillien->isAlive())
-                        DoScriptText(SAY_ISILLIEN5, isillien);
-                    else if (isillien && isillien->isDead())
+                    if (Creature* pIsillien = m_creature->FindMap()->GetCreature(isillien))
                     {
-                        EventPhase = 20;
-                        EventTimer = 1;
-                        break;
+                        if (pIsillien->isAlive())
+                            DoScriptText(SAY_ISILLIEN5, pIsillien);
+                        else if (pIsillien->isDead())
+                        {
+                            EventPhase = 20;
+                            EventTimer = 1;
+                            break;
+                        }
                     }
                     EventTimer = 14000;
                     break;
                 case 17:
-                    if (isillien && isillien->isAlive() && tirionFordring && tirionFordring->isAlive())
+                    if (Creature* pIsillien = m_creature->FindMap()->GetCreature(isillien))
+                    if (Creature* pTirion = m_creature->FindMap()->GetCreature(tirionFordring))
                     {
-                        DoScriptText(SAY_TIRION2, tirionFordring);
-                        tirionFordring->SetFacingToObject(isillien);
-                        tirionFordring->HandleEmote(EMOTE_ONESHOT_POINT);
+                        if (pIsillien->isAlive() && pTirion->isAlive())
+                        {
+                            DoScriptText(SAY_TIRION2, pTirion);
+                            pTirion->SetFacingToObject(pIsillien);
+                            pTirion->HandleEmote(EMOTE_ONESHOT_POINT);
+                        }
                     }
                     EventTimer = 10000;
                     break;
                 case 18:
-                    if (!tirionFordring->getVictim())
-                    {
-                        DoScriptText(SAY_TIRION3, tirionFordring);
-                    }
-                    if (isillien && isillien->isAlive())
-                        DoScriptText(SAY_ISILLIEN6, isillien);
+                    if (Creature* pTirion = m_creature->FindMap()->GetCreature(tirionFordring))
+                    if (!pTirion->getVictim())
+                        DoScriptText(SAY_TIRION3, pTirion);
+                    if (Creature* pIsillien = m_creature->FindMap()->GetCreature(isillien))
+                    if (pIsillien->isAlive())
+                        DoScriptText(SAY_ISILLIEN6, pIsillien);
                     EventTimer = 3500;
                     break;
                 case 19:
                     for (uint8 itr = 0; itr < MAX_CREATURES; ++itr)
-                    if (pTowerCreatures[itr])
-                        pTowerCreatures[itr]->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE + UNIT_FLAG_NOT_ATTACKABLE_1);
-                    if (isillien && tirionFordring)
+                    if (Unit* pTownCreature = m_creature->FindMap()->GetCreature(pTowerCreatures[itr]))
+                        pTownCreature->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE + UNIT_FLAG_NOT_ATTACKABLE_1);
+                    if (Creature* pIsillien = m_creature->FindMap()->GetCreature(isillien))
+                    if (Creature* pTirion = m_creature->FindMap()->GetCreature(tirionFordring))
                     {
-                        tirionFordring->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE + UNIT_FLAG_NOT_ATTACKABLE_1);
-                        isillien->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE + UNIT_FLAG_NOT_ATTACKABLE_1);
-                        tirionFordring->AI()->AttackStart(isillien);
-                        isillien->DeleteThreatList();
-                        isillien->AI()->AttackStart(tirionFordring);
-                       
+                        pTirion->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE + UNIT_FLAG_NOT_ATTACKABLE_1);
+                        pIsillien->RemoveFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE + UNIT_FLAG_NOT_ATTACKABLE_1);
+                        pTirion->AI()->AttackStart(pIsillien);
+                        pIsillien->DeleteThreatList();
+                        if (pIsillien->AI())
+                            pIsillien->AI()->AttackStart(pTirion);
+
                     }
                     EventTimer = 0;
                     DeathTimer = 2500;
@@ -743,18 +742,18 @@ struct MANGOS_DLL_DECL npc_highlord_taelan_fordringAI : public npc_escortAI
                 case 20:
                     // Crimson Elites must be defeated
                     for (uint8 itr = 0; itr < MAX_CREATURES; ++itr)
-                    if (pTowerCreatures[itr] && pTowerCreatures[itr]->isAlive())
-                    if (!pTowerCreatures[itr]->getVictim())
-                    if (tirionFordring && tirionFordring->isAlive() && pTowerCreatures[itr]->AI())
-                        pTowerCreatures[itr]->AI()->AttackStart(tirionFordring);
+                    if (Creature* pTownCreature = m_creature->FindMap()->GetCreature(pTowerCreatures[itr]))
+                    if (pTownCreature->isAlive() && !pTownCreature->getVictim())
+                    if (Creature* pTirion = m_creature->FindMap()->GetCreature(tirionFordring))
+                    if (pTirion->isAlive() && pTownCreature->AI())
+                        pTownCreature->AI()->AttackStart(pTirion);
 
-                    if (tirionFordring)
+                    if (Creature* pTirion = m_creature->FindMap()->GetCreature(tirionFordring))
                     {
-                        if (!tirionFordring->getVictim())
+                        if (!pTirion->getVictim())
                         {
-
-                            tirionFordring->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
-                            tirionFordring->AI()->EnterEvadeMode();
+                            pTirion->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
+                            pTirion->AI()->EnterEvadeMode();
                         }
                         else
                         {
@@ -765,54 +764,54 @@ struct MANGOS_DLL_DECL npc_highlord_taelan_fordringAI : public npc_escortAI
                     EventTimer = 8000;
                     break;
                 case 21:
-                    if (tirionFordring && m_creature)
+                    if (Creature* pTirion = m_creature->FindMap()->GetCreature(tirionFordring))
                     {
-                        tirionFordring->SetFacingToObject(m_creature);
-                        tirionFordring->SetStandState(UNIT_STAND_STATE_KNEEL);
-                        DoScriptText(EMOTE_TIRION_KNEE, tirionFordring);
+                        pTirion->SetFacingToObject(m_creature);
+                        pTirion->SetStandState(UNIT_STAND_STATE_KNEEL);
+                        DoScriptText(EMOTE_TIRION_KNEE, pTirion);
                     }
                     EventTimer = 2000;
                     break;
                 case 22:
-                    if (tirionFordring)
+                    if (Creature* pTirion = m_creature->FindMap()->GetCreature(tirionFordring))
                     {
-                        DoScriptText(SAY_TIRION4, tirionFordring);
-                        tirionFordring->SetStandState(UNIT_STAND_STATE_STAND);
-                        tirionFordring->HandleEmote(EMOTE_ONESHOT_EXCLAMATION);      // TODO: When core support Excited emote, use it!
+                        DoScriptText(SAY_TIRION4, pTirion);
+                        pTirion->SetStandState(UNIT_STAND_STATE_STAND);
+                        pTirion->HandleEmote(EMOTE_ONESHOT_EXCLAMATION);      // TODO: When core support Excited emote, use it!
                     }
                     EventTimer = 2000;
                     break;
                 case 23:
-                    if (tirionFordring)
+                    if (Creature* pTirion = m_creature->FindMap()->GetCreature(tirionFordring))
                     {
-                        tirionFordring->SetStandState(UNIT_STAND_STATE_KNEEL);
-                        DoScriptText(EMOTE_TIRION_HOLD, tirionFordring);
+                        pTirion->SetStandState(UNIT_STAND_STATE_KNEEL);
+                        DoScriptText(EMOTE_TIRION_HOLD, pTirion);
                     }
                     EventTimer = 4000;
                     break;
                 case 24:
-                    if (tirionFordring)
-                        DoScriptText(SAY_TIRION5, tirionFordring);
+                    if (Creature* pTirion = m_creature->FindMap()->GetCreature(tirionFordring))
+                        DoScriptText(SAY_TIRION5, pTirion);
                     EventTimer = 5000;
                     break;
                 case 25:
-                    if (tirionFordring)
-                        DoScriptText(SAY_TIRION6, tirionFordring);
+                    if (Creature* pTirion = m_creature->FindMap()->GetCreature(tirionFordring))
+                        DoScriptText(SAY_TIRION6, pTirion);
                     EventTimer = 5000;
                     break;
                 case 26:
-                    if (tirionFordring)
-                        DoScriptText(SAY_TIRION7, tirionFordring);
+                    if (Creature* pTirion = m_creature->FindMap()->GetCreature(tirionFordring))
+                        DoScriptText(SAY_TIRION7, pTirion);
                     EventTimer = 8000;
                     break;
                 case 27:
                     if (GetPlayerForEscort())
                         GetPlayerForEscort()->GroupEventHappens(QUEST_IN_DREAMS, m_creature);
-                    if (tirionFordring)
+                    if (Creature* pTirion = m_creature->FindMap()->GetCreature(tirionFordring))
                     {
-                        tirionFordring->SetStandState(UNIT_STAND_STATE_STAND);
-                        DoScriptText(SAY_TIRION8, tirionFordring);
-                        tirionFordring->HandleEmote(EMOTE_ONESHOT_ROAR);
+                        pTirion->SetStandState(UNIT_STAND_STATE_STAND);
+                        DoScriptText(SAY_TIRION8, pTirion);
+                        pTirion->HandleEmote(EMOTE_ONESHOT_ROAR);
                     }
 
                     EventTimer = 45000;
@@ -820,11 +819,11 @@ struct MANGOS_DLL_DECL npc_highlord_taelan_fordringAI : public npc_escortAI
                 case 28:
                     // event done
                     /*for(uint8 itr = 0; itr < MAX_CREATURES-1; ++itr)
-                        if (pTowerCreatures[itr])
-                        {
-                        pTowerCreatures[itr]->RemoveFromWorld();
-                        pTowerCreatures[itr] = 0;
-                        }*/
+                    if (pTowerCreatures[itr])
+                    {
+                    pTowerCreatures[itr]->RemoveFromWorld();
+                    pTowerCreatures[itr] = 0;
+                    }*/
                     EventTimer = 0;
                     EventPhase = 0;
                     m_creature->ForcedDespawn();
@@ -832,53 +831,54 @@ struct MANGOS_DLL_DECL npc_highlord_taelan_fordringAI : public npc_escortAI
 
                     // NOOOOOOOOOOOO! event.
                 case 100:
-                    m_creature->SetStandState(UNIT_STAND_STATE_KNEEL);
+                {
+                            m_creature->SetStandState(UNIT_STAND_STATE_KNEEL);
 
-                    GetCreatureListWithEntryInGrid(lTaelansGuards, m_creature, NPC_SCARLET_CAVALIER, 10.f);
-                    if (!lTaelansGuards.empty())
-                    {
-                        uint8 pGuardNo = 0;
-                        for (std::list<Creature*>::iterator itr = lTaelansGuards.begin(); itr != lTaelansGuards.end(); ++itr)
-                        if ((*itr))
-                        {
-                            if ((*itr)->IsWithinLOSInMap(m_creature))
+                            std::list<Creature*> lTempGuardList;
+                            GetCreatureListWithEntryInGrid(lTempGuardList, m_creature, NPC_SCARLET_CAVALIER, 10.f);
+                            uint8 pGuardNo = 0;
+                            for (std::list<Creature*>::iterator itr = lTempGuardList.begin(); itr != lTempGuardList.end(); ++itr)
+                            if (*itr)
                             {
-                                if ((*itr)->isAlive())
+                                lTaelansGuards.push_back((*itr)->GetObjectGuid());
+                                if ((*itr)->IsWithinLOSInMap(m_creature))
                                 {
-                                    ++pGuardNo;
-                                    (*itr)->SetFacingToObject(m_creature);
-                                    switch (pGuardNo)
+                                    if ((*itr)->isAlive())
                                     {
-                                    case 1:
-                                        DoScriptText(SAY_GUARD1, (*itr));
-                                        break;
-                                    case 2:
-                                        DoScriptText(SAY_GUARD2, (*itr));
-                                        break;
-                                    case 3:
-                                        DoScriptText(SAY_GUARD3, (*itr));
-                                        break;
-                                    case 4:
-                                        DoScriptText(SAY_GUARD4, (*itr));
-                                        break;
+                                        ++pGuardNo;
+                                        (*itr)->SetFacingToObject(m_creature);
+                                        switch (pGuardNo)
+                                        {
+                                        case 1:
+                                            DoScriptText(SAY_GUARD1, (*itr));
+                                            break;
+                                        case 2:
+                                            DoScriptText(SAY_GUARD2, (*itr));
+                                            break;
+                                        case 3:
+                                            DoScriptText(SAY_GUARD3, (*itr));
+                                            break;
+                                        case 4:
+                                            DoScriptText(SAY_GUARD4, (*itr));
+                                            break;
+                                        }
                                     }
                                 }
                             }
-                        }
-                    }
-                    else
-                        debug_log("SD0: Taelan cant find his guards around him.");
+                            else
+                                debug_log("SD0: Taelan cant find his guards around him.");
 
-                    EventTimer = 3000;
-                    break;
+                            EventTimer = 3000;
+                            break;
+                }
                 case 101:
-                    if (!lTaelansGuards.empty())
-                    for (std::list<Creature*>::iterator itr = lTaelansGuards.begin(); itr != lTaelansGuards.end(); ++itr)
+                    for (std::list<ObjectGuid>::iterator itr = lTaelansGuards.begin(); itr != lTaelansGuards.end(); ++itr)
                     {
-                        if ((*itr) && (*itr)->IsWithinLOSInMap(m_creature))
+                        if (Creature* pGuard = m_creature->FindMap()->GetCreature((*itr)))
+                        if (pGuard->IsWithinLOSInMap(m_creature))
                         {
-                            (*itr)->GetMotionMaster()->MoveChase(m_creature, 0.25f, 0);
-                            (*itr)->SetFacingToObject(m_creature);
+                            pGuard->GetMotionMaster()->MoveChase(m_creature, 0.25f, 0);
+                            pGuard->SetFacingToObject(m_creature);
                         }
                     }
                     EventTimer = 5000;
@@ -888,21 +888,23 @@ struct MANGOS_DLL_DECL npc_highlord_taelan_fordringAI : public npc_escortAI
                     m_creature->SetStandState(UNIT_STAND_STATE_STAND);
                     m_creature->HandleEmote(EMOTE_ONESHOT_ROAR);
                     if (!lTaelansGuards.empty())
-                    for (std::list<Creature*>::iterator itr = lTaelansGuards.begin(); itr != lTaelansGuards.end(); ++itr)
+                    for (std::list<ObjectGuid>::iterator itr = lTaelansGuards.begin(); itr != lTaelansGuards.end(); ++itr)
                     {
-                        if ((*itr) && (*itr)->IsWithinLOSInMap(m_creature))
+                        if (Creature* pGuard = m_creature->FindMap()->GetCreature((*itr)))
+                        if (pGuard->IsWithinLOSInMap(m_creature))
                         {
-                            (*itr)->AI()->AttackStart(m_creature);
+                            if (pGuard->AI())
+                                pGuard->AI()->AttackStart(m_creature);
                             if (!m_creature->getVictim() && itr == lTaelansGuards.begin())
-                                AttackStart((*itr));
+                                AttackStart(pGuard);
                         }
                     }
                     DoCastSpellIfCan(m_creature, SPELL_TAELANS_SUFFERING);
                     EventPhase = 0;
                     EventTimer = 0;
                     break;
-                  
-                   
+
+
                 }
                 ++EventPhase;
             }
@@ -915,9 +917,9 @@ struct MANGOS_DLL_DECL npc_highlord_taelan_fordringAI : public npc_escortAI
             if (DeathTimer <= uiDiff)
             {
                 DeathTimer = 2500;
-                if (isillien)
+                if (Creature* pIsillien = m_creature->FindMap()->GetCreature(isillien))
                 {
-                    if (isillien->isDead())
+                    if (pIsillien->isDead())
                     {
                         EventTimer = 1;
                         DeathTimer = 0;
@@ -935,16 +937,16 @@ struct MANGOS_DLL_DECL npc_highlord_taelan_fordringAI : public npc_escortAI
 
         // Mount
         if (HasEscortState(STATE_ESCORT_ESCORTING))
-            if (m_uiMountTimer <= uiDiff)
-            {
-                if (bCanMount && !m_creature->IsMounted() && !m_creature->getVictim())
-                    DoCastSpellIfCan(m_creature, SPELL_MOUNT, CAST_TRIGGERED + CAST_FORCE_CAST + CAST_AURA_NOT_PRESENT);
-                else if ((!bCanMount && m_creature->IsMounted()) || (m_creature->isInCombat()))
-                    DismountUnitIfCan();
-                m_uiMountTimer = 1000;
-            }
-            else
-                m_uiMountTimer -= uiDiff;
+        if (m_uiMountTimer <= uiDiff)
+        {
+            if (bCanMount && !m_creature->IsMounted() && !m_creature->getVictim())
+                DoCastSpellIfCan(m_creature, SPELL_MOUNT, CAST_TRIGGERED + CAST_FORCE_CAST + CAST_AURA_NOT_PRESENT);
+            else if ((!bCanMount && m_creature->IsMounted()) || (m_creature->isInCombat()))
+                DismountUnitIfCan();
+            m_uiMountTimer = 1000;
+        }
+        else
+            m_uiMountTimer -= uiDiff;
 
         if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
             return;
@@ -970,7 +972,7 @@ struct MANGOS_DLL_DECL npc_highlord_taelan_fordringAI : public npc_escortAI
             Unit* pFriend = DoSelectLowestHpFriendly(15.f, 15000);
             if (pFriend)
                 DoCastSpellIfCan(pFriend, SPELL_HOLY_LIGHT, CAST_FORCE_CAST);
-            m_uiHolyLightTimer = urand(10000,15000);
+            m_uiHolyLightTimer = urand(10000, 15000);
         }
         else
             m_uiHolyLightTimer -= uiDiff;
@@ -994,9 +996,6 @@ struct MANGOS_DLL_DECL npc_highlord_taelan_fordringAI : public npc_escortAI
         else
             m_uiLayOnHandsTimer -= uiDiff;
 
-       
-
-
         DoMeleeAttackIfReady();
     }
 };
@@ -1009,45 +1008,45 @@ CreatureAI* GetAI_npc_highlord_taelan_fordring(Creature* pCreature)
 bool QuestAccept_npc_highlord_taelan_fordring(Player* pPlayer, Creature* pCreature, const Quest* pQuest)
 {
     if (pQuest->GetQuestId() == QUEST_IN_DREAMS)
-        if (npc_highlord_taelan_fordringAI* pEscortAI = dynamic_cast<npc_highlord_taelan_fordringAI*>(pCreature->AI()))
-            pEscortAI->Start(false, pPlayer, pQuest);
+    if (npc_highlord_taelan_fordringAI* pEscortAI = dynamic_cast<npc_highlord_taelan_fordringAI*>(pCreature->AI()))
+        pEscortAI->Start(false, pPlayer, pQuest);
     return true;
 }
 
 bool QuestRewarded_npc_highlord_taelan_fordring(Player* pPlayer, Creature* pCreature, const Quest* pQuest)
 {
     if (pQuest->GetQuestId() == QUEST_SCARLET_SUBTERFUGE)
-        if (npc_highlord_taelan_fordringAI* pTaelanAI = dynamic_cast<npc_highlord_taelan_fordringAI*>(pCreature->AI()))
-            pTaelanAI->DoStartEvent();
+    if (npc_highlord_taelan_fordringAI* pTaelanAI = dynamic_cast<npc_highlord_taelan_fordringAI*>(pCreature->AI()))
+        pTaelanAI->DoStartEvent();
     return true;
 }
 
 enum
 {
-	DISPLAY_ID_GHOST_MOUNT = 17328,
-	NPC_GRYPHON = 9526,
-	SAY_GUARDS = -549,
-	SPELL_AURA_HORDE = 31309,
-	SPELL_AURA_ALLIANCE = 31748,
-	SPELL_AURA_REMOVEME = 17327,
-	FACTION_HORDE = 83,
-	FACTION_ALLIANCE = 84,
+    DISPLAY_ID_GHOST_MOUNT = 17328,
+    NPC_GRYPHON = 9526,
+    SAY_GUARDS = -549,
+    SPELL_AURA_HORDE = 31309,
+    SPELL_AURA_ALLIANCE = 31748,
+    SPELL_AURA_REMOVEME = 17327,
+    FACTION_HORDE = 83,
+    FACTION_ALLIANCE = 84,
 
-	PATH_Northpass_Tower = 494,
-	PATH_Eastwall_Tower = 495,
-	PATH_Crown_Guard = 496,
+    PATH_Northpass_Tower = 494,
+    PATH_Eastwall_Tower = 495,
+    PATH_Crown_Guard = 496,
 
-	TEXT_NORTHPASS = -3469205,
-	TEXT_EASTWALL = -3469206,
-	TEXT_CROWNGUARD = -3469207,
+    TEXT_NORTHPASS = -3469205,
+    TEXT_EASTWALL = -3469206,
+    TEXT_CROWNGUARD = -3469207,
 };
 
 bool GossipHello_william_kielar(Player* pPlayer, Creature* pCreature)
 {
-	pPlayer->PrepareQuestMenu(pCreature->GetObjectGuid());
-	pPlayer->ADD_GOSSIP_ITEM_ID(GOSSIP_ICON_TAXI, TEXT_NORTHPASS, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1);
-	pPlayer->ADD_GOSSIP_ITEM_ID(GOSSIP_ICON_TAXI, TEXT_EASTWALL, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 2);
-	pPlayer->ADD_GOSSIP_ITEM_ID(GOSSIP_ICON_TAXI, TEXT_CROWNGUARD, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 3);
+    pPlayer->PrepareQuestMenu(pCreature->GetObjectGuid());
+    pPlayer->ADD_GOSSIP_ITEM_ID(GOSSIP_ICON_TAXI, TEXT_NORTHPASS, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1);
+    pPlayer->ADD_GOSSIP_ITEM_ID(GOSSIP_ICON_TAXI, TEXT_EASTWALL, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 2);
+    pPlayer->ADD_GOSSIP_ITEM_ID(GOSSIP_ICON_TAXI, TEXT_CROWNGUARD, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 3);
 
     pPlayer->SEND_GOSSIP_MENU(pPlayer->GetGossipTextId(pCreature), pCreature->GetObjectGuid());
     return true;
@@ -1057,38 +1056,37 @@ bool GossipSelect_william_kielar(Player* pPlayer, Creature* pCreature, uint32, u
 {
     if (uiAction == GOSSIP_ACTION_INFO_DEF + 1)
         pPlayer->GetSession()->SendDoFlight(17328, PATH_Northpass_Tower);
-	else if (uiAction == GOSSIP_ACTION_INFO_DEF + 2)
+    else if (uiAction == GOSSIP_ACTION_INFO_DEF + 2)
         pPlayer->GetSession()->SendDoFlight(17328, PATH_Eastwall_Tower);
-	else if (uiAction == GOSSIP_ACTION_INFO_DEF + 3)
+    else if (uiAction == GOSSIP_ACTION_INFO_DEF + 3)
         pPlayer->GetSession()->SendDoFlight(17328, PATH_Crown_Guard);
     return true;
 }
 
 struct MANGOS_DLL_DECL mob_william_kielar : public ScriptedAI
 {
-	bool justSpawned;
+    bool justSpawned;
 
     mob_william_kielar(Creature* pCreature) : ScriptedAI(pCreature)
     {
-		justSpawned = true;
-	}
+        justSpawned = true;
+    }
 
-	void Reset() {}
+    void Reset() {}
 
-	void UpdateAI(uint32)
-	{
-		if(justSpawned)
-		{
-			m_creature->RemoveAura(SPELL_AURA_REMOVEME, EFFECT_INDEX_0);
-			if(m_creature->getFaction() == FACTION_HORDE)
-				m_creature->CastSpell(m_creature, SPELL_AURA_HORDE, true);
-			else
-				m_creature->CastSpell(m_creature, SPELL_AURA_ALLIANCE, true);
-			justSpawned = false;
-		}
-	}
+    void UpdateAI(uint32)
+    {
+        if (justSpawned)
+        {
+            m_creature->RemoveAura(SPELL_AURA_REMOVEME, EFFECT_INDEX_0);
+            if (m_creature->getFaction() == FACTION_HORDE)
+                m_creature->CastSpell(m_creature, SPELL_AURA_HORDE, true);
+            else
+                m_creature->CastSpell(m_creature, SPELL_AURA_ALLIANCE, true);
+            justSpawned = false;
+        }
+    }
 };
-
 
 void AddSC_eastern_plaguelands()
 {
@@ -1120,16 +1118,16 @@ void AddSC_eastern_plaguelands()
     pNewScript = new Script;
     pNewScript->Name = "npc_highlord_taelan_fordring";
     pNewScript->GetAI = &GetAI_npc_highlord_taelan_fordring;
-    pNewScript->pQuestAcceptNPC =   &QuestAccept_npc_highlord_taelan_fordring;
+    pNewScript->pQuestAcceptNPC = &QuestAccept_npc_highlord_taelan_fordring;
     pNewScript->pQuestRewardedNPC = &QuestRewarded_npc_highlord_taelan_fordring;
     pNewScript->RegisterSelf();
 
     pNewScript = new Script;
     pNewScript->Name = "mob_william_kielar";
     pNewScript->GetAI = [](Creature* c) -> CreatureAI*
-	{
-		return new mob_william_kielar(c);
-	};
+    {
+        return new mob_william_kielar(c);
+    };
     pNewScript->pGossipHello = &GossipHello_william_kielar;
     pNewScript->pGossipSelect = &GossipSelect_william_kielar;
     pNewScript->RegisterSelf();
