@@ -556,7 +556,7 @@ struct MANGOS_DLL_DECL boss_taerarAI : public boss_emerald_dragonAI
             m_creature->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE);
 
             DoScriptText(SAY_SUMMONSHADE, m_creature);
-            m_uiShadesTimeoutTimer = 60000;
+            m_uiShadesTimeoutTimer = 3 * MINUTE * IN_MILLISECONDS;
 
             return true;
         }
@@ -634,6 +634,7 @@ struct MANGOS_DLL_DECL mob_shade_of_taerarAI : public ScriptedAI
     {
         m_uiPoisonCloudTimer = 8000;
         m_uiPosionBreathTimer = 12000;
+        m_creature->SetObjectScale(1.0f);
     }
 
     void UpdateAI(const uint32 uiDiff)
