@@ -1,29 +1,44 @@
 #include "precompiled.h"
 
+enum
+{
+    EPICQUEST = 7636,
+    MINUTES_30 = 1800,
+    HOURS_4 = 10800,
+    FOOLS_PLIGHT = 23504,
+    DEMONIC_FRENZY = 23257,
+    NPC_CLEANER = 14503,
+
+};
+
+static std::string GetFoolText(LocaleConstant lang)
+{
+    return (lang == LOCALE_deDE) ? "Nur ein Verr\303\274ckter w\303\274rde jetzt noch weiterk\303\244mpfen. Sodenn, Schwachkopf!" : "Only a fool would remain in this fight. So long, coward!";
+}
+
+static std::string GetTrueFaceText(LocaleConstant lang)
+{
+
+    return (lang == LOCALE_deDE) ? "Ich wei\303\237, wer Ihr wirklich seid. Zeigt Euer wahres Gesicht, D\303\244mon!" : "I know who you truly are. Reveal your true face, demon!";
+}
+
 struct Hunterquest_BossTemplate : public ScriptedAI
 {
 private:
 	bool justSpawned;
 	uint32 setupTime;
-
-	uint64 ownerGuid;
-
+    	
 public:
-    Hunterquest_BossTemplate(Creature* creature) : 
-		ScriptedAI(creature), 
-		justSpawned(true), 
-		setupTime(5000),
-		ownerGuid(0)
-	{
-		m_creature->SetFlag(UNIT_NPC_FLAGS, UNIT_FLAG_NON_ATTACKABLE | UNIT_FLAG_PASSIVE);
-	}
+    Hunterquest_BossTemplate(Creature* creature) : ScriptedAI(creature)	{Reset();}
 
-	void SetOwner(uint64 guid)
-	{
-		ownerGuid = guid;
-	}
+    void Reset()
+    { 
+        m_creature->SetFlag(UNIT_NPC_FLAGS, UNIT_FLAG_NON_ATTACKABLE | UNIT_FLAG_PASSIVE);
+        justSpawned = true;
+        setupTime = 5000;
+    }
 
-    virtual void Update(const uint32 time) = 0;
+    virtual void Update(const uint32 uidiff) = 0;
 
     void Panik()
     {
@@ -43,12 +58,17 @@ public:
 			if(loc.mapid != m_creature->GetMapId())
 				continue;
 
-            Creature* cleaner = m_creature->SummonCreature(14503, loc.coord_x - 5, loc.coord_y, loc.coord_z, loc.orientation, TEMPSUMMON_TIMED_DESPAWN_OUT_OF_COMBAT, 10000);
+            Creature* cleaner = m_creature->SummonCreature(NPC_CLEANER, loc.coord_x - 5, loc.coord_y, loc.coord_z, loc.orientation, TEMPSUMMON_TIMED_DESPAWN_OUT_OF_COMBAT, 10000);
             if(cleaner)
                 cleaner->AddThreat(unit, 100000);
         }
-        std::string msg = "Only a fool would now remain in this battle. So long, coward";
-        m_creature->MonsterSay(msg.c_str(), 0);
+        if (Player* p = m_creature->GetMap()->GetPlayer(m_creature->getVictim()->GetObjectGuid()))
+        {
+            m_creature->MonsterSay(GetFoolText(p->GetSession()->GetSessionDbcLocale()).c_str(), 0);
+        }
+        else
+            m_creature->MonsterSay(GetFoolText(LOCALE_deDE).c_str(), 0);
+        
         m_creature->ForcedDespawn();
 
         Creature* cr = GetClosestCreatureWithEntry(m_creature, 14528, 1500);
@@ -62,24 +82,23 @@ public:
         }
     }
 
-    static void DespawnDaemon(Creature* c, uint32 addTime)
+    static void DespawnDaemon(Creature* c)
     {
         c->ForcedDespawn(0);
-        //minimal 30 minutes, maximal respawn after 3 hours
-        c->SetRespawnTime(urand(1800 + addTime, 10800 + addTime));
+        c->SetRespawnTime(urand(MINUTES_30, HOURS_4));
     }
 
-    void UpdateAI(const uint32 time)
+    void UpdateAI(const uint32 uidiff)
     {
 		if(justSpawned)
 		{
-			if(setupTime < time)
+            if (setupTime < uidiff)
 			{
 				m_creature->RemoveFlag(UNIT_NPC_FLAGS, UNIT_FLAG_NON_ATTACKABLE | UNIT_FLAG_PASSIVE);
 				justSpawned = false;
 			}
 			else
-				setupTime -= time;
+                setupTime -= uidiff;
 			return;
 		}
 
@@ -89,12 +108,12 @@ public:
 		auto* victim = m_creature->getVictim();
 
         ThreatList const& tl = m_creature->getThreatManager().getThreatList();
-        if(tl.size() > 1 || victim->GetGUID() != ownerGuid)
+        if(tl.size() > 1 || victim->getClass() != CLASS_HUNTER)
         {
             Panik();
         }
 
-        Update(time);
+        Update(uidiff);
         DoMeleeAttackIfReady();
     }
 };
@@ -103,76 +122,66 @@ enum
 {
     /* Spells */
     STINGING_TRAUMA = 23299,
-    FOOLS_PLIGHT = 23504,
-    DEMONIC_FRENZY = 23257,
-    SERPENT_STING_9 = 25295,
-    SERPENT_STING_8 = 13555,
     DEMONIC_DOOM = 23298,
+    LULLISHOT = 19801,
 
     /* Entries */
-    DOOMBRINGER = 14535,
-    AMIABLE = 14531,
+    NPC_ARTORIUS_DEMON = 14535,
+    NPC_ARTORIUS_FRIENDLY = 14531,
 };
 
 struct Hunterquest_Doombringer : public Hunterquest_BossTemplate
 {
-    uint32 stingHit;
-    uint32 frenzy;
-    uint32 doom;
-
+    uint32 m_DoomCheckIntervall;
+    uint32 m_EnrageTimer;
     ObjectGuid hunter;
 
-    Hunterquest_Doombringer(Creature* creature) : Hunterquest_BossTemplate(creature), stingHit(0), frenzy(0), doom(60000), hunter(ObjectGuid()) {}
+    Hunterquest_Doombringer(Creature* creature) : Hunterquest_BossTemplate(creature) { Reset(); }
 
-    void Reset() { stingHit = frenzy = 0; doom = 0; hunter = ObjectGuid(); }
+    void Reset() 
+    {
+        m_DoomCheckIntervall = 500;
+        m_EnrageTimer = 8000;
+    }
 
     void Aggro(Unit* target) 
     {
-        frenzy = urand(0, 20000);
-        doom = urand(0, 20000);
         hunter = target->GetObjectGuid(); 
     }
 
-    void Update(const uint32 time) 
+    void Update(const uint32 uidiff)
     {
-        frenzy += time;
-        doom += time;
-
-        if(!m_creature->HasAura(SERPENT_STING_8))
-            stingHit = 0;
-
-        if(frenzy >= 25000)
+        if (m_EnrageTimer < uidiff)
         {
-            DoCastSpellIfCan(m_creature, DEMONIC_FRENZY);
-            frenzy = 0;
+            if (DoCastSpellIfCan(m_creature, DEMONIC_FRENZY) == CAST_OK)
+            {
+                m_EnrageTimer = 15000;
+            }
         }
+        else
+            m_EnrageTimer -= uidiff;
 
-        if(doom >= 30000)
+        if (m_DoomCheckIntervall < uidiff)
         {
             if (Unit* pHunter = m_creature->FindMap()->GetUnit(hunter))
             {
-                float distance = m_creature->GetDistance2d(pHunter->GetPositionX(), pHunter->GetPositionY());
-                if(distance < 31)
-                    DoCastSpellIfCan(pHunter, DEMONIC_DOOM);
+                float distance = m_creature->GetDistance(pHunter);
+                if (distance <= 30.0f)
+                    DoCastSpellIfCan(pHunter, DEMONIC_DOOM, CAST_TRIGGERED);
             }
-            doom = 0;
+            m_DoomCheckIntervall = 500;
         }
+        else
+            m_DoomCheckIntervall -= uidiff;
     }
 
     void SpellHit(Unit*, const SpellEntry* entry) 
     {
-        if(entry->Id == SERPENT_STING_8)
+        
+        if (m_creature->HasAura(DEMONIC_FRENZY) && entry->IsFitToFamily(SPELLFAMILY_HUNTER, 0x00000004000))
         {
-            if(++stingHit == 2)
-            {
-                DoCastSpellIfCan(m_creature, STINGING_TRAUMA);
-
-                m_creature->RemoveAura(SERPENT_STING_8, EFFECT_INDEX_0);
-                m_creature->RemoveAura(SERPENT_STING_8, EFFECT_INDEX_1);
-                m_creature->RemoveAura(SERPENT_STING_8, EFFECT_INDEX_2);
-
-                stingHit = 0;
-            }
+            DoCastSpellIfCan(m_creature, STINGING_TRAUMA);
+            m_creature->RemoveAurasWithDispelType(DISPEL_ENRAGE);
         }
     }
 
@@ -190,7 +199,7 @@ struct Hunterquest_Amiable : public Hunterquest_BossTemplate
         m_creature->SetFlag(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
         m_creature->SetFlag(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_QUESTGIVER);
     }
-    void Reset() {}
+    
     void Update(const uint32)
     {
         ThreatList const& tl = m_creature->getThreatManager().getThreatList();
@@ -204,10 +213,10 @@ struct Hunterquest_Amiable : public Hunterquest_BossTemplate
 
     static bool GossipHello(Player* pPlayer, Creature* pCreature)
     {
-        if(pPlayer->IsActiveQuest(7636))
+        if(pPlayer->IsCurrentQuest(EPICQUEST,1))
         {
-            std::string msg = "I know who you are, reveal your true face, demon!";
-            pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, msg, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF+1);
+            
+            pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, GetTrueFaceText(pPlayer->GetSession()->GetSessionDbcLocale()), GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1);
         }
 
         pPlayer->PlayerTalkClass->SendGossipMenu(907, pCreature->GetGUID());
@@ -222,14 +231,10 @@ struct Hunterquest_Amiable : public Hunterquest_BossTemplate
             pPlayer->CLOSE_GOSSIP_MENU();
             WorldLocation loc;
             pCreature->GetPosition(loc);
-            //despawn after 20 minutes the summoned mob
-            auto* creature = pCreature->SummonCreature(DOOMBRINGER, loc.coord_x, loc.coord_y, loc.coord_z, loc.orientation, TEMPSUMMON_TIMED_OR_DEAD_DESPAWN, 1200000);
+            auto* creature = pCreature->SummonCreature(NPC_ARTORIUS_DEMON, loc.coord_x, loc.coord_y, loc.coord_z, loc.orientation, TEMPSUMMON_TIMED_OR_DEAD_DESPAWN, 1200000);
 			if(creature)
 			{
-				DespawnDaemon(pCreature, 1200);
-				auto* ai = static_cast<Hunterquest_BossTemplate*>(creature->AI());
-				if(ai)
-					ai->SetOwner(pPlayer->GetGUID());
+				DespawnDaemon(pCreature);
 			}
         }
 
@@ -248,23 +253,25 @@ enum
     SCORPID_STING_RANK4 = 14277,
 
     /* Entries */
-    CRAZED_ENTRY = 14534,
-    FRIENDLY_ENTRY = 14529,
+    NPC_KLINFRAN_DEMON = 14534,
+    NPC_KLINFRAN_FRIENDLY = 14529,
 };
 
 struct Hunterquest_Klinfran : public Hunterquest_BossTemplate
 {
-    uint32 enrage;
+    uint32 m_EnrageTimer;
     float baseMinDmg;
     float baseMaxDmg;
 
-    Hunterquest_Klinfran(Creature *creature) : Hunterquest_BossTemplate(creature), enrage(0)
-    {
+    Hunterquest_Klinfran(Creature *creature) : Hunterquest_BossTemplate(creature) { Reset();}
+
+    void Reset() 
+    { 
         baseMinDmg = m_creature->GetFloatValue(UNIT_FIELD_MINDAMAGE);
         baseMaxDmg = m_creature->GetFloatValue(UNIT_FIELD_MAXDAMAGE);
+        m_EnrageTimer = 8000;
+        MaxDmg();
     }
-
-    void Reset() { enrage = 0; MaxDmg(); }
 
     void MinDmg()
     {
@@ -278,33 +285,29 @@ struct Hunterquest_Klinfran : public Hunterquest_BossTemplate
         m_creature->SetFloatValue(UNIT_FIELD_MAXDAMAGE, baseMaxDmg);
     }
     
-    void Update(const uint32 time)
+    void Update(const uint32 uidiff)
     {
-        enrage += time;
 
-        if(m_creature->HasAura(SCORPID_STING_RANK4) && !m_creature->HasAura(DEMONIC_FRENZY))
-            MinDmg();
-        else
-            MaxDmg();
-        
-        if(enrage >= 15000 && !m_creature->HasAura(SCORPID_STING_RANK4))
+        if (m_EnrageTimer < uidiff)
         {
-            MaxDmg();
-
-            if(DoCastSpellIfCan(m_creature, DEMONIC_FRENZY) != CAST_OK)
-                MinDmg();
-
-            enrage = 0;
+            if (DoCastSpellIfCan(m_creature, DEMONIC_FRENZY) == CAST_OK)
+            {
+                MaxDmg();
+                m_EnrageTimer = 15000;
+            }
         }
+        else
+            m_EnrageTimer -= uidiff;
+
+        
     }
 
     void SpellHit(Unit*, const SpellEntry* entry) 
     {
-        if(entry->Id == SCORPID_STING_RANK4)
+        if (entry->Id == SCORPID_STING_RANK4 && m_creature->HasAura(DEMONIC_FRENZY))
         {
-			m_creature->RemoveAura(DEMONIC_FRENZY, EFFECT_INDEX_0);
-			m_creature->RemoveAura(DEMONIC_FRENZY, EFFECT_INDEX_1);
-			m_creature->RemoveAura(DEMONIC_FRENZY, EFFECT_INDEX_2);
+            m_creature->RemoveAurasWithDispelType(DISPEL_ENRAGE);
+            MinDmg();
         }
     }
 
@@ -320,6 +323,7 @@ struct Hunterquest_Franklin : public Hunterquest_BossTemplate
     { 
         m_creature->SetFlag(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
         m_creature->SetFlag(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_QUESTGIVER);
+        
     }
     void Reset() {}
     void Update(const uint32)
@@ -335,10 +339,9 @@ struct Hunterquest_Franklin : public Hunterquest_BossTemplate
 
     static bool GossipHello(Player* pPlayer, Creature* pCreature)
     {
-        if(pPlayer->IsActiveQuest(7636))
+        if(pPlayer->IsCurrentQuest(EPICQUEST,1))
         {
-            std::string msg = "I know who you are, reveal your true face, demon!";
-            pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, msg, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF+1);
+            pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, GetTrueFaceText(pPlayer->GetSession()->GetSessionDbcLocale()), GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1);
         }
 
         pPlayer->PlayerTalkClass->SendGossipMenu(907, pCreature->GetGUID());
@@ -353,13 +356,10 @@ struct Hunterquest_Franklin : public Hunterquest_BossTemplate
             pPlayer->CLOSE_GOSSIP_MENU();
             WorldLocation loc;
             pCreature->GetPosition(loc);
-            auto* creature = pCreature->SummonCreature(CRAZED_ENTRY, loc.coord_x, loc.coord_y, loc.coord_z, loc.orientation, TEMPSUMMON_TIMED_OR_DEAD_DESPAWN, 1200000);
+            auto* creature = pCreature->SummonCreature(NPC_KLINFRAN_DEMON, loc.coord_x, loc.coord_y, loc.coord_z, loc.orientation, TEMPSUMMON_TIMED_OR_DEAD_DESPAWN, 1200000);
 			if(creature)
 			{
-				DespawnDaemon(pCreature, 1200);
-				auto* ai = static_cast<Hunterquest_BossTemplate*>(creature->AI());
-				if(ai)
-					ai->SetOwner(pPlayer->GetGUID());
+				DespawnDaemon(pCreature);
 			}
         }
 
@@ -380,15 +380,14 @@ enum
     VIPER_STING = 14280,
 
     /* Spawns */
-    PET_ID = 14538,
-    SIMONE_SUCCUBUS_ID = 14533,
-	SIMONE_INCONSPICUOIS = 14527,
+    PET_FELHOUND = 14538,
+    PET_FRIENDLY = 14528, 
+    NPC_SIMONE_DEMON = 14533,
+	NPC_SIMONE_FRIENDLY = 14527,
 };
 
 struct Hunterquest_PetTemplate : public ScriptedAI
 {
-private:
-	uint64 ownerGuid;
 
 public:
     Hunterquest_PetTemplate(Creature* creature) : ScriptedAI(creature) { }
@@ -398,23 +397,19 @@ public:
         return new Hunterquest_PetTemplate(creature);
     }
 
-	void SetOwner(uint64 guid)
-	{
-		ownerGuid = guid;
-	}
-
+	
     void Reset()
     {
     }
 
     void Aggro(Unit* target)
     {
-        Creature* cr = GetClosestCreatureWithEntry(m_creature, SIMONE_SUCCUBUS_ID, 100);
+        Creature* cr = GetClosestCreatureWithEntry(m_creature, NPC_SIMONE_DEMON, 100);
         if(cr)
             cr->AddThreat(target, 100000);
         else
         {
-            cr = GetClosestCreatureWithEntry(m_creature, SIMONE_INCONSPICUOIS, 500);
+            cr = GetClosestCreatureWithEntry(m_creature, NPC_SIMONE_FRIENDLY, 500);
             if(cr)
             {
                 cr->AddThreat(target, 100000);
@@ -430,30 +425,41 @@ public:
 		auto* victim = m_creature->getVictim();
 
         ThreatList const& tl = m_creature->getThreatManager().getThreatList();
-        if(tl.size() > 1 || victim->GetGUID() != ownerGuid)
+        if(tl.size() > 1 || victim->getClass() != CLASS_HUNTER)
         {
             for (ThreatList::const_iterator itr = tl.begin();itr != tl.end(); ++itr)
             {
                 Unit* unit = m_creature->GetMap()->GetUnit((*itr)->getUnitGuid());
                 WorldLocation loc;
                 unit->GetPosition(loc);
-                m_creature->SummonCreature(14503, loc.coord_x - 5, loc.coord_y, loc.coord_z, loc.orientation, TEMPSUMMON_MANUAL_DESPAWN, 1800000)->AddThreat(unit, 100000);
+                m_creature->SummonCreature(NPC_CLEANER, loc.coord_x - 5, loc.coord_y, loc.coord_z, loc.orientation, TEMPSUMMON_MANUAL_DESPAWN, 1800000)->AddThreat(unit, 100000);
             };
 
-            Creature* cr = GetClosestCreatureWithEntry(m_creature, SIMONE_SUCCUBUS_ID, 100);
+            Creature* cr = GetClosestCreatureWithEntry(m_creature, NPC_SIMONE_DEMON, 100);
             if(cr)
             {
-                std::string msg = "Only a fool would now remain in this battle. So long, coward";
-                cr->MonsterSay(msg.c_str(), 0);
+                if (Player* p = m_creature->GetMap()->GetPlayer(cr->getVictim()->GetObjectGuid()))
+                {
+                    cr->MonsterSay(GetFoolText(p->GetSession()->GetSessionDbcLocale()).c_str(), 0);
+                }
+                else
+                    cr->MonsterSay(GetFoolText(LOCALE_deDE).c_str(), 0);
+
+               
                 cr->ForcedDespawn();
             }
             else
             {
-                cr = GetClosestCreatureWithEntry(m_creature, SIMONE_INCONSPICUOIS, 500);
+                cr = GetClosestCreatureWithEntry(m_creature, NPC_SIMONE_FRIENDLY, 500);
                 if(cr)
                 {
-                    std::string msg = "Only a fool would now remain in this battle. So long, coward";
-                    cr->MonsterSay(msg.c_str(), 0);
+                    if (Player* p = m_creature->GetMap()->GetPlayer(cr->getVictim()->GetObjectGuid()))
+                    {
+                        cr->MonsterSay(GetFoolText(p->GetSession()->GetSessionDbcLocale()).c_str(), 0);
+                    }
+                    else
+                        cr->MonsterSay(GetFoolText(LOCALE_deDE).c_str(), 0);
+
                     cr->ForcedDespawn();
                 }
             }
@@ -465,49 +471,76 @@ public:
 
 struct Hunterquest_SimoneSeductress : public Hunterquest_BossTemplate
 {
-    uint32 tk_time;
-    uint32 cl_time;
+    uint32 m_TemptressKissTimer;
+    uint32 m_ChainLightningTimer;
+    ObjectGuid hunter;
 
-    Hunterquest_SimoneSeductress(Creature* creature) : Hunterquest_BossTemplate(creature), tk_time(0), cl_time(0) 
-    { 
-        m_creature->SetMaxPower(POWER_MANA, 12170);
+    Hunterquest_SimoneSeductress(Creature* creature) : Hunterquest_BossTemplate(creature) { Reset(); }
+    
+    
+    void Reset() 
+    {
+        m_TemptressKissTimer = 0;
+        m_ChainLightningTimer = 5000;
     }
-    void Reset() { tk_time = cl_time = 0; }
 
     void Aggro(Unit* target)
     {
         DoCastSpellIfCan(target, TEMPTRESS_KISS);
-		
-        Creature* cr = GetClosestCreatureWithEntry(m_creature, PET_ID, 100);
-        if(cr)
-		{
-			auto* ai = static_cast<Hunterquest_PetTemplate*>(cr->AI());
-			if(ai)
-				ai->SetOwner(target->GetGUID());
-            cr->AddThreat(target, 100000);
-		}
+        hunter = target->GetObjectGuid();
+        Creature* felhound = GetClosestCreatureWithEntry(m_creature, PET_FELHOUND, 100);
+        if (felhound)
+        {
+            felhound->AddThreat(target, 100000);
+        }
+        else if (felhound = m_creature->SummonCreature(PET_FELHOUND, m_creature->GetPositionX(), m_creature->GetPositionY(), m_creature->GetPositionZ(), m_creature->GetOrientation(), TEMPSUMMON_TIMED_OR_DEAD_DESPAWN, 1200000))
+        {
+            felhound->AddThreat(target, 100000);
+            felhound->Attack(target, true);
+        }
+     }
+
+    void JustReachedHome()
+    { 
+        Creature* felhound = GetClosestCreatureWithEntry(m_creature, PET_FELHOUND, 100);
+        if (!felhound)
+        {
+            felhound = m_creature->SummonCreature(PET_FELHOUND, m_creature->GetPositionX(), m_creature->GetPositionY(), m_creature->GetPositionZ(), m_creature->GetOrientation(), TEMPSUMMON_TIMED_OR_DEAD_DESPAWN, 1200000);
+        }
+        
+
     }
 
-    void Update(const uint32 time)
+    void Update(const uint32 uidiff)
     {
-        tk_time += time;
-        cl_time += time;
+        if (Unit* pHunter = m_creature->FindMap()->GetUnit(hunter))
+        {
+            if (m_TemptressKissTimer < uidiff)
+            {
+                if (DoCastSpellIfCan(pHunter, TEMPTRESS_KISS) == CAST_OK)
+                    m_TemptressKissTimer = 30000;
+            }
+            else
+                m_TemptressKissTimer -= uidiff;
 
-        if(tk_time >= 45000)
-        {
-            Unit* unit = m_creature->GetMap()->GetUnit(m_creature->GetTargetGuid());
-            if(unit)
-                DoCastSpellIfCan(unit, TEMPTRESS_KISS);
-            tk_time = 0;
-        }
-        if(cl_time >= 12000)
-        {
-            Unit* unit = m_creature->GetMap()->GetUnit(m_creature->GetTargetGuid());
-            if(unit)
-                DoCastSpellIfCan(unit, CHAIN_LIGHTNING);
-            cl_time = 0;
+            if ( m_ChainLightningTimer < uidiff)
+            {
+                if (DoCastSpellIfCan(pHunter, CHAIN_LIGHTNING) == CAST_OK)
+                        m_ChainLightningTimer = 10000;
+            }
+            else
+                m_ChainLightningTimer -= uidiff;
         }
     }
+
+    void SpellHit(Unit*, const SpellEntry* entry)
+    {
+        if (entry->Id == VIPER_STING)
+        {
+            m_ChainLightningTimer = 8500;
+        }
+    }
+
 
     static CreatureAI* GetAI(Creature* creature)
     {
@@ -536,10 +569,10 @@ struct Hunterquest_SimoneInconspicuois : public Hunterquest_BossTemplate
 
     static bool GossipHello(Player* pPlayer, Creature* pCreature)
     {
-        if(pPlayer->IsActiveQuest(7636))
+        if(pPlayer->IsCurrentQuest(EPICQUEST,1))
         {
-            std::string msg = "I know who you are, reveal your true face, demon!";
-            pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, msg, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF+1);
+            
+            pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, GetTrueFaceText(pPlayer->GetSession()->GetSessionDbcLocale()), GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1);
         }
 
         pPlayer->PlayerTalkClass->SendGossipMenu(907, pCreature->GetGUID());
@@ -552,28 +585,27 @@ struct Hunterquest_SimoneInconspicuois : public Hunterquest_BossTemplate
         if (uiAction == GOSSIP_ACTION_INFO_DEF+1)
         {
             pPlayer->CLOSE_GOSSIP_MENU();
-            Creature* cr = GetClosestCreatureWithEntry(pCreature, 14528, 100);
+            Creature* cr = GetClosestCreatureWithEntry(pCreature, PET_FRIENDLY, 100);
             if(cr)
             {
                 WorldLocation loc;
                 cr->GetPosition(loc);
-                cr->SummonCreature(PET_ID, loc.coord_x, loc.coord_y, loc.coord_z, loc.orientation, TEMPSUMMON_TIMED_OR_DEAD_DESPAWN, 1200000);
+                Creature* felhound = cr->SummonCreature(PET_FELHOUND, loc.coord_x, loc.coord_y, loc.coord_z, loc.orientation, TEMPSUMMON_TIMED_OR_DEAD_DESPAWN, 1200000);
                 cr->ForcedDespawn();
 
                 pCreature->GetPosition(loc);
-				auto* creature = pCreature->SummonCreature(SIMONE_SUCCUBUS_ID, loc.coord_x, loc.coord_y, loc.coord_z, loc.orientation, TEMPSUMMON_TIMED_OR_DEAD_DESPAWN, 1200000);
-				if(creature)
+                auto* simone = pCreature->SummonCreature(NPC_SIMONE_DEMON, loc.coord_x, loc.coord_y, loc.coord_z, loc.orientation, TEMPSUMMON_TIMED_OR_DEAD_DESPAWN, 1200000);
+                if (simone)
 				{
-					DespawnDaemon(pCreature, 1200);
-					auto* ai = static_cast<Hunterquest_BossTemplate*>(creature->AI());
-					if(ai)
-						ai->SetOwner(pPlayer->GetGUID());
+					DespawnDaemon(pCreature);
 				}
             }
         }
 
         return true;
     }
+
+
 
     static CreatureAI* GetAI(Creature* creature)
     {
@@ -591,33 +623,38 @@ enum
     ICE_TRAP = 13810,
 
     /* Entries */
-    SLAYER = 14530,
-    NICE = 14536,
-    CREEPING_DOOM = 14761,
+    NPC_SOLENOR_DEMON = 14530,
+    NPC_SOLENOR_FRIENDLY = 14536,
+    NPC_CREEPING_DOOM = 14761,
 };
 
 
 struct Hunterquest_Solenor : public Hunterquest_BossTemplate
 {
-    uint32 fright;
-    uint32 bug;
+    uint32 m_FrightenTimer;
+    uint32 m_BugSpwanTimer;
     ObjectGuid hunter;
 
     bool applyAura;
     uint32 auraTimer;
 
-    Hunterquest_Solenor(Creature* creature) : Hunterquest_BossTemplate(creature), fright(0), bug(0), hunter(ObjectGuid()),
-        applyAura(false), auraTimer(0) {DoCastSpellIfCan(m_creature, SOUL_FLAME);}
+    Hunterquest_Solenor(Creature* creature) : Hunterquest_BossTemplate(creature) { Reset(); DoCastSpellIfCan(m_creature, SOUL_FLAME);}
 
-    void Reset() { hunter = ObjectGuid(); fright = bug = 0; }
-
-    void Aggro(Unit* target) { hunter = target->GetObjectGuid(); }
-
-    void Update(const uint32 time)
+    void Reset()
     {
-        fright += time;
-        bug += time;
+        m_FrightenTimer = 12000;
+        m_BugSpwanTimer = 10000;
+        applyAura = false;
+        auraTimer = 0;
+    }
 
+    void Aggro(Unit* target) 
+    {
+        hunter = target->GetObjectGuid(); 
+    }
+
+    void Update(const uint32 uidiff)
+    {
         if(m_creature->HasAura(ICE_TRAP))
         {
             m_creature->RemoveAura(SOUL_FLAME, EFFECT_INDEX_0);
@@ -625,22 +662,23 @@ struct Hunterquest_Solenor : public Hunterquest_BossTemplate
             m_creature->RemoveAura(SOUL_FLAME, EFFECT_INDEX_2);
         }
 
-        if(fright >= 12000)
+        if (m_FrightenTimer < uidiff)
         {
-            if(Unit* pHunter = m_creature->FindMap()->GetUnit(hunter))
-            {					
-                float distance1 = m_creature->GetDistance2d(pHunter->GetPositionX(), pHunter->GetPositionY());
-                if(distance1 > 5.0f)
-                    DoCastSpellIfCan(pHunter, DREAFUL_FRIGHT);
+            if (Unit* pHunter = m_creature->FindMap()->GetUnit(hunter))
+            {
+                float distance = m_creature->GetDistance2d(pHunter->GetPositionX(), pHunter->GetPositionY());
+                if (distance > 5.0f)
+                    if (DoCastSpellIfCan(pHunter, DREAFUL_FRIGHT) == CAST_OK)
+                        m_FrightenTimer = 12000;
             }
-            fright = 0;
         }
+        else
+            m_FrightenTimer -= uidiff;
 
         //Hackfix - the aura sometimes disappear because of dmg done by the hunter
         if(applyAura)
         {
-            auraTimer += time;
-
+            auraTimer += uidiff;
             if(auraTimer < 30000)
             {
                 if(!m_creature->HasAura(CRIPPLING_CLIP))
@@ -659,29 +697,28 @@ struct Hunterquest_Solenor : public Hunterquest_BossTemplate
             }
         }
 
-        if(bug >= 10000)
+        if (m_BugSpwanTimer < uidiff)
         {
             if (Unit* pHunter = m_creature->FindMap()->GetUnit(hunter))
-            {			
-                float distance1 = m_creature->GetDistance2d(pHunter->GetPositionX(), pHunter->GetPositionY());
-                if(distance1 > 5.0f)
+            {
+                float distance = m_creature->GetDistance2d(pHunter->GetPositionX(), pHunter->GetPositionY());
+                if (distance > 5.0f)
                 {
                     for (uint8 i = 0; i < 3; i++)
                     {
-                        Creature* DoomBug = DoSpawnCreature(CREEPING_DOOM, 0.0f, 0.0f, 0.0f, 0.0f, TEMPSUMMON_MANUAL_DESPAWN, 1800000);
-                        if(DoomBug)
+                        Creature* DoomBug = DoSpawnCreature(NPC_CREEPING_DOOM, 0.0f, 0.0f, 0.0f, 0.0f, TEMPSUMMON_MANUAL_DESPAWN, 1800000);
+                        if (DoomBug)
                         {
-                            DoomBug->SetSpeedRate(MOVE_WALK, 0.3f);
-                            DoomBug->SetSpeedRate(MOVE_RUN, 0.3f);
                             DoomBug->AI()->AttackStart(pHunter);
-							DoomBug->AI()->JustSummoned(m_creature); //dosn't get called otherwise, weird
+                            DoomBug->AI()->JustSummoned(m_creature); //dosn't get called otherwise, weird
+                            m_BugSpwanTimer = 10000;
                         }
                     }
                 }
             }
-
-            bug = 0;
         }
+        else
+            m_BugSpwanTimer -= uidiff;
     }
 
     void SpellHit(Unit*, const SpellEntry* entry) 
@@ -704,17 +741,14 @@ struct DoomBug : public ScriptedAI
     ObjectGuid hunter;
     ObjectGuid summoner;
 
-    DoomBug(Creature* creature) : ScriptedAI(creature), hunter(ObjectGuid()), summoner(ObjectGuid()) { }
+    DoomBug(Creature* creature) : ScriptedAI(creature) { }
     void Reset()
     {
         m_creature->ForcedDespawn();
         m_creature->AddObjectToRemoveList();
     }
 
-    void Aggro(Unit* target)
-    {
-        hunter = target->GetTargetGuid();
-    }
+ 
 
     void UpdateAI(const uint32 t)
     {
@@ -724,6 +758,7 @@ struct DoomBug : public ScriptedAI
 	void JustSummoned(Creature* summoner)
 	{
 		this->summoner = summoner->GetObjectGuid();
+        hunter = summoner->getVictim()->GetObjectGuid();
 	}
 
     void JustDied(Unit* killer)
@@ -739,7 +774,7 @@ struct DoomBug : public ScriptedAI
 
             WorldLocation loc;
             killer->GetPosition(loc);
-            Creature* cleaner = m_creature->SummonCreature(14503, loc.coord_x - 5, loc.coord_y, loc.coord_z, loc.orientation, TEMPSUMMON_TIMED_OR_CORPSE_DESPAWN, 600000);
+            Creature* cleaner = m_creature->SummonCreature(NPC_CLEANER, loc.coord_x - 5, loc.coord_y, loc.coord_z, loc.orientation, TEMPSUMMON_TIMED_OR_CORPSE_DESPAWN, 600000);
             if(cleaner)
                 cleaner->AddThreat(killer, 100000);
 		}
@@ -775,10 +810,10 @@ struct Hunterquest_Nelson : public Hunterquest_BossTemplate
 
     static bool GossipHello(Player* pPlayer, Creature* pCreature)
     {
-        if(pPlayer->IsActiveQuest(7636))
+        if(pPlayer->IsCurrentQuest(EPICQUEST,1))
         {
-            std::string msg = "I know who you are, reveal your true face, demon!";
-            pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, msg, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF+1);
+            
+            pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, GetTrueFaceText(pPlayer->GetSession()->GetSessionDbcLocale()), GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1);
         }
 
         pPlayer->PlayerTalkClass->SendGossipMenu(907, pCreature->GetGUID());
@@ -793,13 +828,10 @@ struct Hunterquest_Nelson : public Hunterquest_BossTemplate
             pPlayer->CLOSE_GOSSIP_MENU();
             WorldLocation loc;
             pCreature->GetPosition(loc);
-			auto* creature = pCreature->SummonCreature(SLAYER, loc.coord_x, loc.coord_y, loc.coord_z, loc.orientation, TEMPSUMMON_TIMED_OR_DEAD_DESPAWN, 1200000);
+			auto* creature = pCreature->SummonCreature(NPC_SOLENOR_DEMON, loc.coord_x, loc.coord_y, loc.coord_z, loc.orientation, TEMPSUMMON_TIMED_OR_DEAD_DESPAWN, 1200000);
 			if(creature)
 			{
-				DespawnDaemon(pCreature, 1200);
-				auto* ai = static_cast<Hunterquest_BossTemplate*>(creature->AI());
-				if(ai)
-					ai->SetOwner(pPlayer->GetGUID());
+				DespawnDaemon(pCreature);
 			}
         }
 
@@ -850,7 +882,7 @@ void AddSC_Hunter_Epic_Quest()
 
     /* Simone the Inconspicuous	*/
     pScript = new Script;
-    pScript->Name = "Hunterquest_SimoneInconspicuous";
+    pScript->Name = "mob_simone_the_inconspicuous";
     pScript->GetAI = &Hunterquest_SimoneInconspicuois::GetAI;
     pScript->pGossipHello = &Hunterquest_SimoneInconspicuois::GossipHello;
     pScript->pGossipSelect = &Hunterquest_SimoneInconspicuois::GossipSelect;
