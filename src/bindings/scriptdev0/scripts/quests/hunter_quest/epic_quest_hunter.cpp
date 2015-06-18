@@ -1,4 +1,5 @@
 #include "precompiled.h"
+#include "SpellMgr.h"
 
 enum
 {
@@ -8,7 +9,9 @@ enum
     FOOLS_PLIGHT = 23504,
     DEMONIC_FRENZY = 23257,
     NPC_CLEANER = 14503,
-
+    PET_FELHOUND = 14538,
+    PET_FRIENDLY = 14528,
+    SPELL_FULL_IMMUNE = 29230,
 };
 
 static std::string GetFoolText(LocaleConstant lang)
@@ -27,6 +30,11 @@ struct Hunterquest_BossTemplate : public ScriptedAI
 private:
 	bool justSpawned;
 	uint32 setupTime;
+    uint32 m_AurenCheckTimer;
+
+protected:
+    time_t combatTime;
+    ObjectGuid hunter;
     	
 public:
     Hunterquest_BossTemplate(Creature* creature) : ScriptedAI(creature)	{Reset();}
@@ -36,9 +44,17 @@ public:
         m_creature->SetFlag(UNIT_NPC_FLAGS, UNIT_FLAG_NON_ATTACKABLE | UNIT_FLAG_PASSIVE);
         justSpawned = true;
         setupTime = 5000;
+        combatTime = 0;
+        m_AurenCheckTimer = 2000;
     }
 
     virtual void Update(const uint32 uidiff) = 0;
+
+    void Startcombat(Unit* target)
+    {
+        hunter = target->GetObjectGuid();
+        combatTime = time(NULL);
+    }
 
     void Panik()
     {
@@ -59,8 +75,12 @@ public:
 				continue;
 
             Creature* cleaner = m_creature->SummonCreature(NPC_CLEANER, loc.coord_x - 5, loc.coord_y, loc.coord_z, loc.orientation, TEMPSUMMON_TIMED_DESPAWN_OUT_OF_COMBAT, 10000);
-            if(cleaner)
+            if (cleaner)
+            {
                 cleaner->AddThreat(unit, 100000);
+                cleaner->CastSpell(cleaner, SPELL_FULL_IMMUNE, true);
+            }
+
         }
         if (Player* p = m_creature->GetMap()->GetPlayer(m_creature->getVictim()->GetObjectGuid()))
         {
@@ -71,12 +91,12 @@ public:
         
         m_creature->ForcedDespawn();
 
-        Creature* cr = GetClosestCreatureWithEntry(m_creature, 14528, 1500);
+        Creature* cr = GetClosestCreatureWithEntry(m_creature, PET_FRIENDLY, 1500);
         if(cr)
             cr->ForcedDespawn();
         else
         {
-            cr = GetClosestCreatureWithEntry(m_creature, 14538, 1500);
+            cr = GetClosestCreatureWithEntry(m_creature, PET_FELHOUND, 1500);
             if(cr)
                 cr->ForcedDespawn();
         }
@@ -106,6 +126,22 @@ public:
             return;
 
 		auto* victim = m_creature->getVictim();
+        
+        if (m_AurenCheckTimer > uidiff)
+        {
+            for (Unit::SpellAuraHolderMap::const_iterator itr = victim->GetSpellAuraHolderMap().begin(); itr != victim->GetSpellAuraHolderMap().end(); ++itr)
+            {
+                if (!itr->second->GetCaster()) 
+                    continue;
+
+                if (itr->second->GetAuraApplyTime() > combatTime && itr->second->GetCaster() != victim && (itr->second->GetCaster()->IsFriendlyTo(victim) && victim->IsFriendlyTo(itr->second->GetCaster())))
+                    Panik();
+            }
+
+            m_AurenCheckTimer = 2000;
+        }
+        else
+            m_AurenCheckTimer -= uidiff;
 
         ThreatList const& tl = m_creature->getThreatManager().getThreatList();
         if(tl.size() > 1 || victim->getClass() != CLASS_HUNTER)
@@ -134,19 +170,20 @@ struct Hunterquest_Doombringer : public Hunterquest_BossTemplate
 {
     uint32 m_DoomCheckIntervall;
     uint32 m_EnrageTimer;
-    ObjectGuid hunter;
-
+    uint32 m_OutOfRangeTimer;
+    
     Hunterquest_Doombringer(Creature* creature) : Hunterquest_BossTemplate(creature) { Reset(); }
 
     void Reset() 
     {
-        m_DoomCheckIntervall = 500;
+        m_OutOfRangeTimer = 0;
+        m_DoomCheckIntervall = 0;
         m_EnrageTimer = 8000;
     }
 
     void Aggro(Unit* target) 
     {
-        hunter = target->GetObjectGuid(); 
+        Startcombat(target);
     }
 
     void Update(const uint32 uidiff)
@@ -161,27 +198,43 @@ struct Hunterquest_Doombringer : public Hunterquest_BossTemplate
         else
             m_EnrageTimer -= uidiff;
 
-        if (m_DoomCheckIntervall < uidiff)
+        if (Unit* pHunter = m_creature->FindMap()->GetUnit(hunter))
         {
-            if (Unit* pHunter = m_creature->FindMap()->GetUnit(hunter))
+
+            if (m_DoomCheckIntervall < 3500)
             {
                 float distance = m_creature->GetDistance(pHunter);
-                if (distance <= 30.0f)
-                    DoCastSpellIfCan(pHunter, DEMONIC_DOOM, CAST_TRIGGERED);
+                if (distance <= 30.0f && !pHunter->HasAura(DEMONIC_DOOM))
+                    m_DoomCheckIntervall += uidiff;
+                else
+                    m_DoomCheckIntervall = 0;
             }
-            m_DoomCheckIntervall = 500;
+            else
+            {
+                DoCastSpellIfCan(pHunter, DEMONIC_DOOM);
+                m_DoomCheckIntervall = 0;
+            }
+
+            if (m_OutOfRangeTimer < 3500)
+            {
+                float distance = m_creature->GetDistance(pHunter);
+                if (distance > 46.0f)
+                    m_OutOfRangeTimer += uidiff;
+                else
+                    m_OutOfRangeTimer = 0;
+            }
+            else
+                EnterEvadeMode();
         }
-        else
-            m_DoomCheckIntervall -= uidiff;
+
+        
     }
 
     void SpellHit(Unit*, const SpellEntry* entry) 
     {
-        
         if (m_creature->HasAura(DEMONIC_FRENZY) && entry->IsFitToFamily(SPELLFAMILY_HUNTER, 0x00000004000))
         {
             DoCastSpellIfCan(m_creature, STINGING_TRAUMA);
-            m_creature->RemoveAurasWithDispelType(DISPEL_ENRAGE);
         }
     }
 
@@ -198,6 +251,11 @@ struct Hunterquest_Amiable : public Hunterquest_BossTemplate
     { 
         m_creature->SetFlag(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_GOSSIP);
         m_creature->SetFlag(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_QUESTGIVER);
+    }
+    
+    void Aggro(Unit* target)
+    {
+        Startcombat(target);
     }
     
     void Update(const uint32)
@@ -231,7 +289,7 @@ struct Hunterquest_Amiable : public Hunterquest_BossTemplate
             pPlayer->CLOSE_GOSSIP_MENU();
             WorldLocation loc;
             pCreature->GetPosition(loc);
-            auto* creature = pCreature->SummonCreature(NPC_ARTORIUS_DEMON, loc.coord_x, loc.coord_y, loc.coord_z, loc.orientation, TEMPSUMMON_TIMED_OR_DEAD_DESPAWN, 1200000);
+            auto* creature = pCreature->SummonCreature(NPC_ARTORIUS_DEMON, loc.coord_x, loc.coord_y, loc.coord_z, loc.orientation, TEMPSUMMON_TIMED_OR_DEAD_DESPAWN, 600000);
 			if(creature)
 			{
 				DespawnDaemon(pCreature);
@@ -251,6 +309,7 @@ enum
 {
     /* Spells */
     SCORPID_STING_RANK4 = 14277,
+    ENTROPIC_STING = 23260,
 
     /* Entries */
     NPC_KLINFRAN_DEMON = 14534,
@@ -260,30 +319,17 @@ enum
 struct Hunterquest_Klinfran : public Hunterquest_BossTemplate
 {
     uint32 m_EnrageTimer;
-    float baseMinDmg;
-    float baseMaxDmg;
+    
 
     Hunterquest_Klinfran(Creature *creature) : Hunterquest_BossTemplate(creature) { Reset();}
 
     void Reset() 
     { 
-        baseMinDmg = m_creature->GetFloatValue(UNIT_FIELD_MINDAMAGE);
-        baseMaxDmg = m_creature->GetFloatValue(UNIT_FIELD_MAXDAMAGE);
         m_EnrageTimer = 8000;
-        MaxDmg();
+        
     }
-
-    void MinDmg()
-    {
-        m_creature->SetFloatValue(UNIT_FIELD_MINDAMAGE, 1.0f);
-        m_creature->SetFloatValue(UNIT_FIELD_MAXDAMAGE, 1.0f);
-    }
-
-    void MaxDmg()
-    {
-        m_creature->SetFloatValue(UNIT_FIELD_MINDAMAGE, baseMinDmg);
-        m_creature->SetFloatValue(UNIT_FIELD_MAXDAMAGE, baseMaxDmg);
-    }
+    void Aggro(Unit* target) { Startcombat(target); }
+   
     
     void Update(const uint32 uidiff)
     {
@@ -292,7 +338,6 @@ struct Hunterquest_Klinfran : public Hunterquest_BossTemplate
         {
             if (DoCastSpellIfCan(m_creature, DEMONIC_FRENZY) == CAST_OK)
             {
-                MaxDmg();
                 m_EnrageTimer = 15000;
             }
         }
@@ -304,11 +349,13 @@ struct Hunterquest_Klinfran : public Hunterquest_BossTemplate
 
     void SpellHit(Unit*, const SpellEntry* entry) 
     {
-        if (entry->Id == SCORPID_STING_RANK4 && m_creature->HasAura(DEMONIC_FRENZY))
+        if (entry->Id == SCORPID_STING_RANK4)
         {
-            m_creature->RemoveAurasWithDispelType(DISPEL_ENRAGE);
-            MinDmg();
+            if  (m_creature->HasAura(DEMONIC_FRENZY))
+                m_creature->RemoveAurasWithDispelType(DISPEL_ENRAGE);
+            DoCastSpellIfCan(m_creature, ENTROPIC_STING);
         }
+       
     }
 
     static CreatureAI* GetAI(Creature* creature)
@@ -326,6 +373,7 @@ struct Hunterquest_Franklin : public Hunterquest_BossTemplate
         
     }
     void Reset() {}
+    void Aggro(Unit* target) { Startcombat(target); }
     void Update(const uint32)
     {
         ThreatList const& tl = m_creature->getThreatManager().getThreatList();
@@ -356,7 +404,7 @@ struct Hunterquest_Franklin : public Hunterquest_BossTemplate
             pPlayer->CLOSE_GOSSIP_MENU();
             WorldLocation loc;
             pCreature->GetPosition(loc);
-            auto* creature = pCreature->SummonCreature(NPC_KLINFRAN_DEMON, loc.coord_x, loc.coord_y, loc.coord_z, loc.orientation, TEMPSUMMON_TIMED_OR_DEAD_DESPAWN, 1200000);
+            auto* creature = pCreature->SummonCreature(NPC_KLINFRAN_DEMON, loc.coord_x, loc.coord_y, loc.coord_z, loc.orientation, TEMPSUMMON_TIMED_OR_DEAD_DESPAWN, 600000);
 			if(creature)
 			{
 				DespawnDaemon(pCreature);
@@ -380,8 +428,7 @@ enum
     VIPER_STING = 14280,
 
     /* Spawns */
-    PET_FELHOUND = 14538,
-    PET_FRIENDLY = 14528, 
+    
     NPC_SIMONE_DEMON = 14533,
 	NPC_SIMONE_FRIENDLY = 14527,
 };
@@ -404,6 +451,7 @@ public:
 
     void Aggro(Unit* target)
     {
+       
         Creature* cr = GetClosestCreatureWithEntry(m_creature, NPC_SIMONE_DEMON, 100);
         if(cr)
             cr->AddThreat(target, 100000);
@@ -413,6 +461,7 @@ public:
             if(cr)
             {
                 cr->AddThreat(target, 100000);
+                
             }
         }
     }
@@ -432,7 +481,12 @@ public:
                 Unit* unit = m_creature->GetMap()->GetUnit((*itr)->getUnitGuid());
                 WorldLocation loc;
                 unit->GetPosition(loc);
-                m_creature->SummonCreature(NPC_CLEANER, loc.coord_x - 5, loc.coord_y, loc.coord_z, loc.orientation, TEMPSUMMON_MANUAL_DESPAWN, 1800000)->AddThreat(unit, 100000);
+                if (Creature* cleaner = m_creature->SummonCreature(NPC_CLEANER, loc.coord_x - 5, loc.coord_y, loc.coord_z, loc.orientation, TEMPSUMMON_MANUAL_DESPAWN, 1800000))
+                {
+                    cleaner->AddThreat(unit, 10000);
+                    cleaner->CastSpell(cleaner, SPELL_FULL_IMMUNE, true);
+                }
+                
             };
 
             Creature* cr = GetClosestCreatureWithEntry(m_creature, NPC_SIMONE_DEMON, 100);
@@ -473,7 +527,7 @@ struct Hunterquest_SimoneSeductress : public Hunterquest_BossTemplate
 {
     uint32 m_TemptressKissTimer;
     uint32 m_ChainLightningTimer;
-    ObjectGuid hunter;
+    
 
     Hunterquest_SimoneSeductress(Creature* creature) : Hunterquest_BossTemplate(creature) { Reset(); }
     
@@ -486,14 +540,15 @@ struct Hunterquest_SimoneSeductress : public Hunterquest_BossTemplate
 
     void Aggro(Unit* target)
     {
+        Startcombat(target);
         DoCastSpellIfCan(target, TEMPTRESS_KISS);
-        hunter = target->GetObjectGuid();
+       
         Creature* felhound = GetClosestCreatureWithEntry(m_creature, PET_FELHOUND, 100);
         if (felhound)
         {
             felhound->AddThreat(target, 100000);
         }
-        else if (felhound = m_creature->SummonCreature(PET_FELHOUND, m_creature->GetPositionX(), m_creature->GetPositionY(), m_creature->GetPositionZ(), m_creature->GetOrientation(), TEMPSUMMON_TIMED_OR_DEAD_DESPAWN, 1200000))
+        else if (felhound = m_creature->SummonCreature(PET_FELHOUND, m_creature->GetPositionX(), m_creature->GetPositionY(), m_creature->GetPositionZ(), m_creature->GetOrientation(), TEMPSUMMON_TIMED_OR_DEAD_DESPAWN, 600000))
         {
             felhound->AddThreat(target, 100000);
             felhound->Attack(target, true);
@@ -505,10 +560,8 @@ struct Hunterquest_SimoneSeductress : public Hunterquest_BossTemplate
         Creature* felhound = GetClosestCreatureWithEntry(m_creature, PET_FELHOUND, 100);
         if (!felhound)
         {
-            felhound = m_creature->SummonCreature(PET_FELHOUND, m_creature->GetPositionX(), m_creature->GetPositionY(), m_creature->GetPositionZ(), m_creature->GetOrientation(), TEMPSUMMON_TIMED_OR_DEAD_DESPAWN, 1200000);
+            felhound = m_creature->SummonCreature(PET_FELHOUND, m_creature->GetPositionX(), m_creature->GetPositionY(), m_creature->GetPositionZ(), m_creature->GetOrientation(), TEMPSUMMON_TIMED_OR_DEAD_DESPAWN, 600000);
         }
-        
-
     }
 
     void Update(const uint32 uidiff)
@@ -556,6 +609,8 @@ struct Hunterquest_SimoneInconspicuois : public Hunterquest_BossTemplate
         m_creature->SetFlag(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_QUESTGIVER);
     }
     void Reset() {}
+    void Aggro(Unit* target) { Startcombat(target); }
+
     void Update(const uint32)
     {
         ThreatList const& tl = m_creature->getThreatManager().getThreatList();
@@ -590,15 +645,20 @@ struct Hunterquest_SimoneInconspicuois : public Hunterquest_BossTemplate
             {
                 WorldLocation loc;
                 cr->GetPosition(loc);
-                Creature* felhound = cr->SummonCreature(PET_FELHOUND, loc.coord_x, loc.coord_y, loc.coord_z, loc.orientation, TEMPSUMMON_TIMED_OR_DEAD_DESPAWN, 1200000);
+                Creature* felhound = cr->SummonCreature(PET_FELHOUND, loc.coord_x, loc.coord_y, loc.coord_z, loc.orientation, TEMPSUMMON_TIMED_OR_DEAD_DESPAWN, 600000);
                 cr->ForcedDespawn();
 
                 pCreature->GetPosition(loc);
-                auto* simone = pCreature->SummonCreature(NPC_SIMONE_DEMON, loc.coord_x, loc.coord_y, loc.coord_z, loc.orientation, TEMPSUMMON_TIMED_OR_DEAD_DESPAWN, 1200000);
+                auto* simone = pCreature->SummonCreature(NPC_SIMONE_DEMON, loc.coord_x, loc.coord_y, loc.coord_z, loc.orientation, TEMPSUMMON_TIMED_OR_DEAD_DESPAWN, 600000);
                 if (simone)
 				{
 					DespawnDaemon(pCreature);
 				}
+                if (simone && felhound)
+                {
+                    simone->AddThreat(pPlayer, 10000);
+                    felhound->AddThreat(pPlayer, 10000);
+                }
             }
         }
 
@@ -633,8 +693,7 @@ struct Hunterquest_Solenor : public Hunterquest_BossTemplate
 {
     uint32 m_FrightenTimer;
     uint32 m_BugSpwanTimer;
-    ObjectGuid hunter;
-
+   
     bool applyAura;
     uint32 auraTimer;
 
@@ -650,7 +709,7 @@ struct Hunterquest_Solenor : public Hunterquest_BossTemplate
 
     void Aggro(Unit* target) 
     {
-        hunter = target->GetObjectGuid(); 
+        Startcombat(target);
     }
 
     void Update(const uint32 uidiff)
@@ -706,7 +765,7 @@ struct Hunterquest_Solenor : public Hunterquest_BossTemplate
                 {
                     for (uint8 i = 0; i < 3; i++)
                     {
-                        Creature* DoomBug = DoSpawnCreature(NPC_CREEPING_DOOM, 0.0f, 0.0f, 0.0f, 0.0f, TEMPSUMMON_MANUAL_DESPAWN, 1800000);
+                        Creature* DoomBug = DoSpawnCreature(NPC_CREEPING_DOOM, 0.0f, 0.0f, 0.0f, 0.0f, TEMPSUMMON_MANUAL_DESPAWN, 10000);
                         if (DoomBug)
                         {
                             DoomBug->AI()->AttackStart(pHunter);
@@ -774,9 +833,12 @@ struct DoomBug : public ScriptedAI
 
             WorldLocation loc;
             killer->GetPosition(loc);
-            Creature* cleaner = m_creature->SummonCreature(NPC_CLEANER, loc.coord_x - 5, loc.coord_y, loc.coord_z, loc.orientation, TEMPSUMMON_TIMED_OR_CORPSE_DESPAWN, 600000);
-            if(cleaner)
+            Creature* cleaner = m_creature->SummonCreature(NPC_CLEANER, loc.coord_x - 5, loc.coord_y, loc.coord_z, loc.orientation, TEMPSUMMON_TIMED_OR_CORPSE_DESPAWN, 10000);
+            if (cleaner)
+            {
                 cleaner->AddThreat(killer, 100000);
+                cleaner->CastSpell(cleaner, SPELL_FULL_IMMUNE, true);
+            }
 		}
 
         m_creature->ForcedDespawn();
@@ -797,6 +859,7 @@ struct Hunterquest_Nelson : public Hunterquest_BossTemplate
         m_creature->SetFlag(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_QUESTGIVER);
     }
     void Reset() {}
+    void Aggro(Unit* target) { Startcombat(target); }
     void Update(const uint32)
     {
         ThreatList const& tl = m_creature->getThreatManager().getThreatList();
@@ -828,7 +891,7 @@ struct Hunterquest_Nelson : public Hunterquest_BossTemplate
             pPlayer->CLOSE_GOSSIP_MENU();
             WorldLocation loc;
             pCreature->GetPosition(loc);
-			auto* creature = pCreature->SummonCreature(NPC_SOLENOR_DEMON, loc.coord_x, loc.coord_y, loc.coord_z, loc.orientation, TEMPSUMMON_TIMED_OR_DEAD_DESPAWN, 1200000);
+			auto* creature = pCreature->SummonCreature(NPC_SOLENOR_DEMON, loc.coord_x, loc.coord_y, loc.coord_z, loc.orientation, TEMPSUMMON_TIMED_OR_DEAD_DESPAWN, 600000);
 			if(creature)
 			{
 				DespawnDaemon(pCreature);

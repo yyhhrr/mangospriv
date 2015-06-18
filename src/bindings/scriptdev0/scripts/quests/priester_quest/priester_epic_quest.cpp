@@ -564,6 +564,7 @@ struct MANGOS_DLL_DECL npc_eris_havenfireAI : public ScriptedAI
                     m_creature->GetRandomPoint( (*i)->GetPositionX(), (*i)->GetPositionY(), (*i)->GetPositionZ(), 5.0f, fX, fY, fZ );
                     Creature* pCleaner = m_creature->SummonCreature(NPC_CLEANER, fX, fY, fZ, 0, TEMPSUMMON_TIMED_DESPAWN_OUT_OF_COMBAT, 10000);		 
                     pCleaner->AI()->AttackStart((*i));
+                    pCleaner->CastSpell(pCleaner, 29230, true);
                     m_bCleaningInProgress = true;
                 }
 
