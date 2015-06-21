@@ -1136,6 +1136,186 @@ CreatureAI* GetAI_npc_cenarion_scout_azenel(Creature* pCreature)
     return new npc_cenarion_scout_azenelAI(pCreature);
 }
 
+enum
+{
+    NPC_TWILIGT_PROPHET = 15308,
+    NPC_TWILIGHT_MARAUDER = 11880,
+
+    SPELL_CHAIN_LIGHTNING = 15305,
+    SPELL_FIRE_NOVA = 17366,
+    SPELL_FROST_NOVA = 15531,
+    SPELL_PSYCHIC_SCREAM = 22884,
+
+    MARAUDER_COUNT = 4,
+
+
+};
+
+
+struct twilight_prophetAI : public ScriptedAI
+{
+    twilight_prophetAI(Creature *c) : ScriptedAI(c) 
+    {
+        Reset();  
+        for (uint8 i = 0; i < MARAUDER_COUNT; i++)
+            marauders[i] = ObjectGuid();
+    }
+
+    ObjectGuid marauders[MARAUDER_COUNT];
+    uint32 m_ChainLightningTimer;
+    uint32 m_FireNovaTimer;
+    uint32 m_FrostNovaTimer;
+    uint32 m_PsychicScreamTimer;
+    uint32 m_maurauderTimer;
+    float m_fSpeedRate;
+
+    void Reset()
+    {
+        m_ChainLightningTimer = 3000;
+        m_FrostNovaTimer = 11000;
+        m_FireNovaTimer = 5000;
+        m_PsychicScreamTimer = 8000;
+        m_maurauderTimer = 500;
+        
+
+    }
+
+    /*void Aggro(Unit* who)
+    {
+        UpdateMarauders();
+
+    }
+
+
+    void MovementInform(uint32 uiMotionType, uint32 uiPointId)
+    {
+        UpdateMarauders();
+    }*/
+
+    
+
+    void UpdateMarauders()
+    {
+        
+        for (uint8 i = 0; i < MARAUDER_COUNT; i++)
+        {
+            if (Creature* cr = m_creature->GetMap()->GetCreature(marauders[i]))
+            {
+                if (cr->isEvading())
+                    continue;
+
+                if (m_creature->getVictim()) // Start Combat --> Attack
+                {
+                    if (!cr->isInCombat() && cr->AI())
+                    {
+                        cr->AI()->AttackStart(m_creature->getVictim());
+                       
+                    }
+                }
+                else if (!cr->isAlive()) // Dead --> Respawn
+                {
+                    if (Creature* cre = m_creature->SummonCreature(NPC_TWILIGHT_MARAUDER, m_creature->GetPositionX(), m_creature->GetPositionY(), m_creature->GetPositionZ(), 0, TEMPSUMMON_CORPSE_TIMED_DESPAWN, 3 * MINUTE * IN_MILLISECONDS))
+                    {
+                        marauders[i] = cre->GetObjectGuid();
+                        cre->GetMotionMaster()->MoveFollow(m_creature, 2.0f, (i + 1) * M_PI_F / 2.0f);
+                    }
+                }
+                else // Alive --> Follow
+                {
+                    if (!cr->isInCombat())
+                    {
+                        cr->GetMotionMaster()->MoveFollow(m_creature, 2.0f, (i + 1) * M_PI_F / 2.0f);
+                        CreatureCreatePos pos(m_creature->GetMap(), m_creature->GetPositionX(), m_creature->GetPositionY(), m_creature->GetPositionZ(), m_creature->GetOrientation());
+                        cr->SetRespawnCoord(pos);
+                        float dist = cr->GetDistance(m_creature);
+                        if (dist > 5.0f)
+                        {
+                             cr->SetSpeedRate(MOVE_WALK, (dist / 3.0f));
+                        }
+                        else
+                        {
+                            m_fSpeedRate = m_creature->GetSpeedRate(MOVE_WALK);
+                            cr->SetSpeedRate(MOVE_WALK, 1.2f);
+                        }
+                    }
+                }
+            }
+            else
+                if (Creature* cre = m_creature->SummonCreature(NPC_TWILIGHT_MARAUDER, m_creature->GetPositionX(), m_creature->GetPositionY(), m_creature->GetPositionZ(), 0, TEMPSUMMON_CORPSE_TIMED_DESPAWN, 3 * MINUTE * IN_MILLISECONDS))
+                {
+                    marauders[i] = cre->GetObjectGuid();
+                    cre->GetMotionMaster()->MoveFollow(m_creature, 2.0f, (i + 1) * M_PI_F / 2.0f);
+                }
+        }
+    }
+
+    void JustKilled(Unit* killer)
+    {
+        for (uint8 i = 0; i < MARAUDER_COUNT; i++)
+        {
+            if (marauders[i])
+                if (Creature* cr = m_creature->GetMap()->GetCreature(marauders[i]))
+                    cr->ForcedDespawn(3 * MINUTE * IN_MILLISECONDS);
+        }
+        marauders->Clear();
+    }
+
+    void UpdateAI(const uint32 uidiff)
+    {
+
+        if (m_maurauderTimer < uidiff)
+        {
+            UpdateMarauders();
+            m_maurauderTimer = 500;
+        }
+        else
+            m_maurauderTimer -= uidiff;
+
+
+        if (!m_creature->SelectHostileTarget() || !m_creature->getVictim())
+            return;
+       
+
+        Unit* target = m_creature->getVictim();
+        
+        if (m_ChainLightningTimer < uidiff)
+        {
+            if (DoCastSpellIfCan(target, SPELL_CHAIN_LIGHTNING) == CAST_OK)
+                m_ChainLightningTimer = urand(5000, 15000);
+        }
+        else
+            m_ChainLightningTimer -= uidiff;
+
+        if (m_FrostNovaTimer < uidiff)
+        {
+            if (DoCastSpellIfCan(target, SPELL_FROST_NOVA) == CAST_OK)
+                m_FrostNovaTimer = urand(5000, 15000);
+        }
+        else
+            m_FrostNovaTimer -= uidiff;
+
+        if (m_FireNovaTimer < uidiff)
+        {
+            if (DoCastSpellIfCan(target, SPELL_FIRE_NOVA) == CAST_OK)
+                m_FireNovaTimer = urand(5000, 15000);
+        }
+        else
+            m_FireNovaTimer -= uidiff;
+
+        if (m_PsychicScreamTimer < uidiff)
+        {
+            if (DoCastSpellIfCan(target, SPELL_PSYCHIC_SCREAM) == CAST_OK)
+                m_PsychicScreamTimer = urand(5000, 15000);
+        }
+        else
+            m_PsychicScreamTimer -= uidiff;
+
+        DoMeleeAttackIfReady();
+    }
+
+};
+
+
 
 //TODO: Sandvortex (npc:15428 zaubert:25160 und läuft random durch silithus)
 
@@ -1163,24 +1343,24 @@ void AddSC_silithus()
 
     pNewScript = new Script;
     pNewScript->Name = "go_crystalline_tear";
-	pNewScript->pGOUse = &GoUse_crystalline_tear;
+    pNewScript->pGOUse = &GoUse_crystalline_tear;
     pNewScript->pQuestAcceptGO = &QuestAcceptGO_crystalline_tear;
-	pNewScript->RegisterSelf();
+    pNewScript->RegisterSelf();
 
-	pNewScript = new Script;
-	pNewScript->Name = "AQ_SUMMON_GLYPHS";
-	pNewScript->pProcessEventId = &OnEvent;
-	pNewScript->RegisterSelf();
+    pNewScript = new Script;
+    pNewScript->Name = "AQ_SUMMON_GLYPHS";
+    pNewScript->pProcessEventId = &OnEvent;
+    pNewScript->RegisterSelf();
 
-	pNewScript = new Script;
-	pNewScript->Name = "AQ_SUMMON_ROOTS";
-	pNewScript->pProcessEventId = &OnEvent;
-	pNewScript->RegisterSelf();
+    pNewScript = new Script;
+    pNewScript->Name = "AQ_SUMMON_ROOTS";
+    pNewScript->pProcessEventId = &OnEvent;
+    pNewScript->RegisterSelf();
 
-	pNewScript = new Script;
-	pNewScript->Name = "AQ_SUMMON_DOOR";
-	pNewScript->pProcessEventId = &OnEvent;
-	pNewScript->RegisterSelf();
+    pNewScript = new Script;
+    pNewScript->Name = "AQ_SUMMON_DOOR";
+    pNewScript->pProcessEventId = &OnEvent;
+    pNewScript->RegisterSelf();
 
     pNewScript = new Script;
     pNewScript->Name = "npc_cenarion_scout_landion";
@@ -1199,4 +1379,9 @@ void AddSC_silithus()
     pNewScript->GetAI = &GetAI_npc_cenarion_scout_azenel;
     pNewScript->pGossipHello = &GossipHello_mob_azenel_the_scout;
     pNewScript->RegisterSelf();
-}
+
+    pNewScript = new Script;
+    pNewScript->Name = "npc_twilight_prophet";
+    pNewScript->GetAI = [](Creature* c) -> CreatureAI*{return new twilight_prophetAI(c); };
+    pNewScript->RegisterSelf();
+};
