@@ -258,6 +258,12 @@ void CreatureGroup::LeaderMoveTo(float x, float y, float z)
 
         member->UpdateGroundPositionZ(dx, dy, dz);
 
+        float memberdist = member->GetDistance(dx, dy, dz);
+        float leaderdist = m_leader->GetDistance(x, y, z);
+               
+        member->SetSpeedRate(MOVE_WALK, m_leader->GetSpeedRate(MOVE_WALK) * (memberdist / leaderdist));
+        
+
         member->GetMotionMaster()->MovePoint(0, dx, dy, dz);
         CreatureCreatePos pos(member->GetMap(), dx, dy, dz, member->GetOrientation());
 		member->SetRespawnCoord(pos);

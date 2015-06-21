@@ -28,6 +28,7 @@
 #include "ScriptMgr.h"
 #include "movement/MoveSplineInit.h"
 #include "movement/MoveSpline.h"
+#include "CreatureGroups.h"
 
 #include <cassert>
 
@@ -203,10 +204,20 @@ void WaypointMovementGenerator<Creature>::StartMove(Creature& creature)
     Movement::MoveSplineInit init(creature);
     init.MoveTo(nextNode.x, nextNode.y, nextNode.z, true);
 
+    
+    
+
     if (nextNode.orientation != 100 && nextNode.delay != 0)
         init.SetFacing(nextNode.orientation);
     creature.SetWalk(!creature.hasUnitState(UNIT_STAT_RUNNING_STATE) && !creature.IsLevitating(), false);
     init.Launch();
+
+  
+    if (creature.GetFormation() && creature.GetFormation()->getLeader()->GetObjectGuid() == creature.GetObjectGuid())
+    {
+       
+        creature.GetFormation()->LeaderMoveTo(nextNode.x, nextNode.y, nextNode.z);
+    }
 }
 
 bool WaypointMovementGenerator<Creature>::Update(Creature& creature, const uint32& diff)
