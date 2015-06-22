@@ -1201,6 +1201,9 @@ void Spell::EffectDummy(SpellEffectIndex eff_idx)
                 {
                     if (!unitTarget || unitTarget->GetTypeId() != TYPEID_PLAYER || !unitTarget->HasAura(29519, EFFECT_INDEX_0))
                         return;
+                    
+                    if (!unitTarget->IsPvP())
+                        unitTarget->SetPvP(true);
 
                     if (unitTarget->isInCombat() || unitTarget->GetHealthPercent() < 50)
                         unitTarget->RemoveAurasDueToSpell(29519);
