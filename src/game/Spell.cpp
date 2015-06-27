@@ -4262,8 +4262,8 @@ void Spell::TakeAmmo()
     {
         Item* pItem = ((Player*)m_caster)->GetWeaponForAttack(RANGED_ATTACK, true, false);
 
-        // wands don't have ammo
-        if (!pItem || pItem->GetProto()->SubClass == ITEM_SUBCLASS_WEAPON_WAND)
+        // wands don't have ammo and Blind (Rogue) should not use ammo at all
+        if (!pItem || pItem->GetProto()->SubClass == ITEM_SUBCLASS_WEAPON_WAND || m_spellInfo->Id == 2094)
             return;
 
         if (pItem->GetProto()->InventoryType == INVTYPE_THROWN)
@@ -6091,7 +6091,10 @@ uint32 Spell::CalculatePowerCost(SpellEntry const* spellInfo, Unit* caster, cons
 {
     // item cast not used power
     if (castItem)
+    {
+        
         return 0;
+    }
 
     // Spell drain all exist power on cast (Only paladin lay of Hands)
     if (spellInfo->HasAttribute(SPELL_ATTR_EX_DRAIN_ALL_POWER))
