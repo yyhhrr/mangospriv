@@ -3232,8 +3232,26 @@ void Spell::EffectEnchantItemTmp(SpellEffectIndex eff_idx)
         return;
     }
 
-    // select enchantment duration
+    // select enchantment duration and charges
     uint32 duration;
+    //uint32 charges = 0; // infinite
+
+    //switch (m_spellInfo->SpellIconID)
+    //{
+    //    case 513:
+    //        charges = 45 + (sSpellMgr.GetSpellRank(m_spellInfo->Id) * 15);
+    //        break;
+    //    case 247:
+    //        charges = 25 + (sSpellMgr.GetSpellRank(m_spellInfo->Id) * 15);
+    //        break;
+    //    case 1496:
+    //        charges = 55 + (sSpellMgr.GetSpellRank(m_spellInfo->Id) * 15);
+    //        break;
+    //    case 264:
+    //        charges = 25 + (sSpellMgr.GetSpellRank(m_spellInfo->Id) * 25);
+    //        break;
+    //}
+
 
     // other rogue family enchantments always 1 hour (some have spell damage=0, but some have wrong data in EffBasePoints)
     if(m_spellInfo->SpellFamilyName == SPELLFAMILY_ROGUE)
@@ -3300,7 +3318,7 @@ void Spell::EffectEnchantItemTmp(SpellEffectIndex eff_idx)
     // remove old enchanting before applying new if equipped
     item_owner->ApplyEnchantment(itemTarget,TEMP_ENCHANTMENT_SLOT, false);
 
-    itemTarget->SetEnchantment(TEMP_ENCHANTMENT_SLOT, enchant_id, duration * 1000, 0);
+    itemTarget->SetEnchantment(TEMP_ENCHANTMENT_SLOT, enchant_id, duration * 1000, m_spellInfo->procCharges);
 
     // add new enchanting if equipped
     item_owner->ApplyEnchantment(itemTarget, TEMP_ENCHANTMENT_SLOT, true);

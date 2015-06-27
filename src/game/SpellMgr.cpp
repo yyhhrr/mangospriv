@@ -4300,7 +4300,60 @@ void SpellMgr::LoadDbcDataCorrections()
 
         switch (spellInfo->Id)
         {
-        case 22888:
+
+        // Instant Poison
+        case 11340:
+            spellInfo->procCharges += 15;
+        case 11339:
+            spellInfo->procCharges += 15;
+        case 11338:
+            spellInfo->procCharges += 15;
+        case 8688:
+            spellInfo->procCharges += 15;
+        case 8686:
+            spellInfo->procCharges += 15;
+        case 8679:
+            spellInfo->procCharges += 40;
+            break;
+             
+        // Deadly Poison
+        case 25351:
+            spellInfo->procCharges += 15;
+        case 11356:
+            spellInfo->procCharges += 15;
+        case 11355:
+            spellInfo->procCharges += 15;
+        case 2824:
+            spellInfo->procCharges += 15;
+        case 2823:
+            spellInfo->procCharges += 60;
+            break;
+
+
+        // Wound Poison
+        case 13227:
+            spellInfo->procCharges += 15;
+        case 13226:
+            spellInfo->procCharges += 15;
+        case 13225:
+            spellInfo->procCharges += 15;
+        case 13219:
+            spellInfo->procCharges += 60;
+            break;
+
+        // Mind Numbing Poison
+        case 11399:
+            spellInfo->procCharges += 25;
+        case 8693:
+            spellInfo->procCharges += 25;
+        case 5761:
+            spellInfo->procCharges += 50;
+            break;
+
+
+
+           
+        case 22888: // Onybuff
             
             spellInfo->EffectRadiusIndex[0] = 28;
             spellInfo->EffectRadiusIndex[1] = 28;

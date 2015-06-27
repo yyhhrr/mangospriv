@@ -7128,9 +7128,9 @@ void Player::CastItemCombatSpell(Unit* Target, WeaponAttackType attType)
                 if (IsPositiveSpell(spellInfo->Id))
                 {
                     CastSpell(this, spellInfo->Id, true, item);
-                    if(IsExtraAttack)
+                    if (IsExtraAttack)
                     {
-                        while(m_extraAttacks)
+                        while (m_extraAttacks)
                         {
                             AttackerStateUpdate(Target, BASE_ATTACK, true);
                             if (m_extraAttacks > 0)
@@ -7140,6 +7140,22 @@ void Player::CastItemCombatSpell(Unit* Target, WeaponAttackType attType)
                 }
                 else
                     CastSpell(Target, spellInfo->Id, true, item);
+
+                if (e_slot != TEMP_ENCHANTMENT_SLOT)
+                    continue;
+                if (item->GetEnchantmentId(TEMP_ENCHANTMENT_SLOT))
+                {
+                    uint32 charges = item->GetEnchantmentCharges(TEMP_ENCHANTMENT_SLOT);
+                    if (charges == 0)
+                        continue;
+                    if (charges > 1)
+                        item->SetEnchantmentCharges(TEMP_ENCHANTMENT_SLOT, charges - 1);
+                    else if (charges <= 1)
+                    {
+                        ApplyEnchantment(item, TEMP_ENCHANTMENT_SLOT, false);
+                        item->ClearEnchantment(TEMP_ENCHANTMENT_SLOT);
+                    }
+                }
             }
         }
     }
@@ -7872,10 +7888,16 @@ void Player::SetVirtualItemSlot( uint8 i, Item* item)
         uint32 charges = item->GetEnchantmentCharges(TEMP_ENCHANTMENT_SLOT);
         if(charges == 0)
             return;
-        if(charges > 1)
+        if (charges > 1)
+        {
+            if (getClass() == CLASS_ROGUE)
+                return;
             item->SetEnchantmentCharges(TEMP_ENCHANTMENT_SLOT,charges-1);
+        }
         else if(charges <= 1)
         {
+            if (getClass() == CLASS_ROGUE)
+                return;
             ApplyEnchantment(item,TEMP_ENCHANTMENT_SLOT,false);
             item->ClearEnchantment(TEMP_ENCHANTMENT_SLOT);
         }
@@ -7884,30 +7906,30 @@ void Player::SetVirtualItemSlot( uint8 i, Item* item)
 
 void Player::SetSheath( SheathState sheathed )
 {
-    switch (sheathed)
-    {
-        case SHEATH_STATE_UNARMED:                          // no prepared weapon
-            SetVirtualItemSlot(0,NULL);
-            SetVirtualItemSlot(1,NULL);
-            SetVirtualItemSlot(2,NULL);
-            break;
-        case SHEATH_STATE_MELEE:                            // prepared melee weapon
-        {
-            SetVirtualItemSlot(0,GetWeaponForAttack(BASE_ATTACK,true,true));
-            SetVirtualItemSlot(1,GetWeaponForAttack(OFF_ATTACK,true,true));
-            SetVirtualItemSlot(2,NULL);
-        };  break;
-        case SHEATH_STATE_RANGED:                           // prepared ranged weapon
-            SetVirtualItemSlot(0,NULL);
-            SetVirtualItemSlot(1,NULL);
-            SetVirtualItemSlot(2,GetWeaponForAttack(RANGED_ATTACK,true,true));
-            break;
-        default:
-            SetVirtualItemSlot(0,NULL);
-            SetVirtualItemSlot(1,NULL);
-            SetVirtualItemSlot(2,NULL);
-            break;
-    }
+    //switch (sheathed)
+    //{
+    //    case SHEATH_STATE_UNARMED:                          // no prepared weapon
+    //        SetVirtualItemSlot(0,NULL);
+    //        SetVirtualItemSlot(1,NULL);
+    //        SetVirtualItemSlot(2,NULL);
+    //        break;
+    //    case SHEATH_STATE_MELEE:                            // prepared melee weapon
+    //    {
+    //        SetVirtualItemSlot(0,GetWeaponForAttack(BASE_ATTACK,true,true));
+    //        SetVirtualItemSlot(1,GetWeaponForAttack(OFF_ATTACK,true,true));
+    //        SetVirtualItemSlot(2,NULL);
+    //    };  break;
+    //    case SHEATH_STATE_RANGED:                           // prepared ranged weapon
+    //        SetVirtualItemSlot(0,NULL);
+    //        SetVirtualItemSlot(1,NULL);
+    //        SetVirtualItemSlot(2,GetWeaponForAttack(RANGED_ATTACK,true,true));
+    //        break;
+    //    default:
+    //        SetVirtualItemSlot(0,NULL);
+    //        SetVirtualItemSlot(1,NULL);
+    //        SetVirtualItemSlot(2,NULL);
+    //        break;
+    //}
     Unit::SetSheath(sheathed);                              // this must visualize Sheath changing for other players...
 }
 
