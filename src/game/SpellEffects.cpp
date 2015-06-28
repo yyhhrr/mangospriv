@@ -912,7 +912,7 @@ void Spell::EffectDummy(SpellEffectIndex eff_idx)
                     if (!unitTarget)
                         return;
 
-                    unitTarget->CastSpell(unitTarget, 20494, true);
+                    m_caster->CastSpell(unitTarget, 20494, true);
                     return;
                 }
 				case 19873:                                 // Ei zerstören Spell bei Feuerkralle der Ungezähmte
@@ -3778,11 +3778,19 @@ void Spell::EffectSummonObjectWild(SpellEffectIndex eff_idx)
     if (!target)
 		target = m_caster;
 
+
     float x, y, z;
     if(m_targets.m_targetMask & TARGET_FLAG_DEST_LOCATION)
 		m_targets.getDestination(x, y, z);
     else
         m_caster->GetClosePoint(x, y, z, DEFAULT_WORLD_OBJECT_SIZE);
+
+
+    if (m_spellInfo->Id == 20494)
+    {
+        Unit* temp = m_targets.getUnitTarget();
+        temp->GetClosePoint(x, y, z, 2.5f);
+    }
 
     Map *map = target->GetMap();
 
@@ -3824,6 +3832,8 @@ void Spell::EffectSummonObjectWild(SpellEffectIndex eff_idx)
             }
         }
     }
+    if (gameobject_id == 177704)
+        pGameObj->SetOwnerGuid(m_caster->GetObjectGuid());
 
     pGameObj->SummonLinkedTrapIfAny();
 

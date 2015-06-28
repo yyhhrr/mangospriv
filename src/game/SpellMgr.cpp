@@ -4301,6 +4301,10 @@ void SpellMgr::LoadDbcDataCorrections()
         switch (spellInfo->Id)
         {
 
+        case 19428:
+            spellInfo->EffectImplicitTargetA[0] = TARGET_CURRENT_ENEMY_COORDINATES;
+            spellInfo->EffectImplicitTargetB[0] = TARGET_ALL_ENEMY_IN_AREA_INSTANT;
+            break;
         // Instant Poison
         case 11340:
             spellInfo->procCharges += 15;
