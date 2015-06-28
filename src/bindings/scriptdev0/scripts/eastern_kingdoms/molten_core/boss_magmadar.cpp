@@ -127,7 +127,7 @@ struct MANGOS_DLL_DECL boss_magmadarAI : public ScriptedAI
 				TankFeared = true;
 				// m_creature->getThreatManager().modifyThreatPercent(pTank, -99);
                 tankthreat = m_creature->getThreatManager().getCurrentVictim()->getThreat() -1.0f;
-                m_creature->getThreatManager().addThreatDirectly(pTank, -( m_creature->getThreatManager().getCurrentVictim()->getThreat() -1.0f));
+                m_creature->getThreatManager().addThreatDirectly(pTank, -tankthreat);
 			}
 		}
 
@@ -140,7 +140,7 @@ struct MANGOS_DLL_DECL boss_magmadarAI : public ScriptedAI
 				TankFeared = false;
 				// m_creature->getThreatManager().modifyThreatPercent(pTank, 11000);
                 m_creature->getThreatManager().addThreatDirectly(pTank, tankthreat);
-                
+                tankthreat = 0;
 			}
 		}
 
